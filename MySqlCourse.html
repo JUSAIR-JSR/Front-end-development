@@ -1,0 +1,1927 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MySQL Course - Complete Beginner to Advanced Database Course</title>
+  <meta name="description" content="Complete MySQL course with database design, SQL queries, optimization, and integration with Python, Node.js, and Django" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Highlight.js for syntax highlighting -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            neon: {
+              50: '#f3f7ff',
+              100: '#e6f0ff',
+              300: '#99ccff',
+              500: '#00d0ff',
+              600: '#00a8d9',
+              700: '#00a3cc',
+              800: '#007399'
+            },
+            dark: {
+              900: '#0a0f1c',
+              800: '#0f172a',
+              700: '#1e293b'
+            },
+            mysql: {
+              500: '#00758f',
+              600: '#005f73',
+              700: '#004956'
+            }
+          },
+          animation: {
+            'float': 'float 6s ease-in-out infinite',
+            'pulse-glow': 'pulse-glow 2s ease-in-out infinite alternate',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    .neon-text { 
+      text-shadow: 0 0 8px rgba(0,208,255,0.15), 0 0 18px rgba(0,208,255,0.06); 
+    }
+    
+    .glass {
+      background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .code-container {
+      position: relative;
+    }
+    
+    .copy-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    
+    .code-container:hover .copy-btn {
+      opacity: 1;
+    }
+    
+    .terminal {
+      background: #1a1b26;
+      color: #c0caf5;
+      font-family: 'Fira Code', monospace;
+      border-radius: 0.5rem;
+      padding: 1rem;
+    }
+    
+    .terminal .prompt {
+      color: #7dcfff;
+    }
+    
+    .terminal .command {
+      color: #9ece6a;
+    }
+    
+    .terminal .comment {
+      color: #565f89;
+    }
+    
+    .sql-output {
+      background: #0f172a;
+      color: #10b981;
+      font-family: 'Fira Code', monospace;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      min-height: 100px;
+      border: 1px solid #374151;
+    }
+    
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.5);
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: rgba(0, 208, 255, 0.3);
+      border-radius: 4px;
+    }
+    
+    .course-section {
+      scroll-margin-top: 100px;
+    }
+    
+    /* Animation for live examples */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .animate-fade-in {
+      animation: fadeInUp 0.6s ease-out;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    @keyframes pulse-glow {
+      0% { box-shadow: 0 0 20px rgba(0, 208, 255, 0.4); }
+      100% { box-shadow: 0 0 30px rgba(0, 208, 255, 0.8), 0 0 40px rgba(0, 208, 255, 0.4); }
+    }
+    
+    .mysql-badge {
+      background: linear-gradient(135deg, #00758f, #005f73);
+      color: white;
+    }
+    
+    .sql-keyword {
+      color: #ff79c6;
+    }
+    
+    .sql-function {
+      color: #8be9fd;
+    }
+    
+    .sql-string {
+      color: #f1fa8c;
+    }
+    
+    .sql-comment {
+      color: #6272a4;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-dark-900 via-dark-800 to-dark-900 text-slate-200 min-h-screen">
+
+  <!-- Navigation -->
+  <nav class="glass border-b border-slate-800 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-mysql-500 to-mysql-600 flex items-center justify-center">
+          <i class="fas fa-database text-white text-lg"></i>
+        </div>
+        <div>
+          <h1 class="text-lg font-bold neon-text">MySQL Course</h1>
+          <p class="text-xs text-slate-400">Beginner to Advanced</p>
+        </div>
+      </a>
+
+      <div class="flex items-center gap-4">
+        <a href="/" class="px-4 py-2 rounded-lg text-sm hover:bg-slate-800/40 transition">
+          <i class="fas fa-home mr-2"></i>Home
+        </a>
+        <a href="#basics" class="px-4 py-2 rounded-lg text-sm bg-slate-800/40 border border-neon-500/30">
+          <i class="fas fa-book mr-2"></i>Course
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="max-w-7xl mx-auto px-6 py-16 text-center">
+    <div class="max-w-3xl mx-auto">
+      <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800/40 border border-slate-700/40 text-sm mb-6">
+        <i class="fas fa-database text-mysql-500"></i>
+        Complete MySQL Database Course
+      </span>
+      <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight text-white neon-text mb-6">
+        Master MySQL
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-mysql-500 to-mysql-600 block">The World's Most Popular Database</span>
+      </h1>
+      <p class="text-slate-300 text-lg mb-8">Learn MySQL with practical examples, SQL queries, database design, optimization, and integration with Python, Node.js, and Django. Build professional database skills.</p>
+      
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href="#basics" class="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r from-mysql-500 to-mysql-600 font-medium hover:scale-105 transition-transform">
+          <i class="fas fa-play"></i>
+          Start Learning
+        </a>
+        <a href="#integration" class="inline-flex items-center gap-3 px-6 py-3 rounded-full border border-slate-700/40 hover:border-neon-500 transition glass">
+          <i class="fas fa-code"></i>
+          Integration Guide
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- MySQL Basics Section -->
+  <section id="basics" class="course-section py-5">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">MySQL Basics</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Setup & Installation -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4 flex items-center gap-2">
+            <i class="fas fa-download"></i>
+            Setup & Installation
+          </h3>
+          <p class="text-slate-300 mb-4">Get MySQL installed and connect to the database</p>
+          
+          <div class="terminal mb-4">
+            <div class="flex items-center gap-2 mb-2">
+              <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+              <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+              <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+            </div>
+            <div class="space-y-2 text-sm">
+              <div><span class="prompt">$</span> <span class="command">mysql --version</span></div>
+              <div class="text-blue-300">mysql  Ver 8.0 for Linux on x86_64</div>
+              <div><span class="prompt">$</span> <span class="command">mysql -u root -p</span></div>
+              <div class="text-green-300">Enter password: </div>
+              <div class="text-green-300">Welcome to the MySQL monitor.</div>
+              <div class="text-green-300">mysql></div>
+            </div>
+          </div>
+          
+          <div class="p-4 bg-green-900/30 rounded-lg">
+            <h4 class="font-semibold text-green-300 mb-2">🛠️ MySQL Tools</h4>
+            <div class="grid grid-cols-2 gap-3 text-sm">
+              <div class="flex items-center gap-2 p-2 bg-slate-800/50 rounded">
+                <i class="fas fa-window-restore text-blue-400"></i>
+                <span>MySQL Workbench</span>
+              </div>
+              <div class="flex items-center gap-2 p-2 bg-slate-800/50 rounded">
+                <i class="fas fa-terminal text-green-400"></i>
+                <span>MySQL Shell</span>
+              </div>
+              <div class="flex items-center gap-2 p-2 bg-slate-800/50 rounded">
+                <i class="fas fa-database text-purple-400"></i>
+                <span>phpMyAdmin</span>
+              </div>
+              <div class="flex items-center gap-2 p-2 bg-slate-800/50 rounded">
+                <i class="fas fa-cloud text-yellow-400"></i>
+                <span>HeidiSQL</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Database Operations -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Database Operations</h3>
+          <p class="text-slate-300 mb-4">Create and manage databases</p>
+          
+          <div class="terminal mb-4">
+            <div class="flex items-center gap-2 mb-2">
+              <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+              <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+              <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+            </div>
+            <div class="space-y-2 text-sm">
+              <div><span class="prompt">mysql></span> <span class="command">CREATE DATABASE school;</span></div>
+              <div class="text-green-300">Query OK, 1 row affected (0.01 sec)</div>
+              
+              <div><span class="prompt">mysql></span> <span class="command">SHOW DATABASES;</span></div>
+              <div class="text-blue-300">+--------------------+</div>
+              <div class="text-blue-300">| Database           |</div>
+              <div class="text-blue-300">+--------------------+</div>
+              <div class="text-blue-300">| school             |</div>
+              <div class="text-blue-300">| information_schema |</div>
+              <div class="text-blue-300">| mysql              |</div>
+              
+              <div><span class="prompt">mysql></span> <span class="command">USE school;</span></div>
+              <div class="text-green-300">Database changed</div>
+              
+              <div><span class="prompt">mysql></span> <span class="command">DROP DATABASE school;</span></div>
+              <div class="comment"># Delete database</div>
+            </div>
+          </div>
+          
+          <div class="p-4 bg-blue-900/30 rounded-lg">
+            <h4 class="font-semibold text-blue-300 mb-2">📋 System Databases</h4>
+            <div class="text-sm text-blue-200 space-y-1">
+              <div><code>information_schema</code> - Database metadata</div>
+              <div><code>mysql</code> - System tables and users</div>
+              <div><code>performance_schema</code> - Performance metrics</div>
+              <div><code>sys</code> - Simplified performance views</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Creating Tables -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Creating Tables</h3>
+          <p class="text-slate-300 mb-4">Define table structure with proper data types</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4 mb-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-sql">-- Create students table
+CREATE TABLE students (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    age INT CHECK (age > 0),
+    email VARCHAR(100) UNIQUE,
+    city VARCHAR(50) DEFAULT 'Unknown',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create courses table
+CREATE TABLE courses (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(200) NOT NULL,
+    description TEXT,
+    duration_hours INT,
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at DATETIME DEFAULT NOW()
+);
+
+-- Show tables in database
+SHOW TABLES;
+
+-- Describe table structure
+DESCRIBE students;</code></pre>
+          </div>
+          
+          <div class="p-4 bg-green-900/30 rounded-lg">
+            <h4 class="font-semibold text-green-300 mb-2">🔑 Common Data Types</h4>
+            <div class="grid grid-cols-2 gap-2 text-sm">
+              <div><code>INT</code> - Whole numbers</div>
+              <div><code>VARCHAR(n)</code> - Variable string</div>
+              <div><code>TEXT</code> - Long text</div>
+              <div><code>BOOLEAN</code> - True/False</div>
+              <div><code>DATE</code> - Date only</div>
+              <div><code>TIMESTAMP</code> - Date and time</div>
+              <div><code>DECIMAL</code> - Exact decimal</div>
+              <div><code>ENUM</code> - Predefined values</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CRUD Operations -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">CRUD Operations</h3>
+          <p class="text-slate-300 mb-4">Create, Read, Update, Delete operations</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-sql">-- INSERT - Create new records
+INSERT INTO students (name, age, email, city)
+VALUES 
+  ('Alice Johnson', 22, 'alice@email.com', 'New York'),
+  ('Bob Smith', 25, 'bob@email.com', 'London'),
+  ('Carol Davis', 20, 'carol@email.com', 'Tokyo');
+
+INSERT INTO courses (title, description, duration_hours)
+VALUES 
+  ('Database Fundamentals', 'Learn basic database concepts', 40),
+  ('Web Development', 'Build modern web applications', 60),
+  ('Data Science', 'Introduction to data analysis', 50);
+
+-- SELECT - Read data
+SELECT * FROM students;
+SELECT name, age FROM students WHERE age > 21;
+SELECT * FROM students ORDER BY name ASC;
+
+-- UPDATE - Modify data
+UPDATE students SET city = 'Paris' WHERE name = 'Alice Johnson';
+UPDATE students SET age = age + 1;
+
+-- DELETE - Remove data
+DELETE FROM students WHERE id = 3;
+DELETE FROM students WHERE age < 18;</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SQL Queries Section -->
+  <section class="course-section py-5 bg-dark-800">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">SQL Queries & Operations</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- WHERE Conditions -->
+        <div class="glass rounded-xl p-6 component-card">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">WHERE Conditions</h3>
+          <p class="text-slate-300 mb-4">Filter data with conditions</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-sql">-- Basic WHERE conditions
+SELECT * FROM students WHERE age > 20;
+SELECT * FROM students WHERE city = 'London';
+SELECT * FROM students WHERE age BETWEEN 18 AND 25;
+
+-- AND, OR, NOT operators
+SELECT * FROM students WHERE age > 20 AND city = 'New York';
+SELECT * FROM students WHERE age < 18 OR city = 'Tokyo';
+SELECT * FROM students WHERE NOT age = 22;
+
+-- IN operator
+SELECT * FROM students WHERE city IN ('New York', 'London', 'Paris');
+SELECT * FROM students WHERE age IN (20, 22, 25);
+
+-- IS NULL / IS NOT NULL
+SELECT * FROM students WHERE email IS NULL;
+SELECT * FROM students WHERE email IS NOT NULL;
+
+-- Comparison operators
+SELECT * FROM students WHERE age = 20;    -- Equal
+SELECT * FROM students WHERE age != 20;   -- Not equal
+SELECT * FROM students WHERE age <> 20;   -- Not equal (alternative)
+SELECT * FROM students WHERE age > 20;    -- Greater than
+SELECT * FROM students WHERE age < 20;    -- Less than
+SELECT * FROM students WHERE age >= 20;   -- Greater than or equal
+SELECT * FROM students WHERE age <= 20;   -- Less than or equal</code></pre>
+          </div>
+        </div>
+
+        <!-- LIKE & Pattern Matching -->
+        <div class="glass rounded-xl p-6 component-card">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">LIKE & Pattern Matching</h3>
+          <p class="text-slate-300 mb-4">Search for patterns in text data</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-sql">-- LIKE operator with wildcards
+SELECT * FROM students WHERE name LIKE 'A%';   -- Starts with A
+SELECT * FROM students WHERE name LIKE '%n';   -- Ends with n
+SELECT * FROM students WHERE name LIKE '%oh%'; -- Contains 'oh'
+SELECT * FROM students WHERE name LIKE 'J_n';  -- J followed by any char, then n
+
+-- NOT LIKE
+SELECT * FROM students WHERE name NOT LIKE 'A%';
+
+-- Case sensitivity (MySQL is case-insensitive by default)
+SELECT * FROM students WHERE name LIKE BINARY 'alice%'; -- Case sensitive
+
+-- Multiple pattern matching
+SELECT * FROM students WHERE name LIKE 'A%' OR name LIKE 'B%';
+
+-- Using wildcards in the middle
+SELECT * FROM students WHERE name LIKE 'A%e'; -- Starts with A, ends with e
+
+-- ESCAPE character for literal %
+SELECT * FROM products WHERE description LIKE '100\% off';
+
+-- REGEXP (Regular Expressions)
+SELECT * FROM students WHERE name REGEXP '^A';     -- Starts with A
+SELECT * FROM students WHERE name REGEXP 'n$';     -- Ends with n
+SELECT * FROM students WHERE name REGEXP 'John|Jane'; -- John or Jane
+SELECT * FROM students WHERE name REGEXP '^[A-C]'; -- Starts with A, B, or C
+
+-- Practical examples
+-- Find students with email from specific domain
+SELECT * FROM students WHERE email LIKE '%@gmail.com';
+
+-- Find courses with specific words in title
+SELECT * FROM courses WHERE title LIKE '%Database%' OR title LIKE '%Web%';
+
+-- Find names with exactly 5 characters
+SELECT * FROM students WHERE name LIKE '_____';</code></pre>
+          </div>
+        </div>
+
+        <!-- ORDER BY & LIMIT -->
+        <div class="glass rounded-xl p-6 component-card">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">ORDER BY & LIMIT</h3>
+          <p class="text-slate-300 mb-4">Sort and limit query results</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-sql">-- ORDER BY single column
+SELECT * FROM students ORDER BY name ASC;   -- Ascending (A-Z)
+SELECT * FROM students ORDER BY age DESC;   -- Descending (high to low)
+
+-- ORDER BY multiple columns
+SELECT * FROM students ORDER BY city ASC, name ASC;
+SELECT * FROM students ORDER BY age DESC, name ASC;
+
+-- ORDER BY with expressions
+SELECT * FROM students ORDER BY LENGTH(name) DESC;
+
+-- LIMIT results
+SELECT * FROM students LIMIT 5;                    -- First 5 records
+SELECT * FROM students LIMIT 10 OFFSET 5;         -- Skip 5, take 10
+SELECT * FROM students ORDER BY id DESC LIMIT 3;  -- Last 3 records
+
+-- Combining WHERE, ORDER BY, and LIMIT
+SELECT name, age, city 
+FROM students 
+WHERE age > 20 
+ORDER BY age DESC 
+LIMIT 5;
+
+-- Pagination example (page 2, 10 records per page)
+SELECT * FROM students 
+ORDER BY id 
+LIMIT 10 OFFSET 10;
+
+-- Top 3 oldest students
+SELECT name, age 
+FROM students 
+ORDER BY age DESC 
+LIMIT 3;
+
+-- Random sampling
+SELECT * FROM students 
+ORDER BY RAND() 
+LIMIT 5;
+
+-- Finding minimum and maximum with LIMIT
+-- Youngest student
+SELECT * FROM students ORDER BY age ASC LIMIT 1;
+
+-- Oldest student
+SELECT * FROM students ORDER BY age DESC LIMIT 1;
+
+-- Using LIMIT with UPDATE (MySQL specific)
+UPDATE students SET city = 'Unknown' 
+WHERE email IS NULL 
+LIMIT 10;
+
+-- Using LIMIT with DELETE
+DELETE FROM students 
+WHERE age < 18 
+LIMIT 5;</code></pre>
+          </div>
+        </div>
+
+        <!-- Aggregate Functions -->
+        <div class="glass rounded-xl p-6 component-card">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Aggregate Functions</h3>
+          <p class="text-slate-300 mb-4">Perform calculations on data sets</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-sql">-- Basic aggregate functions
+SELECT COUNT(*) AS total_students FROM students;
+SELECT COUNT(email) AS students_with_email FROM students; -- Non-null counts
+SELECT COUNT(DISTINCT city) AS unique_cities FROM students;
+
+SELECT MAX(age) AS max_age FROM students;
+SELECT MIN(age) AS min_age FROM students;
+SELECT AVG(age) AS average_age FROM students;
+SELECT SUM(age) AS total_years FROM students;
+
+-- Multiple aggregates in one query
+SELECT 
+    COUNT(*) AS total_students,
+    AVG(age) AS average_age,
+    MIN(age) AS youngest,
+    MAX(age) AS oldest,
+    SUM(age) AS total_years
+FROM students;
+
+-- Aggregates with WHERE clause
+SELECT 
+    COUNT(*) AS adult_students,
+    AVG(age) AS avg_adult_age
+FROM students 
+WHERE age >= 18;
+
+-- COUNT with DISTINCT
+SELECT COUNT(DISTINCT city) AS cities_count FROM students;
+
+-- String aggregates (MySQL 8.0+)
+SELECT GROUP_CONCAT(name) AS all_names FROM students;
+SELECT GROUP_CONCAT(DISTINCT city ORDER BY city) AS all_cities FROM students;
+
+-- Statistical functions
+SELECT 
+    STDDEV(age) AS age_stddev,
+    VARIANCE(age) AS age_variance
+FROM students;
+
+-- Conditional aggregates
+SELECT 
+    COUNT(CASE WHEN age < 20 THEN 1 END) AS under_20,
+    COUNT(CASE WHEN age >= 20 THEN 1 END) AS over_20
+FROM students;
+
+-- Aggregates with expressions
+SELECT 
+    AVG(age * 365) AS avg_age_in_days,
+    MAX(LENGTH(name)) AS longest_name_length
+FROM students;
+
+-- Practical examples
+-- Student statistics by city
+SELECT 
+    city,
+    COUNT(*) AS student_count,
+    AVG(age) AS average_age,
+    MIN(age) AS youngest,
+    MAX(age) AS oldest
+FROM students
+GROUP BY city;
+
+-- Course enrollment statistics
+SELECT 
+    COUNT(*) AS total_courses,
+    AVG(duration_hours) AS avg_duration,
+    SUM(duration_hours) AS total_hours
+FROM courses
+WHERE is_active = TRUE;</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Advanced MySQL Section -->
+  <section class="course-section py-5">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">Advanced MySQL</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- GROUP BY & HAVING -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">GROUP BY & HAVING</h3>
+          <p class="text-slate-300 mb-4">Group data and filter groups</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-sql">-- Create enrollments table for examples
+CREATE TABLE enrollments (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    student_id INT,
+    course_id INT,
+    enrolled_date DATE DEFAULT CURRENT_DATE,
+    grade CHAR(1),
+    FOREIGN KEY (student_id) REFERENCES students(id),
+    FOREIGN KEY (course_id) REFERENCES courses(id)
+);
+
+-- Basic GROUP BY
+SELECT city, COUNT(*) AS student_count
+FROM students
+GROUP BY city;
+
+-- GROUP BY with multiple columns
+SELECT city, age, COUNT(*) AS count
+FROM students
+GROUP BY city, age;
+
+-- GROUP BY with aggregate functions
+SELECT 
+    city,
+    COUNT(*) AS total_students,
+    AVG(age) AS average_age,
+    MAX(age) AS max_age,
+    MIN(age) AS min_age
+FROM students
+GROUP BY city;
+
+-- HAVING clause (filter groups)
+SELECT city, COUNT(*) AS student_count
+FROM students
+GROUP BY city
+HAVING COUNT(*) > 1;
+
+SELECT city, AVG(age) AS avg_age
+FROM students
+GROUP BY city
+HAVING AVG(age) > 21;
+
+-- GROUP BY with WHERE and HAVING
+SELECT city, COUNT(*) AS student_count
+FROM students
+WHERE age >= 18
+GROUP BY city
+HAVING COUNT(*) >= 2;
+
+-- GROUP BY with ORDER BY
+SELECT city, COUNT(*) AS student_count
+FROM students
+GROUP BY city
+ORDER BY student_count DESC;
+
+-- Complex GROUP BY example
+SELECT 
+    EXTRACT(YEAR FROM enrolled_date) AS year,
+    EXTRACT(MONTH FROM enrolled_date) AS month,
+    COUNT(*) AS enrollments_count
+FROM enrollments
+GROUP BY year, month
+HAVING COUNT(*) > 0
+ORDER BY year DESC, month DESC;
+
+-- ROLLUP extension (subtotals)
+SELECT 
+    COALESCE(city, 'All Cities') AS city,
+    COUNT(*) AS student_count
+FROM students
+GROUP BY city WITH ROLLUP;
+
+-- Multiple aggregates with HAVING
+SELECT 
+    city,
+    COUNT(*) AS total,
+    SUM(CASE WHEN age < 20 THEN 1 ELSE 0 END) AS under_20,
+    SUM(CASE WHEN age >= 20 THEN 1 ELSE 0 END) AS over_20
+FROM students
+GROUP BY city
+HAVING total > 1 AND over_20 > 0;</code></pre>
+          </div>
+        </div>
+
+        <!-- JOINS -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">JOIN Operations</h3>
+          <p class="text-slate-300 mb-4">Combine data from multiple tables</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-sql">-- Sample data for joins
+INSERT INTO enrollments (student_id, course_id, grade) VALUES
+(1, 1, 'A'), (1, 2, 'B'), (2, 1, 'C'), (3, 3, 'A');
+
+-- INNER JOIN (most common)
+SELECT 
+    s.name AS student_name,
+    c.title AS course_title,
+    e.grade
+FROM enrollments e
+INNER JOIN students s ON e.student_id = s.id
+INNER JOIN courses c ON e.course_id = c.id;
+
+-- LEFT JOIN (all students, even without enrollments)
+SELECT 
+    s.name AS student_name,
+    c.title AS course_title
+FROM students s
+LEFT JOIN enrollments e ON s.id = e.student_id
+LEFT JOIN courses c ON e.course_id = c.id;
+
+-- RIGHT JOIN (all courses, even without students)
+SELECT 
+    c.title AS course_title,
+    s.name AS student_name
+FROM courses c
+LEFT JOIN enrollments e ON c.id = e.course_id
+LEFT JOIN students s ON e.student_id = s.id;
+
+-- Multiple JOIN conditions
+SELECT 
+    s.name,
+    c.title,
+    e.enrolled_date
+FROM students s
+JOIN enrollments e ON s.id = e.student_id
+JOIN courses c ON e.course_id = c.id AND c.is_active = TRUE;
+
+-- JOIN with WHERE clause
+SELECT 
+    s.name,
+    c.title
+FROM students s
+JOIN enrollments e ON s.id = e.student_id
+JOIN courses c ON e.course_id = c.id
+WHERE s.age > 20 AND c.duration_hours > 40;
+
+-- JOIN with aggregate functions
+SELECT 
+    c.title AS course_title,
+    COUNT(e.student_id) AS enrollment_count,
+    AVG(s.age) AS average_student_age
+FROM courses c
+LEFT JOIN enrollments e ON c.id = e.course_id
+LEFT JOIN students s ON e.student_id = s.id
+GROUP BY c.id, c.title;
+
+-- Self JOIN (join table with itself)
+CREATE TABLE employees (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100),
+    manager_id INT,
+    FOREIGN KEY (manager_id) REFERENCES employees(id)
+);
+
+SELECT 
+    e.name AS employee,
+    m.name AS manager
+FROM employees e
+LEFT JOIN employees m ON e.manager_id = m.id;
+
+-- CROSS JOIN (Cartesian product)
+SELECT s.name, c.title
+FROM students s
+CROSS JOIN courses c
+LIMIT 10; -- Be careful with large tables!
+
+-- NATURAL JOIN (joins on same column names)
+-- Not recommended - can be unpredictable
+SELECT * FROM students NATURAL JOIN enrollments;
+
+-- USING clause (when join columns have same name)
+SELECT *
+FROM students s
+JOIN enrollments e USING (id); -- If both have 'id' column
+
+-- Complex JOIN with multiple conditions
+SELECT 
+    s.name AS student_name,
+    c.title AS course_title,
+    e.grade,
+    CASE 
+        WHEN e.grade IN ('A', 'B') THEN 'Good'
+        WHEN e.grade = 'C' THEN 'Average'
+        ELSE 'Needs Improvement'
+    END AS performance
+FROM students s
+JOIN enrollments e ON s.id = e.student_id
+JOIN courses c ON e.course_id = c.id
+WHERE c.is_active = TRUE
+ORDER BY s.name, c.title;</code></pre>
+          </div>
+        </div>
+
+        <!-- Subqueries -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Subqueries</h3>
+          <p class="text-slate-300 mb-4">Nested queries for complex operations</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-sql">-- Subquery in WHERE clause
+SELECT name, age
+FROM students
+WHERE age = (SELECT MAX(age) FROM students);
+
+SELECT name
+FROM students
+WHERE id IN (SELECT student_id FROM enrollments WHERE grade = 'A');
+
+-- Subquery in SELECT clause
+SELECT 
+    name,
+    age,
+    (SELECT AVG(age) FROM students) AS average_age,
+    age - (SELECT AVG(age) FROM students) AS age_difference
+FROM students;
+
+-- Correlated subquery
+SELECT 
+    s.name,
+    s.city,
+    (SELECT COUNT(*) FROM students s2 WHERE s2.city = s.city) AS city_count
+FROM students s;
+
+-- EXISTS subquery
+SELECT name
+FROM students s
+WHERE EXISTS (
+    SELECT 1 FROM enrollments e 
+    WHERE e.student_id = s.id AND e.grade = 'A'
+);
+
+-- NOT EXISTS
+SELECT name
+FROM students s
+WHERE NOT EXISTS (
+    SELECT 1 FROM enrollments e WHERE e.student_id = s.id
+);
+
+-- Subquery in FROM clause (derived table)
+SELECT 
+    city,
+    student_count
+FROM (
+    SELECT 
+        city, 
+        COUNT(*) AS student_count
+    FROM students
+    GROUP BY city
+) AS city_stats
+WHERE student_count > 1;
+
+-- Multiple subqueries
+SELECT 
+    name,
+    (SELECT COUNT(*) FROM enrollments WHERE student_id = students.id) AS course_count,
+    (SELECT AVG(age) FROM students) AS overall_avg_age
+FROM students
+WHERE age > (SELECT AVG(age) FROM students);
+
+-- Subquery with JOIN
+SELECT 
+    s.name,
+    c.title
+FROM students s
+JOIN enrollments e ON s.id = e.student_id
+JOIN courses c ON e.course_id = c.id
+WHERE e.grade = (
+    SELECT MAX(grade) 
+    FROM enrollments e2 
+    WHERE e2.student_id = s.id
+);
+
+-- ANY and ALL operators
+SELECT name
+FROM students
+WHERE age > ANY (SELECT age FROM students WHERE city = 'New York');
+
+SELECT name
+FROM students
+WHERE age > ALL (SELECT age FROM students WHERE city = 'Tokyo');
+
+-- Practical examples
+-- Students enrolled in more than 2 courses
+SELECT name
+FROM students
+WHERE (
+    SELECT COUNT(*) 
+    FROM enrollments 
+    WHERE student_id = students.id
+) > 2;
+
+-- Courses with above average enrollment
+SELECT title
+FROM courses
+WHERE (
+    SELECT COUNT(*) 
+    FROM enrollments 
+    WHERE course_id = courses.id
+) > (SELECT AVG(course_count) FROM (
+    SELECT COUNT(*) AS course_count 
+    FROM enrollments 
+    GROUP BY course_id
+) AS counts);</code></pre>
+          </div>
+        </div>
+
+        <!-- Indexes & Performance -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Indexes & Performance</h3>
+          <p class="text-slate-300 mb-4">Optimize query performance with indexes</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-sql">-- Create basic indexes
+CREATE INDEX idx_students_email ON students(email);
+CREATE INDEX idx_students_city ON students(city);
+CREATE INDEX idx_students_age ON students(age);
+
+-- Composite index
+CREATE INDEX idx_students_city_age ON students(city, age);
+
+-- Unique index
+CREATE UNIQUE INDEX idx_unique_student_email ON students(email);
+
+-- Full-text index (for text search)
+CREATE TABLE articles (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(200),
+    content TEXT,
+    FULLTEXT(title, content)
+);
+
+-- Use full-text search
+SELECT * FROM articles 
+WHERE MATCH(title, content) AGAINST('database performance');
+
+-- Show indexes
+SHOW INDEX FROM students;
+
+-- Drop index
+DROP INDEX idx_students_city ON students;
+
+-- EXPLAIN to analyze query performance
+EXPLAIN SELECT * FROM students WHERE city = 'London';
+EXPLAIN FORMAT=JSON SELECT * FROM students WHERE age > 20;
+
+-- Force index usage
+SELECT * FROM students FORCE INDEX (idx_students_city) WHERE city = 'London';
+
+-- Analyze table for better performance
+ANALYZE TABLE students;
+
+-- Check table status
+SHOW TABLE STATUS LIKE 'students';
+
+-- Index on expression (MySQL 8.0+)
+CREATE INDEX idx_name_length ON students((LENGTH(name)));
+
+-- Partial index (MySQL 8.0+)
+CREATE INDEX idx_active_students ON students(name) WHERE age >= 18;
+
+-- Performance tips in practice
+-- 1. Index columns used in WHERE, JOIN, ORDER BY
+-- 2. Use covering indexes when possible
+-- 3. Avoid SELECT * - specify only needed columns
+-- 4. Use LIMIT to restrict result sets
+-- 5. Normalize your database design
+
+-- Query optimization examples
+-- Slow query (without proper indexes)
+SELECT * FROM students WHERE city = 'London' AND age > 20;
+
+-- Optimized query (with composite index)
+CREATE INDEX idx_city_age ON students(city, age);
+SELECT name, email FROM students WHERE city = 'London' AND age > 20;
+
+-- Using covering index
+CREATE INDEX idx_covering ON students(city, age, name, email);
+SELECT name, email FROM students WHERE city = 'London' AND age > 20;
+
+-- Monitoring slow queries
+-- Enable slow query log in my.cnf:
+-- slow_query_log = 1
+-- slow_query_log_file = /var/log/mysql/slow.log
+-- long_query_time = 2
+
+-- Check slow queries
+SHOW VARIABLES LIKE 'slow_query_log';
+SHOW VARIABLES LIKE 'long_query_time';
+
+-- Query cache (MySQL 5.7 and earlier)
+SHOW VARIABLES LIKE 'query_cache%';
+
+-- Buffer pool size optimization
+SHOW VARIABLES LIKE 'innodb_buffer_pool_size';
+-- SET GLOBAL innodb_buffer_pool_size = 1073741824; -- 1GB</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Database Design Section -->
+  <section class="course-section py-5 bg-dark-800">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">Database Design & Advanced Features</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Constraints & Keys -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Constraints & Keys</h3>
+          <p class="text-slate-300 mb-4">Ensure data integrity with constraints</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-sql">-- Primary Key constraints
+CREATE TABLE departments (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL UNIQUE
+);
+
+-- Foreign Key constraints
+CREATE TABLE employees (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    dept_id INT,
+    salary DECIMAL(10,2) CHECK (salary > 0),
+    FOREIGN KEY (dept_id) REFERENCES departments(id)
+        ON DELETE SET NULL
+        ON UPDATE CASCADE
+);
+
+-- Check constraints (MySQL 8.0.16+)
+CREATE TABLE products (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    price DECIMAL(10,2) CHECK (price > 0),
+    category ENUM('Electronics', 'Books', 'Clothing') NOT NULL,
+    stock_quantity INT CHECK (stock_quantity >= 0)
+);
+
+-- Default constraints
+CREATE TABLE users (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    is_active BOOLEAN DEFAULT TRUE,
+    login_count INT DEFAULT 0
+);
+
+-- Not Null constraints
+CREATE TABLE orders (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    customer_name VARCHAR(100) NOT NULL,
+    order_date DATE NOT NULL,
+    total_amount DECIMAL(10,2) NOT NULL
+);
+
+-- Unique constraints
+CREATE TABLE employees (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    employee_code VARCHAR(20) UNIQUE NOT NULL,
+    national_id VARCHAR(20) UNIQUE,
+    email VARCHAR(100) UNIQUE NOT NULL
+);
+
+-- Composite primary key
+CREATE TABLE order_items (
+    order_id INT,
+    product_id INT,
+    quantity INT NOT NULL CHECK (quantity > 0),
+    unit_price DECIMAL(10,2) NOT NULL CHECK (unit_price > 0),
+    PRIMARY KEY (order_id, product_id),
+    FOREIGN KEY (order_id) REFERENCES orders(id),
+    FOREIGN KEY (product_id) REFERENCES products(id)
+);
+
+-- Adding constraints to existing tables
+ALTER TABLE students 
+ADD CONSTRAINT chk_age_positive CHECK (age > 0);
+
+ALTER TABLE students 
+ADD CONSTRAINT uk_student_email UNIQUE (email);
+
+-- Dropping constraints
+ALTER TABLE students DROP CHECK chk_age_positive;
+ALTER TABLE students DROP INDEX uk_student_email;
+
+-- Foreign key options
+CREATE TABLE parent_child (
+    parent_id INT,
+    child_id INT,
+    FOREIGN KEY (parent_id) REFERENCES parents(id)
+        ON DELETE CASCADE    -- Delete children when parent deleted
+        ON UPDATE CASCADE,   -- Update children when parent updated
+    FOREIGN KEY (child_id) REFERENCES children(id)
+        ON DELETE RESTRICT  -- Prevent deletion if children exist
+        ON UPDATE CASCADE
+);
+
+-- Check existing constraints
+SELECT 
+    TABLE_NAME,
+    CONSTRAINT_NAME,
+    CONSTRAINT_TYPE
+FROM information_schema.TABLE_CONSTRAINTS 
+WHERE TABLE_SCHEMA = 'school';
+
+-- Practical constraint examples
+CREATE TABLE bank_accounts (
+    account_number VARCHAR(20) PRIMARY KEY,
+    account_holder VARCHAR(100) NOT NULL,
+    balance DECIMAL(15,2) DEFAULT 0.00 CHECK (balance >= 0),
+    account_type ENUM('Savings', 'Checking', 'Business') NOT NULL,
+    opened_date DATE DEFAULT (CURRENT_DATE),
+    last_activity TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);</code></pre>
+          </div>
+        </div>
+
+        <!-- Views, Procedures, Triggers -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Views, Procedures & Triggers</h3>
+          <p class="text-slate-300 mb-4">Advanced database programming features</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-sql">-- Creating views
+CREATE VIEW student_courses_view AS
+SELECT 
+    s.name AS student_name,
+    s.email,
+    c.title AS course_title,
+    e.enrolled_date,
+    e.grade
+FROM students s
+JOIN enrollments e ON s.id = e.student_id
+JOIN courses c ON e.course_id = c.id;
+
+-- Using views
+SELECT * FROM student_courses_view WHERE grade = 'A';
+
+-- Updatable view
+CREATE VIEW active_students AS
+SELECT id, name, email, city
+FROM students
+WHERE age BETWEEN 18 AND 25;
+
+-- Stored procedures
+DELIMITER //
+
+CREATE PROCEDURE GetStudentCount()
+BEGIN
+    SELECT COUNT(*) AS total_students FROM students;
+END //
+
+CREATE PROCEDURE GetStudentsByCity(IN city_name VARCHAR(50))
+BEGIN
+    SELECT name, age, email 
+    FROM students 
+    WHERE city = city_name;
+END //
+
+CREATE PROCEDURE AddStudent(
+    IN student_name VARCHAR(100),
+    IN student_age INT,
+    IN student_email VARCHAR(100),
+    IN student_city VARCHAR(50)
+)
+BEGIN
+    INSERT INTO students (name, age, email, city)
+    VALUES (student_name, student_age, student_email, student_city);
+    
+    SELECT LAST_INSERT_ID() AS new_student_id;
+END //
+
+DELIMITER ;
+
+-- Calling procedures
+CALL GetStudentCount();
+CALL GetStudentsByCity('London');
+CALL AddStudent('David Wilson', 23, 'david@email.com', 'Berlin');
+
+-- Functions
+DELIMITER //
+
+CREATE FUNCTION GetAverageAge() 
+RETURNS DECIMAL(5,2)
+READS SQL DATA
+DETERMINISTIC
+BEGIN
+    DECLARE avg_age DECIMAL(5,2);
+    SELECT AVG(age) INTO avg_age FROM students;
+    RETURN avg_age;
+END //
+
+CREATE FUNCTION IsAdult(age INT) 
+RETURNS BOOLEAN
+DETERMINISTIC
+BEGIN
+    RETURN age >= 18;
+END //
+
+DELIMITER ;
+
+-- Using functions
+SELECT name, age, IsAdult(age) AS is_adult FROM students;
+SELECT GetAverageAge() AS average_age;
+
+-- Triggers
+DELIMITER //
+
+-- Before insert trigger
+CREATE TRIGGER before_student_insert
+BEFORE INSERT ON students
+FOR EACH ROW
+BEGIN
+    IF NEW.age < 0 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Age cannot be negative';
+    END IF;
+    
+    SET NEW.name = TRIM(NEW.name);
+    SET NEW.email = LOWER(NEW.email);
+END //
+
+-- After insert trigger
+CREATE TRIGGER after_student_insert
+AFTER INSERT ON students
+FOR EACH ROW
+BEGIN
+    INSERT INTO audit_log (table_name, action, record_id, changed_at)
+    VALUES ('students', 'INSERT', NEW.id, NOW());
+END //
+
+-- Before update trigger
+CREATE TRIGGER before_student_update
+BEFORE UPDATE ON students
+FOR EACH ROW
+BEGIN
+    IF NEW.age < OLD.age THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Age cannot decrease';
+    END IF;
+END //
+
+DELIMITER ;
+
+-- Show procedures and functions
+SHOW PROCEDURE STATUS WHERE Db = 'school';
+SHOW FUNCTION STATUS WHERE Db = 'school';
+SHOW TRIGGERS FROM school;
+
+-- Drop procedures and triggers
+DROP PROCEDURE IF EXISTS GetStudentCount;
+DROP FUNCTION IF EXISTS GetAverageAge;
+DROP TRIGGER IF EXISTS before_student_insert;</code></pre>
+          </div>
+        </div>
+
+        <!-- Transactions & Backup -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Transactions & Backup</h3>
+          <p class="text-slate-300 mb-4">Data consistency and protection</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-sql">-- Basic transaction
+START TRANSACTION;
+
+INSERT INTO students (name, age, email) 
+VALUES ('Emma Brown', 24, 'emma@email.com');
+
+INSERT INTO enrollments (student_id, course_id) 
+VALUES (LAST_INSERT_ID(), 1);
+
+COMMIT;
+
+-- Transaction with error handling
+START TRANSACTION;
+
+BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        RESIGNAL;
+    END;
+    
+    UPDATE accounts SET balance = balance - 100 WHERE id = 1;
+    UPDATE accounts SET balance = balance + 100 WHERE id = 2;
+    
+    COMMIT;
+END;
+
+-- Savepoints
+START TRANSACTION;
+
+INSERT INTO students (name, age) VALUES ('Frank Miller', 21);
+SAVEPOINT student_added;
+
+INSERT INTO enrollments (student_id, course_id) VALUES (LAST_INSERT_ID(), 1);
+
+-- If enrollment fails, rollback to savepoint
+-- ROLLBACK TO student_added;
+
+COMMIT;
+
+-- Transaction isolation levels
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
+START TRANSACTION;
+SELECT * FROM students;
+COMMIT;
+
+SET TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+START TRANSACTION;
+SELECT * FROM students;
+COMMIT;
+
+SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+START TRANSACTION;
+SELECT * FROM students;
+COMMIT;
+
+-- Backup database (command line)
+-- mysqldump -u root -p school > school_backup.sql
+
+-- Backup specific tables
+-- mysqldump -u root -p school students courses > tables_backup.sql
+
+-- Backup with compression
+-- mysqldump -u root -p school | gzip > school_backup.sql.gz
+
+-- Restore database
+-- mysql -u root -p school < school_backup.sql
+
+-- Automated backup script example
+DELIMITER //
+
+CREATE PROCEDURE BackupStudents()
+BEGIN
+    -- Create backup table
+    CREATE TABLE IF NOT EXISTS students_backup LIKE students;
+    
+    -- Clear existing backup
+    TRUNCATE TABLE students_backup;
+    
+    -- Copy data
+    INSERT INTO students_backup SELECT * FROM students;
+    
+    SELECT 'Backup completed successfully' AS result;
+END //
+
+DELIMITER ;
+
+-- Point-in-time recovery setup
+-- Enable binary logging in my.cnf:
+-- log_bin = /var/log/mysql/mysql-bin.log
+-- expire_logs_days = 7
+
+-- Check binary log status
+SHOW VARIABLES LIKE 'log_bin';
+SHOW BINARY LOGS;
+
+-- Using binary log for recovery
+-- mysqlbinlog mysql-bin.000001 | mysql -u root -p
+
+-- Database maintenance
+OPTIMIZE TABLE students;
+ANALYZE TABLE students;
+CHECK TABLE students;
+
+-- User and permission management
+CREATE USER 'school_user'@'localhost' IDENTIFIED BY 'password123';
+GRANT SELECT, INSERT, UPDATE ON school.* TO 'school_user'@'localhost';
+GRANT ALL PRIVILEGES ON school.* TO 'school_admin'@'localhost';
+
+SHOW GRANTS FOR 'school_user'@'localhost';
+REVOKE INSERT ON school.* FROM 'school_user'@'localhost';
+
+-- Security best practices
+-- Create application-specific users
+CREATE USER 'web_app'@'localhost' IDENTIFIED BY 'secure_password';
+GRANT SELECT, INSERT, UPDATE ON school.students TO 'web_app'@'localhost';
+GRANT SELECT ON school.courses TO 'web_app'@'localhost';
+
+-- Regular backup strategy
+-- 1. Full backup weekly
+-- 2. Incremental backup daily
+-- 3. Binary logs for point-in-time recovery
+-- 4. Test restore procedures regularly</code></pre>
+          </div>
+        </div>
+
+        <!-- Integration Examples -->
+        <div id="integration" class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Integration with Applications</h3>
+          <p class="text-slate-300 mb-4">Connect MySQL with popular programming languages</p>
+          
+          <div class="space-y-4">
+            <div class="p-4 bg-blue-900/30 rounded-lg">
+              <h4 class="font-semibold text-blue-300 mb-2">🐍 MySQL + Python</h4>
+              <div class="code-container bg-slate-800 rounded p-3">
+                <pre><code class="language-python"># Install: pip install mysql-connector-python
+
+import mysql.connector
+from mysql.connector import Error
+
+try:
+    # Connect to MySQL
+    connection = mysql.connector.connect(
+        host='localhost',
+        user='root',
+        password='your_password',
+        database='school'
+    )
+    
+    if connection.is_connected():
+        cursor = connection.cursor()
+        
+        # Execute query
+        cursor.execute("SELECT * FROM students")
+        students = cursor.fetchall()
+        
+        for student in students:
+            print(student)
+            
+        # Insert data
+        insert_query = """
+        INSERT INTO students (name, age, email, city)
+        VALUES (%s, %s, %s, %s)
+        """
+        student_data = ('John Doe', 22, 'john@email.com', 'New York')
+        cursor.execute(insert_query, student_data)
+        connection.commit()
+        
+except Error as e:
+    print(f"Error: {e}")
+finally:
+    if connection.is_connected():
+        cursor.close()
+        connection.close()</code></pre>
+              </div>
+            </div>
+            
+            <div class="p-4 bg-green-900/30 rounded-lg">
+              <h4 class="font-semibold text-green-300 mb-2">🟨 MySQL + Node.js</h4>
+              <div class="code-container bg-slate-800 rounded p-3">
+                <pre><code class="language-javascript">// Install: npm install mysql2
+
+import mysql from 'mysql2/promise';
+
+async function connectMySQL() {
+    try {
+        // Create connection
+        const connection = await mysql.createConnection({
+            host: 'localhost',
+            user: 'root',
+            password: 'your_password',
+            database: 'school'
+        });
+
+        // Execute query
+        const [students] = await connection.execute(
+            'SELECT * FROM students WHERE age > ?',
+            [20]
+        );
+
+        console.log(students);
+
+        // Insert data
+        const [result] = await connection.execute(
+            `INSERT INTO students (name, age, email, city)
+             VALUES (?, ?, ?, ?)`,
+            ['Jane Smith', 25, 'jane@email.com', 'London']
+        );
+
+        console.log('Inserted student ID:', result.insertId);
+
+        await connection.end();
+    } catch (error) {
+        console.error('Database error:', error);
+    }
+}
+
+connectMySQL();</code></pre>
+              </div>
+            </div>
+            
+            <div class="p-4 bg-purple-900/30 rounded-lg">
+              <h4 class="font-semibold text-purple-300 mb-2">⚡ MySQL + Django</h4>
+              <div class="code-container bg-slate-800 rounded p-3">
+                <pre><code class="language-python"># Install: pip install mysqlclient
+
+# settings.py
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'school',
+        'USER': 'root',
+        'PASSWORD': 'your_password',
+        'HOST': 'localhost',
+        'PORT': '3306',
+        'OPTIONS': {
+            'charset': 'utf8mb4',
+        }
+    }
+}
+
+# models.py
+from django.db import models
+
+class Student(models.Model):
+    name = models.CharField(max_length=100)
+    age = models.IntegerField()
+    email = models.EmailField(unique=True)
+    city = models.CharField(max_length=50, default='Unknown')
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        db_table = 'students'
+
+# Using the model
+students = Student.objects.filter(age__gt=20)
+for student in students:
+    print(student.name, student.age)</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cheat Sheet Section -->
+  <section class="course-section py-5">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">MySQL Commands Cheat Sheet</h2>
+      
+      <div class="glass rounded-xl p-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="space-y-4">
+            <h3 class="text-lg font-semibold text-green-400 mb-3">📊 Database Operations</h3>
+            <div class="space-y-2">
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Create database</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">CREATE DATABASE name;</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Show databases</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">SHOW DATABASES;</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Use database</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">USE database;</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Drop database</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">DROP DATABASE name;</code>
+              </div>
+            </div>
+          </div>
+          
+          <div class="space-y-4">
+            <h3 class="text-lg font-semibold text-blue-400 mb-3">📝 Table Operations</h3>
+            <div class="space-y-2">
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Create table</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">CREATE TABLE name (...);</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Show tables</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">SHOW TABLES;</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Describe table</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">DESCRIBE table;</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Drop table</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">DROP TABLE name;</code>
+              </div>
+            </div>
+          </div>
+          
+          <div class="space-y-4">
+            <h3 class="text-lg font-semibold text-purple-400 mb-3">🔍 Query Operations</h3>
+            <div class="space-y-2">
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Select data</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">SELECT * FROM table;</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Insert data</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">INSERT INTO table VALUES (...);</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Update data</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">UPDATE table SET col=val;</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Delete data</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">DELETE FROM table;</code>
+              </div>
+            </div>
+          </div>
+          
+          <div class="space-y-4">
+            <h3 class="text-lg font-semibold text-yellow-400 mb-3">⚡ Performance</h3>
+            <div class="space-y-2">
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Create index</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">CREATE INDEX idx ON table(col);</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Explain query</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">EXPLAIN SELECT...</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Optimize table</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">OPTIMIZE TABLE table;</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Analyze table</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">ANALYZE TABLE table;</code>
+              </div>
+            </div>
+          </div>
+          
+          <div class="space-y-4">
+            <h3 class="text-lg font-semibold text-red-400 mb-3">🔧 Administration</h3>
+            <div class="space-y-2">
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Backup DB</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">mysqldump -u root -p db > file.sql</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Restore DB</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">mysql -u root -p db < file.sql</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Create user</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">CREATE USER name;</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Grant privileges</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">GRANT SELECT ON db.* TO user;</code>
+              </div>
+            </div>
+          </div>
+          
+          <div class="space-y-4">
+            <h3 class="text-lg font-semibold text-indigo-400 mb-3">🔄 Advanced</h3>
+            <div class="space-y-2">
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Create view</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">CREATE VIEW name AS SELECT...</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Transaction</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">START TRANSACTION; COMMIT;</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Stored procedure</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">CREATE PROCEDURE name()</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Create trigger</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">CREATE TRIGGER name</code>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mt-6 p-4 bg-blue-900/30 rounded-lg">
+          <h4 class="font-semibold text-blue-300 mb-2">💡 Pro Tips</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+            <div class="space-y-2">
+              <div><code>SHOW PROCESSLIST;</code> - View active connections</div>
+              <div><code>SELECT @@version;</code> - Check MySQL version</div>
+              <div><code>SHOW VARIABLES LIKE '%buffer%';</code> - View configuration</div>
+            </div>
+            <div class="space-y-2">
+              <div><code>SELECT DATABASE();</code> - Show current database</div>
+              <div><code>SHOW ENGINES;</code> - List storage engines</div>
+              <div><code>SET FOREIGN_KEY_CHECKS=0;</code> - Disable FK checks</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Navigation -->
+  <div class="max-w-6xl mx-auto px-6 py-8">
+    <div class="glass rounded-xl p-6 sticky bottom-6">
+      <h3 class="font-semibold text-neon-300 mb-4">Course Navigation</h3>
+      <div class="flex flex-wrap gap-3">
+        <a href="#basics" class="px-4 py-2 rounded-lg bg-slate-800/40 hover:bg-slate-700/40 transition text-sm">Basics</a>
+        <a href="#integration" class="px-4 py-2 rounded-lg bg-slate-800/40 hover:bg-slate-700/40 transition text-sm">Integration</a>
+        <button onclick="showCheatSheet()" class="px-4 py-2 rounded-lg bg-mysql-500 hover:bg-mysql-600 transition text-sm">Cheat Sheet</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="glass border-t border-slate-800 mt-20">
+    <div class="max-w-6xl mx-auto px-6 py-8 text-center">
+      <div class="flex items-center justify-center gap-6 mb-4">
+        <a href="/" class="text-slate-300 hover:text-neon-500 transition">Home</a>
+        <a href="#basics" class="text-slate-300 hover:text-neon-500 transition">Course</a>
+        <a href="https://github.com/JUSAIR-JSR" target="_blank" class="text-slate-300 hover:text-neon-500 transition">GitHub</a>
+      </div>
+      <p class="text-slate-500 text-sm">© 2023 MySQL Course - Complete Beginner to Advanced Database Course</p>
+    </div>
+  </footer>
+
+  <!-- Cheat Sheet Modal -->
+  <div id="cheat-sheet" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-50 p-4">
+    <div class="glass rounded-xl p-6 max-w-4xl max-h-[80vh] overflow-y-auto">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-2xl font-bold text-neon-300">MySQL Cheat Sheet</h3>
+        <button onclick="hideCheatSheet()" class="text-slate-400 hover:text-white">
+          <i class="fas fa-times text-2xl"></i>
+        </button>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h4 class="font-semibold text-green-400 mb-3">Basic Commands</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">SHOW DATABASES;</code>
+            <code class="block bg-slate-800 p-2 rounded">USE database;</code>
+            <code class="block bg-slate-800 p-2 rounded">SHOW TABLES;</code>
+            <code class="block bg-slate-800 p-2 rounded">DESCRIBE table;</code>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-blue-400 mb-3">Data Types</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">INT AUTO_INCREMENT</code>
+            <code class="block bg-slate-800 p-2 rounded">VARCHAR(255)</code>
+            <code class="block bg-slate-800 p-2 rounded">TEXT</code>
+            <code class="block bg-slate-800 p-2 rounded">DATETIME</code>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-yellow-400 mb-3">CRUD Operations</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">INSERT INTO table VALUES (...)</code>
+            <code class="block bg-slate-800 p-2 rounded">SELECT * FROM table</code>
+            <code class="block bg-slate-800 p-2 rounded">UPDATE table SET col=val</code>
+            <code class="block bg-slate-800 p-2 rounded">DELETE FROM table</code>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-purple-400 mb-3">Joins</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">INNER JOIN</code>
+            <code class="block bg-slate-800 p-2 rounded">LEFT JOIN</code>
+            <code class="block bg-slate-800 p-2 rounded">RIGHT JOIN</code>
+            <code class="block bg-slate-800 p-2 rounded">CROSS JOIN</code>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-red-400 mb-3">Performance</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">CREATE INDEX</code>
+            <code class="block bg-slate-800 p-2 rounded">EXPLAIN SELECT</code>
+            <code class="block bg-slate-800 p-2 rounded">OPTIMIZE TABLE</code>
+            <code class="block bg-slate-800 p-2 rounded">ANALYZE TABLE</code>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-indigo-400 mb-3">Administration</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">mysqldump db</code>
+            <code class="block bg-slate-800 p-2 rounded">CREATE USER</code>
+            <code class="block bg-slate-800 p-2 rounded">GRANT SELECT</code>
+            <code class="block bg-slate-800 p-2 rounded">REVOKE DELETE</code>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Initialize syntax highlighting
+    hljs.highlightAll();
+
+    // Copy button functionality
+    document.querySelectorAll('.copy-btn').forEach(button => {
+      button.addEventListener('click', function() {
+        const codeBlock = this.closest('.code-container').querySelector('code');
+        const textArea = document.createElement('textarea');
+        textArea.value = codeBlock.textContent;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        
+        // Visual feedback
+        const originalText = this.innerHTML;
+        this.innerHTML = '<i class="fas fa-check mr-1"></i>Copied!';
+        setTimeout(() => {
+          this.innerHTML = originalText;
+        }, 2000);
+      });
+    });
+
+    // Cheat sheet functions
+    function showCheatSheet() {
+      document.getElementById('cheat-sheet').classList.remove('hidden');
+      document.getElementById('cheat-sheet').classList.add('flex');
+    }
+
+    function hideCheatSheet() {
+      document.getElementById('cheat-sheet').classList.add('hidden');
+      document.getElementById('cheat-sheet').classList.remove('flex');
+    }
+
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,1798 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PostgreSQL Course - Complete Beginner to Advanced Guide</title>
+  <meta name="description" content="Complete PostgreSQL course with SQL, indexing, relations, functions, joins, and optimization" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Highlight.js for syntax highlighting -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            neon: {
+              50: '#f3f7ff',
+              100: '#e6f0ff',
+              300: '#99ccff',
+              500: '#00d0ff',
+              600: '#00a8d9',
+              700: '#00a3cc',
+              800: '#007399'
+            },
+            dark: {
+              900: '#0a0f1c',
+              800: '#0f172a',
+              700: '#1e293b'
+            },
+            postgresql: {
+              500: '#336791',
+              600: '#2a5777',
+              700: '#21445d'
+            }
+          },
+          animation: {
+            'float': 'float 6s ease-in-out infinite',
+            'pulse-glow': 'pulse-glow 2s ease-in-out infinite alternate',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    .neon-text { 
+      text-shadow: 0 0 8px rgba(0,208,255,0.15), 0 0 18px rgba(0,208,255,0.06); 
+    }
+    
+    .glass {
+      background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .code-container {
+      position: relative;
+    }
+    
+    .copy-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    
+    .code-container:hover .copy-btn {
+      opacity: 1;
+    }
+    
+    .terminal {
+      background: #1a1b26;
+      color: #c0caf5;
+      font-family: 'Fira Code', monospace;
+      border-radius: 0.5rem;
+      padding: 1rem;
+    }
+    
+    .terminal .prompt {
+      color: #7dcfff;
+    }
+    
+    .terminal .command {
+      color: #9ece6a;
+    }
+    
+    .terminal .comment {
+      color: #565f89;
+    }
+    
+    .sql-output {
+      background: #0f172a;
+      color: #10b981;
+      font-family: 'Fira Code', monospace;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      min-height: 100px;
+      border: 1px solid #374151;
+    }
+    
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.5);
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: rgba(0, 208, 255, 0.3);
+      border-radius: 4px;
+    }
+    
+    .course-section {
+      scroll-margin-top: 100px;
+    }
+    
+    /* Animation for live examples */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .animate-fade-in {
+      animation: fadeInUp 0.6s ease-out;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    @keyframes pulse-glow {
+      0% { box-shadow: 0 0 20px rgba(0, 208, 255, 0.4); }
+      100% { box-shadow: 0 0 30px rgba(0, 208, 255, 0.8), 0 0 40px rgba(0, 208, 255, 0.4); }
+    }
+    
+    .postgresql-badge {
+      background: linear-gradient(135deg, #336791, #2a5777);
+      color: white;
+    }
+    
+    .table-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1rem;
+    }
+    
+    .table-card {
+      background: rgba(30, 41, 59, 0.5);
+      border: 1px solid rgba(55, 65, 81, 0.5);
+      border-radius: 0.5rem;
+      padding: 1rem;
+    }
+    
+    .table-header {
+      background: rgba(51, 103, 145, 0.3);
+      padding: 0.5rem;
+      border-radius: 0.25rem;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+    
+    .table-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.25rem 0;
+      border-bottom: 1px solid rgba(55, 65, 81, 0.3);
+    }
+    
+    .sql-keyword {
+      color: #ff79c6;
+    }
+    
+    .sql-function {
+      color: #8be9fd;
+    }
+    
+    .sql-string {
+      color: #f1fa8c;
+    }
+    
+    .sql-comment {
+      color: #6272a4;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-dark-900 via-dark-800 to-dark-900 text-slate-200 min-h-screen">
+
+  <!-- Navigation -->
+  <nav class="glass border-b border-slate-800 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-postgresql-500 to-postgresql-600 flex items-center justify-center">
+          <i class="fas fa-database text-white text-lg"></i>
+        </div>
+        <div>
+          <h1 class="text-lg font-bold neon-text">PostgreSQL Course</h1>
+          <p class="text-xs text-slate-400">Beginner to Advanced</p>
+        </div>
+      </a>
+
+      <div class="flex items-center gap-4">
+        <a href="/" class="px-4 py-2 rounded-lg text-sm hover:bg-slate-800/40 transition">
+          <i class="fas fa-home mr-2"></i>Home
+        </a>
+        <a href="#basics" class="px-4 py-2 rounded-lg text-sm bg-slate-800/40 border border-neon-500/30">
+          <i class="fas fa-book mr-2"></i>Course
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="max-w-7xl mx-auto px-6 py-16 text-center">
+    <div class="max-w-3xl mx-auto">
+      <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800/40 border border-slate-700/40 text-sm mb-6">
+        <i class="fas fa-database text-postgresql-500"></i>
+        Complete PostgreSQL Database Course
+      </span>
+      <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight text-white neon-text mb-6">
+        Master PostgreSQL
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-postgresql-500 to-postgresql-600 block">The Advanced Open-Source Database</span>
+      </h1>
+      <p class="text-slate-300 text-lg mb-8">Learn PostgreSQL with practical examples, SQL queries, indexing, relations, functions, joins, and performance optimization. Build professional database skills.</p>
+      
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href="#basics" class="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r from-postgresql-500 to-postgresql-600 font-medium hover:scale-105 transition-transform">
+          <i class="fas fa-play"></i>
+          Start Learning
+        </a>
+        <a href="#project" class="inline-flex items-center gap-3 px-6 py-3 rounded-full border border-slate-700/40 hover:border-neon-500 transition glass">
+          <i class="fas fa-project-diagram"></i>
+          Real Project
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PostgreSQL Basics Section -->
+  <section id="basics" class="course-section py-5">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">PostgreSQL Basics</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Setup & Installation -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4 flex items-center gap-2">
+            <i class="fas fa-download"></i>
+            Setup & Installation
+          </h3>
+          <p class="text-slate-300 mb-4">Get PostgreSQL installed and connect to the database</p>
+          
+          <div class="terminal mb-4">
+            <div class="flex items-center gap-2 mb-2">
+              <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+              <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+              <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+            </div>
+            <div class="space-y-2 text-sm">
+              <div><span class="prompt">$</span> <span class="command">psql --version</span></div>
+              <div class="text-blue-300">psql (PostgreSQL) 15.0</div>
+              <div><span class="prompt">$</span> <span class="command">psql -U postgres</span></div>
+              <div class="text-green-300">psql (15.0)</div>
+              <div class="text-green-300">Type "help" for help.</div>
+              <div class="text-green-300">postgres=#</div>
+            </div>
+          </div>
+          
+          <div class="p-4 bg-green-900/30 rounded-lg">
+            <h4 class="font-semibold text-green-300 mb-2">🛠️ GUI Tools</h4>
+            <div class="grid grid-cols-2 gap-3 text-sm">
+              <div class="flex items-center gap-2 p-2 bg-slate-800/50 rounded">
+                <i class="fas fa-window-restore text-blue-400"></i>
+                <span>pgAdmin</span>
+              </div>
+              <div class="flex items-center gap-2 p-2 bg-slate-800/50 rounded">
+                <i class="fas fa-table text-purple-400"></i>
+                <span>TablePlus</span>
+              </div>
+              <div class="flex items-center gap-2 p-2 bg-slate-800/50 rounded">
+                <i class="fas fa-database text-green-400"></i>
+                <span>DBeaver</span>
+              </div>
+              <div class="flex items-center gap-2 p-2 bg-slate-800/50 rounded">
+                <i class="fas fa-rocket text-yellow-400"></i>
+                <span>DataGrip</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Basic Commands -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Basic psql Commands</h3>
+          <p class="text-slate-300 mb-4">Essential commands for working with PostgreSQL</p>
+          
+          <div class="terminal mb-4">
+            <div class="flex items-center gap-2 mb-2">
+              <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+              <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+              <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+            </div>
+            <div class="space-y-2 text-sm">
+              <div><span class="prompt">postgres=#</span> <span class="command">\l</span></div>
+              <div class="text-blue-300">List of databases</div>
+              <div class="text-blue-300">Name | Owner | Encoding</div>
+              
+              <div><span class="prompt">postgres=#</span> <span class="command">\c mydatabase</span></div>
+              <div class="text-green-300">You are now connected to database "mydatabase"</div>
+              
+              <div><span class="prompt">mydatabase=#</span> <span class="command">\dt</span></div>
+              <div class="text-blue-300">List of relations</div>
+              
+              <div><span class="prompt">mydatabase=#</span> <span class="command">\d students</span></div>
+              <div class="text-blue-300">Table structure</div>
+              
+              <div><span class="prompt">mydatabase=#</span> <span class="command">\q</span></div>
+              <div class="comment"># Exit psql</div>
+            </div>
+          </div>
+          
+          <div class="p-4 bg-blue-900/30 rounded-lg">
+            <h4 class="font-semibold text-blue-300 mb-2">📋 Useful Meta-Commands</h4>
+            <div class="text-sm text-blue-200 space-y-1">
+              <div><code>\l</code> - List databases</div>
+              <div><code>\c dbname</code> - Connect to database</div>
+              <div><code>\dt</code> - List tables</div>
+              <div><code>\d table</code> - Describe table</div>
+              <div><code>\du</code> - List users</div>
+              <div><code>\?</code> - Help for commands</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Creating Database & Tables -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Creating Database & Tables</h3>
+          <p class="text-slate-300 mb-4">Create your first database and tables</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4 mb-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-sql">-- Create a new database
+CREATE DATABASE students_db;
+
+-- Connect to the database
+\c students_db;
+
+-- Create a table
+CREATE TABLE students (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(50) NOT NULL,
+  age INT CHECK (age > 0),
+  email VARCHAR(100) UNIQUE,
+  city VARCHAR(50) DEFAULT 'Unknown',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create another table for courses
+CREATE TABLE courses (
+  id SERIAL PRIMARY KEY,
+  title VARCHAR(100) NOT NULL,
+  description TEXT,
+  duration_hours INT,
+  is_active BOOLEAN DEFAULT TRUE
+);</code></pre>
+          </div>
+          
+          <div class="p-4 bg-green-900/30 rounded-lg">
+            <h4 class="font-semibold text-green-300 mb-2">🔑 Common Data Types</h4>
+            <div class="grid grid-cols-2 gap-2 text-sm">
+              <div><code>SERIAL</code> - Auto increment</div>
+              <div><code>VARCHAR(n)</code> - Variable string</div>
+              <div><code>INTEGER</code> - Whole numbers</div>
+              <div><code>BOOLEAN</code> - True/False</div>
+              <div><code>TIMESTAMP</code> - Date and time</div>
+              <div><code>TEXT</code> - Long text</div>
+              <div><code>JSONB</code> - JSON data</div>
+              <div><code>NUMERIC</code> - Exact decimal</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CRUD Operations -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">CRUD Operations</h3>
+          <p class="text-slate-300 mb-4">Create, Read, Update, Delete operations</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-sql">-- INSERT - Create new records
+INSERT INTO students (name, age, email, city)
+VALUES 
+  ('Alice Johnson', 22, 'alice@email.com', 'New York'),
+  ('Bob Smith', 25, 'bob@email.com', 'London'),
+  ('Carol Davis', 20, 'carol@email.com', 'Tokyo');
+
+INSERT INTO courses (title, description, duration_hours)
+VALUES 
+  ('Database Fundamentals', 'Learn basic database concepts', 40),
+  ('Web Development', 'Build modern web applications', 60),
+  ('Data Science', 'Introduction to data analysis', 50);
+
+-- SELECT - Read data
+SELECT * FROM students;
+SELECT name, age FROM students WHERE age > 21;
+SELECT * FROM students ORDER BY name ASC;
+
+-- UPDATE - Modify data
+UPDATE students SET city = 'Paris' WHERE name = 'Alice Johnson';
+UPDATE students SET age = age + 1;
+
+-- DELETE - Remove data
+DELETE FROM students WHERE id = 3;
+DELETE FROM students WHERE age < 18;</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SQL Fundamentals Section -->
+  <section class="course-section py-5 bg-dark-800">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">SQL Fundamentals</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Constraints & Keys -->
+        <div class="glass rounded-xl p-6 component-card">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Constraints & Keys</h3>
+          <p class="text-slate-300 mb-4">Data integrity and relationships</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-sql">-- Table with various constraints
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,                    -- Primary Key
+  username VARCHAR(30) UNIQUE NOT NULL,     -- Unique & Not Null
+  email VARCHAR(100) UNIQUE NOT NULL,
+  age INT CHECK (age >= 0 AND age <= 150),  -- Check constraint
+  status VARCHAR(20) DEFAULT 'active',      -- Default value
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+-- Foreign Key example
+CREATE TABLE orders (
+  id SERIAL PRIMARY KEY,
+  user_id INT NOT NULL REFERENCES users(id), -- Foreign Key
+  amount DECIMAL(10,2) CHECK (amount > 0),
+  order_date DATE DEFAULT CURRENT_DATE
+);
+
+-- Composite Primary Key
+CREATE TABLE enrollments (
+  student_id INT REFERENCES students(id),
+  course_id INT REFERENCES courses(id),
+  enrolled_date DATE DEFAULT CURRENT_DATE,
+  grade CHAR(1) CHECK (grade IN ('A', 'B', 'C', 'D', 'F')),
+  PRIMARY KEY (student_id, course_id)        -- Composite PK
+);</code></pre>
+          </div>
+          
+          <div class="mt-4 p-4 bg-purple-900/30 rounded-lg">
+            <h4 class="font-semibold text-purple-300 mb-2">🔐 Constraint Types</h4>
+            <div class="text-sm text-purple-200 space-y-1">
+              <div><code>PRIMARY KEY</code> - Unique identifier</div>
+              <div><code>FOREIGN KEY</code> - References another table</div>
+              <div><code>UNIQUE</code> - No duplicate values</div>
+              <div><code>NOT NULL</code> - Value required</div>
+              <div><code>CHECK</code> - Custom validation</div>
+              <div><code>DEFAULT</code> - Automatic value</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Joins -->
+        <div class="glass rounded-xl p-6 component-card">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">JOIN Operations</h3>
+          <p class="text-slate-300 mb-4">Combine data from multiple tables</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-sql">-- Sample data setup
+INSERT INTO enrollments (student_id, course_id, grade) VALUES
+(1, 1, 'A'), (1, 2, 'B'), (2, 1, 'C'), (3, 3, 'A');
+
+-- INNER JOIN (most common)
+SELECT 
+  s.name AS student_name,
+  c.title AS course_title,
+  e.grade
+FROM enrollments e
+INNER JOIN students s ON e.student_id = s.id
+INNER JOIN courses c ON e.course_id = c.id;
+
+-- LEFT JOIN (all students, even without enrollments)
+SELECT 
+  s.name AS student_name,
+  c.title AS course_title
+FROM students s
+LEFT JOIN enrollments e ON s.id = e.student_id
+LEFT JOIN courses c ON e.course_id = c.id;
+
+-- RIGHT JOIN (all courses, even without students)
+SELECT 
+  c.title AS course_title,
+  s.name AS student_name
+FROM courses c
+LEFT JOIN enrollments e ON c.id = e.course_id
+LEFT JOIN students s ON e.student_id = s.id;
+
+-- FULL OUTER JOIN (all records from both sides)
+SELECT 
+  s.name AS student_name,
+  c.title AS course_title
+FROM students s
+FULL OUTER JOIN enrollments e ON s.id = e.student_id
+FULL OUTER JOIN courses c ON e.course_id = c.id;
+
+-- SELF JOIN (join table with itself)
+CREATE TABLE employees (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(50),
+  manager_id INT REFERENCES employees(id)
+);
+
+SELECT 
+  e.name AS employee,
+  m.name AS manager
+FROM employees e
+LEFT JOIN employees m ON e.manager_id = m.id;</code></pre>
+          </div>
+        </div>
+
+        <!-- Functions -->
+        <div class="glass rounded-xl p-6 component-card">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Built-in Functions</h3>
+          <p class="text-slate-300 mb-4">Powerful functions for data manipulation</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-sql">-- String Functions
+SELECT 
+  name,
+  UPPER(name) AS upper_name,
+  LOWER(name) AS lower_name,
+  LENGTH(name) AS name_length,
+  SUBSTRING(name FROM 1 FOR 3) AS first_three,
+  REPLACE(name, ' ', '_') AS name_underscore
+FROM students;
+
+-- Date/Time Functions
+SELECT 
+  created_at,
+  EXTRACT(YEAR FROM created_at) AS year,
+  EXTRACT(MONTH FROM created_at) AS month,
+  DATE_PART('dow', created_at) AS day_of_week,
+  created_at + INTERVAL '1 day' AS tomorrow,
+  AGE(created_at) AS age_interval
+FROM students;
+
+-- Mathematical Functions
+SELECT 
+  age,
+  ROUND(age * 1.0, 2) AS age_decimal,
+  ABS(age - 25) AS age_diff_from_25,
+  POWER(age, 2) AS age_squared,
+  SQRT(age) AS age_sqrt
+FROM students;
+
+-- Aggregate Functions
+SELECT 
+  COUNT(*) AS total_students,
+  AVG(age) AS average_age,
+  MIN(age) AS min_age,
+  MAX(age) AS max_age,
+  SUM(age) AS total_years,
+  STDDEV(age) AS age_stddev
+FROM students;
+
+-- Conditional Functions
+SELECT 
+  name,
+  age,
+  CASE 
+    WHEN age < 20 THEN 'Teen'
+    WHEN age BETWEEN 20 AND 25 THEN 'Young Adult'
+    ELSE 'Adult'
+  END AS age_group,
+  COALESCE(city, 'Not specified') AS city_name
+FROM students;</code></pre>
+          </div>
+        </div>
+
+        <!-- Aggregations & Grouping -->
+        <div class="glass rounded-xl p-6 component-card">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Aggregations & Grouping</h3>
+          <p class="text-slate-300 mb-4">Summarize and analyze data</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-sql">-- Basic GROUP BY
+SELECT 
+  city,
+  COUNT(*) AS student_count,
+  AVG(age) AS average_age
+FROM students
+GROUP BY city
+ORDER BY student_count DESC;
+
+-- GROUP BY with HAVING (filter groups)
+SELECT 
+  city,
+  COUNT(*) AS student_count
+FROM students
+GROUP BY city
+HAVING COUNT(*) > 1;
+
+-- Multiple column grouping
+SELECT 
+  city,
+  EXTRACT(YEAR FROM created_at) AS year,
+  COUNT(*) AS count_per_year
+FROM students
+GROUP BY city, EXTRACT(YEAR FROM created_at)
+ORDER BY city, year;
+
+-- ROLLUP (subtotals)
+SELECT 
+  COALESCE(city, 'All Cities') AS city,
+  COUNT(*) AS student_count
+FROM students
+GROUP BY ROLLUP (city)
+ORDER BY city;
+
+-- CUBE (all combinations)
+SELECT 
+  city,
+  CASE 
+    WHEN age < 22 THEN 'Under 22'
+    ELSE '22 and over'
+  END AS age_group,
+  COUNT(*) AS count
+FROM students
+GROUP BY CUBE (city, age_group)
+ORDER BY city, age_group;
+
+-- Window Functions (advanced)
+SELECT 
+  name,
+  age,
+  city,
+  RANK() OVER (PARTITION BY city ORDER BY age DESC) AS age_rank_in_city,
+  AVG(age) OVER (PARTITION BY city) AS avg_age_in_city
+FROM students;</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Advanced PostgreSQL Section -->
+  <section class="course-section py-5">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">Advanced PostgreSQL</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Views -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Views</h3>
+          <p class="text-slate-300 mb-4">Virtual tables for simplified queries</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-sql">-- Create a simple view
+CREATE VIEW student_courses_view AS
+SELECT 
+  s.name AS student_name,
+  s.email,
+  c.title AS course_title,
+  e.enrolled_date,
+  e.grade
+FROM students s
+JOIN enrollments e ON s.id = e.student_id
+JOIN courses c ON e.course_id = c.id;
+
+-- Use the view
+SELECT * FROM student_courses_view 
+WHERE grade = 'A'
+ORDER BY student_name;
+
+-- Create a view with calculated columns
+CREATE VIEW student_stats AS
+SELECT 
+  city,
+  COUNT(*) AS total_students,
+  ROUND(AVG(age), 2) AS average_age,
+  MIN(age) AS youngest,
+  MAX(age) AS oldest
+FROM students
+GROUP BY city;
+
+-- Materialized View (stores results physically)
+CREATE MATERIALIZED VIEW popular_courses AS
+SELECT 
+  c.title,
+  COUNT(e.student_id) AS enrollment_count
+FROM courses c
+LEFT JOIN enrollments e ON c.id = e.course_id
+GROUP BY c.id, c.title
+ORDER BY enrollment_count DESC;
+
+-- Refresh materialized view
+REFRESH MATERIALIZED VIEW popular_courses;
+
+-- Updateable view (with INSTEAD OF triggers)
+CREATE VIEW active_students AS
+SELECT id, name, email, city
+FROM students
+WHERE age BETWEEN 18 AND 25;
+
+-- Drop view
+DROP VIEW IF EXISTS student_courses_view;</code></pre>
+          </div>
+        </div>
+
+        <!-- Indexes -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Indexes</h3>
+          <p class="text-slate-300 mb-4">Improve query performance</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-sql">-- Basic B-tree index (default)
+CREATE INDEX idx_students_email ON students(email);
+CREATE INDEX idx_students_city ON students(city);
+
+-- Composite index
+CREATE INDEX idx_students_city_age ON students(city, age);
+
+-- Unique index
+CREATE UNIQUE INDEX idx_unique_student_email ON students(email);
+
+-- Partial index (only on subset of data)
+CREATE INDEX idx_active_students ON students(name) 
+WHERE age >= 18;
+
+-- Expression index
+CREATE INDEX idx_student_name_lower ON students(LOWER(name));
+
+-- Hash index (good for equality comparisons)
+CREATE INDEX idx_hash_city ON students USING HASH (city);
+
+-- GIN index (for JSON/array data)
+CREATE TABLE products (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(100),
+  tags TEXT[],
+  metadata JSONB
+);
+
+CREATE INDEX idx_gin_tags ON products USING GIN (tags);
+CREATE INDEX idx_gin_metadata ON products USING GIN (metadata);
+
+-- BRIN index (for large, sorted tables)
+CREATE INDEX idx_brin_created ON students USING BRIN (created_at);
+
+-- Check existing indexes
+SELECT 
+  tablename,
+  indexname,
+  indexdef
+FROM pg_indexes
+WHERE schemaname = 'public';
+
+-- Drop index
+DROP INDEX IF EXISTS idx_students_city;</code></pre>
+          </div>
+          
+          <div class="mt-4 p-4 bg-yellow-900/30 rounded-lg">
+            <h4 class="font-semibold text-yellow-300 mb-2">⚡ Index Types</h4>
+            <div class="text-sm text-yellow-200 space-y-1">
+              <div><code>B-tree</code> - Default, good for ranges</div>
+              <div><code>Hash</code> - Fast equality lookups</div>
+              <div><code>GIN</code> - JSON, arrays, full-text</div>
+              <div><code>GiST</code> - Geometric data, full-text</div>
+              <div><code>BRIN</code> - Large sorted tables</div>
+              <div><code>SP-GiST</code> - Clustered data</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stored Procedures & Functions -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Stored Procedures & Functions</h3>
+          <p class="text-slate-300 mb-4">Reusable database logic</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-sql">-- SQL Function
+CREATE OR REPLACE FUNCTION get_student_count()
+RETURNS INTEGER AS $$
+  SELECT COUNT(*) FROM students;
+$$ LANGUAGE SQL;
+
+-- Use the function
+SELECT get_student_count();
+
+-- Function with parameters
+CREATE OR REPLACE FUNCTION get_students_by_city(city_name VARCHAR)
+RETURNS TABLE(
+  student_id INTEGER,
+  student_name VARCHAR,
+  student_age INTEGER
+) AS $$
+  SELECT id, name, age 
+  FROM students 
+  WHERE city = city_name;
+$$ LANGUAGE SQL;
+
+-- Use parameterized function
+SELECT * FROM get_students_by_city('London');
+
+-- PL/pgSQL Function (procedural logic)
+CREATE OR REPLACE FUNCTION calculate_age_statistics()
+RETURNS TABLE(
+  city_name VARCHAR,
+  avg_age DECIMAL,
+  min_age INTEGER,
+  max_age INTEGER
+) AS $$
+BEGIN
+  RETURN QUERY
+  SELECT 
+    s.city,
+    ROUND(AVG(s.age), 2),
+    MIN(s.age),
+    MAX(s.age)
+  FROM students s
+  GROUP BY s.city;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Stored Procedure (can have transactions)
+CREATE OR REPLACE PROCEDURE enroll_student(
+  student_name VARCHAR,
+  course_title VARCHAR
+)
+LANGUAGE plpgsql
+AS $$
+DECLARE
+  s_id INTEGER;
+  c_id INTEGER;
+BEGIN
+  -- Get student ID
+  SELECT id INTO s_id FROM students WHERE name = student_name;
+  
+  -- Get course ID
+  SELECT id INTO c_id FROM courses WHERE title = course_title;
+  
+  -- Insert enrollment
+  INSERT INTO enrollments (student_id, course_id, enrolled_date)
+  VALUES (s_id, c_id, CURRENT_DATE);
+  
+  COMMIT;
+EXCEPTION
+  WHEN others THEN
+    ROLLBACK;
+    RAISE NOTICE 'Error enrolling student: %', SQLERRM;
+END;
+$$;
+
+-- Call procedure
+CALL enroll_student('Alice Johnson', 'Database Fundamentals');
+
+-- Function with conditional logic
+CREATE OR REPLACE FUNCTION get_student_grade_level(age INTEGER)
+RETURNS VARCHAR AS $$
+BEGIN
+  IF age < 18 THEN
+    RETURN 'High School';
+  ELSIF age BETWEEN 18 AND 22 THEN
+    RETURN 'Undergraduate';
+  ELSE
+    RETURN 'Graduate';
+  END IF;
+END;
+$$ LANGUAGE plpgsql;</code></pre>
+          </div>
+        </div>
+
+        <!-- Transactions -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Transactions</h3>
+          <p class="text-slate-300 mb-4">ACID properties and data consistency</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-sql">-- Basic transaction
+BEGIN;
+  INSERT INTO students (name, age, email) 
+  VALUES ('David Wilson', 23, 'david@email.com');
+  
+  INSERT INTO enrollments (student_id, course_id) 
+  VALUES (currval('students_id_seq'), 1);
+COMMIT;
+
+-- Transaction with error handling
+BEGIN;
+  UPDATE accounts SET balance = balance - 100 WHERE id = 1;
+  UPDATE accounts SET balance = balance + 100 WHERE id = 2;
+  
+  -- If anything fails, both updates are rolled back
+COMMIT;
+
+-- Transaction with savepoints
+BEGIN;
+  INSERT INTO students (name, age) VALUES ('Eva Brown', 21);
+  SAVEPOINT student_added;
+  
+  INSERT INTO enrollments (student_id, course_id) 
+  VALUES (currval('students_id_seq'), 1);
+  
+  -- If enrollment fails, rollback to savepoint
+  -- ROLLBACK TO student_added;
+  
+COMMIT;
+
+-- Transaction isolation levels
+BEGIN TRANSACTION ISOLATION LEVEL READ COMMITTED;
+  SELECT * FROM students WHERE city = 'London';
+  -- Other transactions can see changes after commit
+COMMIT;
+
+BEGIN TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+  SELECT * FROM students;
+  -- Guaranteed consistent reads within transaction
+COMMIT;
+
+BEGIN TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+  -- Highest isolation, prevents phantom reads
+  SELECT COUNT(*) FROM students WHERE age > 20;
+COMMIT;
+
+-- Monitoring transactions
+SELECT 
+  pid,
+  usename,
+  application_name,
+  state,
+  query
+FROM pg_stat_activity 
+WHERE state = 'active';
+
+-- Transaction in function
+CREATE OR REPLACE FUNCTION transfer_funds(
+  from_account INTEGER,
+  to_account INTEGER,
+  amount DECIMAL
+) RETURNS BOOLEAN AS $$
+BEGIN
+  -- Start transaction
+  BEGIN
+    UPDATE accounts SET balance = balance - amount WHERE id = from_account;
+    IF NOT FOUND THEN
+      RAISE EXCEPTION 'Source account not found';
+    END IF;
+    
+    UPDATE accounts SET balance = balance + amount WHERE id = to_account;
+    IF NOT FOUND THEN
+      RAISE EXCEPTION 'Destination account not found';
+    END IF;
+    
+    -- Log the transaction
+    INSERT INTO transactions (from_account, to_account, amount, timestamp)
+    VALUES (from_account, to_account, amount, NOW());
+    
+    COMMIT;
+    RETURN TRUE;
+    
+  EXCEPTION
+    WHEN others THEN
+      ROLLBACK;
+      RETURN FALSE;
+  END;
+END;
+$$ LANGUAGE plpgsql;</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Real World Project Section -->
+  <section id="project" class="course-section py-5 bg-dark-800">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">Real World Project</h2>
+      
+      <div class="glass rounded-xl p-6">
+        <h3 class="text-xl font-semibold text-neon-300 mb-4">Student Management System</h3>
+        <p class="text-slate-300 mb-6">Complete database design with relationships</p>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div>
+            <h4 class="font-semibold text-green-400 mb-3">🗄️ Database Schema</h4>
+            <div class="code-container bg-slate-900 rounded-lg p-4">
+              <pre><code class="language-sql">-- Complete schema for student management system
+CREATE TABLE departments (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(100) UNIQUE NOT NULL,
+  head_of_department VARCHAR(100),
+  budget DECIMAL(12,2) DEFAULT 0
+);
+
+CREATE TABLE instructors (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  email VARCHAR(100) UNIQUE NOT NULL,
+  department_id INTEGER REFERENCES departments(id),
+  hire_date DATE DEFAULT CURRENT_DATE,
+  salary DECIMAL(10,2) CHECK (salary > 0)
+);
+
+CREATE TABLE courses (
+  id SERIAL PRIMARY KEY,
+  title VARCHAR(200) NOT NULL,
+  code VARCHAR(20) UNIQUE NOT NULL,
+  credits INTEGER CHECK (credits BETWEEN 1 AND 5),
+  department_id INTEGER REFERENCES departments(id),
+  instructor_id INTEGER REFERENCES instructors(id),
+  description TEXT,
+  is_active BOOLEAN DEFAULT TRUE
+);
+
+CREATE TABLE students (
+  id SERIAL PRIMARY KEY,
+  student_id VARCHAR(20) UNIQUE NOT NULL,
+  name VARCHAR(100) NOT NULL,
+  email VARCHAR(100) UNIQUE NOT NULL,
+  date_of_birth DATE,
+  enrollment_date DATE DEFAULT CURRENT_DATE,
+  major_department_id INTEGER REFERENCES departments(id),
+  gpa DECIMAL(3,2) CHECK (gpa BETWEEN 0 AND 4.0)
+);
+
+CREATE TABLE enrollments (
+  id SERIAL PRIMARY KEY,
+  student_id INTEGER REFERENCES students(id),
+  course_id INTEGER REFERENCES courses(id),
+  enrollment_date DATE DEFAULT CURRENT_DATE,
+  grade CHAR(2) CHECK (grade IN ('A', 'A-', 'B+', 'B', 'B-', 'C+', 'C', 'C-', 'D', 'F', 'W')),
+  UNIQUE(student_id, course_id)
+);
+
+CREATE TABLE assignments (
+  id SERIAL PRIMARY KEY,
+  course_id INTEGER REFERENCES courses(id),
+  title VARCHAR(200) NOT NULL,
+  description TEXT,
+  due_date TIMESTAMP,
+  max_score INTEGER CHECK (max_score > 0)
+);
+
+CREATE TABLE grades (
+  id SERIAL PRIMARY KEY,
+  enrollment_id INTEGER REFERENCES enrollments(id),
+  assignment_id INTEGER REFERENCES assignments(id),
+  score DECIMAL(5,2) CHECK (score >= 0),
+  submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE(enrollment_id, assignment_id)
+);</code></pre>
+            </div>
+          </div>
+          
+          <div>
+            <h4 class="font-semibold text-blue-400 mb-3">🔗 Entity Relationships</h4>
+            <div class="space-y-4">
+              <div class="p-4 bg-slate-800/50 rounded-lg">
+                <div class="font-semibold text-green-400">Departments (1) ─── (∞) Courses</div>
+                <div class="text-sm text-slate-400">One department offers many courses</div>
+              </div>
+              
+              <div class="p-4 bg-slate-800/50 rounded-lg">
+                <div class="font-semibold text-blue-400">Instructors (1) ─── (∞) Courses</div>
+                <div class="text-sm text-slate-400">One instructor teaches many courses</div>
+              </div>
+              
+              <div class="p-4 bg-slate-800/50 rounded-lg">
+                <div class="font-semibold text-purple-400">Students (∞) ─── (∞) Courses</div>
+                <div class="text-sm text-slate-400">Many-to-many via enrollments</div>
+              </div>
+              
+              <div class="p-4 bg-slate-800/50 rounded-lg">
+                <div class="font-semibold text-yellow-400">Courses (1) ─── (∞) Assignments</div>
+                <div class="text-sm text-slate-400">One course has many assignments</div>
+              </div>
+            </div>
+            
+            <h4 class="font-semibold text-purple-400 mt-6 mb-3">📊 Sample Queries</h4>
+            <div class="code-container bg-slate-900 rounded-lg p-4">
+              <pre><code class="language-sql">-- Students with their majors and GPAs
+SELECT 
+  s.name AS student_name,
+  s.student_id,
+  d.name AS major,
+  s.gpa
+FROM students s
+JOIN departments d ON s.major_department_id = d.id
+WHERE s.gpa > 3.5
+ORDER BY s.gpa DESC;
+
+-- Course enrollment counts
+SELECT 
+  c.title AS course_name,
+  c.code,
+  COUNT(e.student_id) AS enrollment_count
+FROM courses c
+LEFT JOIN enrollments e ON c.id = e.course_id
+GROUP BY c.id, c.title, c.code
+ORDER BY enrollment_count DESC;
+
+-- Instructor workload
+SELECT 
+  i.name AS instructor_name,
+  d.name AS department,
+  COUNT(c.id) AS courses_taught,
+  SUM(c.credits) AS total_credits
+FROM instructors i
+JOIN departments d ON i.department_id = d.id
+LEFT JOIN courses c ON i.id = c.instructor_id
+GROUP BY i.id, i.name, d.name
+ORDER BY total_credits DESC;</code></pre>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mt-6 p-4 bg-green-900/30 rounded-lg">
+          <h4 class="font-semibold text-green-300 mb-2">🚀 Performance Optimization</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+            <div class="space-y-2">
+              <div class="flex items-center gap-2">
+                <i class="fas fa-bolt text-green-400"></i>
+                <code>CREATE INDEX idx_student_email ON students(email);</code>
+              </div>
+              <div class="flex items-center gap-2">
+                <i class="fas fa-bolt text-green-400"></i>
+                <code>CREATE INDEX idx_enrollment_course ON enrollments(course_id);</code>
+              </div>
+              <div class="flex items-center gap-2">
+                <i class="fas fa-bolt text-green-400"></i>
+                <code>CREATE INDEX idx_course_department ON courses(department_id);</code>
+              </div>
+            </div>
+            <div class="space-y-2">
+              <div class="flex items-center gap-2">
+                <i class="fas fa-bolt text-green-400"></i>
+                <code>VACUUM ANALYZE students;</code>
+              </div>
+              <div class="flex items-center gap-2">
+                <i class="fas fa-bolt text-green-400"></i>
+                <code>EXPLAIN ANALYZE SELECT * FROM students;</code>
+              </div>
+              <div class="flex items-center gap-2">
+                <i class="fas fa-bolt text-green-400"></i>
+                <code>SET work_mem = '256MB';</code>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Administration Section -->
+  <section class="course-section py-5">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">Administration & Advanced Topics</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Backup & Restore -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Backup & Restore</h3>
+          <p class="text-slate-300 mb-4">Protect your data with proper backups</p>
+          
+          <div class="terminal mb-4">
+            <div class="flex items-center gap-2 mb-2">
+              <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+              <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+              <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+            </div>
+            <div class="space-y-2 text-sm">
+              <div><span class="prompt">$</span> <span class="command">pg_dump students_db > backup.sql</span></div>
+              <div class="comment"># Backup entire database</div>
+              
+              <div><span class="prompt">$</span> <span class="command">pg_dump -t students students_db > students_backup.sql</span></div>
+              <div class="comment"># Backup specific table</div>
+              
+              <div><span class="prompt">$</span> <span class="command">pg_dump -Fc students_db > backup.custom</span></div>
+              <div class="comment"># Custom format (compressed)</div>
+              
+              <div><span class="prompt">$</span> <span class="command">pg_restore -d new_db backup.custom</span></div>
+              <div class="comment"># Restore from custom format</div>
+              
+              <div><span class="prompt">$</span> <span class="command">psql students_db < backup.sql</span></div>
+              <div class="comment"># Restore from SQL file</div>
+              
+              <div><span class="prompt">$</span> <span class="command">pg_dumpall > all_databases.sql</span></div>
+              <div class="comment"># Backup all databases</div>
+            </div>
+          </div>
+          
+          <div class="p-4 bg-blue-900/30 rounded-lg">
+            <h4 class="font-semibold text-blue-300 mb-2">💾 Backup Strategies</h4>
+            <div class="text-sm text-blue-200 space-y-2">
+              <div><span class="font-semibold">Full backup</span> - Complete database dump</div>
+              <div><span class="font-semibold">Incremental</span> - WAL archiving for point-in-time recovery</div>
+              <div><span class="font-semibold">Logical</span> - SQL statements (pg_dump)</div>
+              <div><span class="font-semibold">Physical</span> - File system level backup</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- User Management -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">User Management & Permissions</h3>
+          <p class="text-slate-300 mb-4">Control access and security</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-sql">-- Create a new user
+CREATE USER john_doe WITH PASSWORD 'securepassword123';
+
+-- Create a role with specific privileges
+CREATE ROLE read_only;
+GRANT CONNECT ON DATABASE students_db TO read_only;
+GRANT USAGE ON SCHEMA public TO read_only;
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO read_only;
+
+-- Assign role to user
+GRANT read_only TO john_doe;
+
+-- Create admin role
+CREATE ROLE db_admin;
+GRANT ALL PRIVILEGES ON DATABASE students_db TO db_admin;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO db_admin;
+
+-- Grant specific table permissions
+GRANT SELECT, INSERT, UPDATE ON students TO john_doe;
+GRANT DELETE ON students TO db_admin;
+
+-- Revoke permissions
+REVOKE DELETE ON students FROM john_doe;
+
+-- Create group role
+CREATE ROLE faculty;
+GRANT faculty TO instructor1, instructor2;
+
+-- Row Level Security (RLS)
+ALTER TABLE students ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY student_policy ON students
+FOR ALL TO faculty
+USING (major_department_id = current_setting('app.current_department_id')::INT);
+
+-- View current privileges
+SELECT 
+  grantee,
+  table_name,
+  privilege_type
+FROM information_schema.role_table_grants
+WHERE table_name = 'students';
+
+-- Drop user
+DROP USER IF EXISTS john_doe;</code></pre>
+          </div>
+        </div>
+
+        <!-- Advanced Features -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Advanced Features</h3>
+          <p class="text-slate-300 mb-4">Modern PostgreSQL capabilities</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-sql">-- JSONB support
+CREATE TABLE products (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(100),
+  attributes JSONB,
+  tags TEXT[]
+);
+
+INSERT INTO products (name, attributes, tags) VALUES
+('Laptop', '{"brand": "Dell", "ram": 16, "storage": "512GB"}', '{"electronics", "computers"}'),
+('Phone', '{"brand": "Samsung", "storage": "128GB", "color": "black"}', '{"electronics", "mobile"}');
+
+-- Query JSONB data
+SELECT name, attributes->>'brand' as brand
+FROM products
+WHERE attributes @> '{"ram": 16}';
+
+-- Full-text search
+CREATE TABLE articles (
+  id SERIAL PRIMARY KEY,
+  title VARCHAR(200),
+  content TEXT,
+  search_vector TSVECTOR
+);
+
+CREATE INDEX idx_fts_search ON articles USING GIN (search_vector);
+
+UPDATE articles SET search_vector = 
+  to_tsvector('english', coalesce(title, '') || ' ' || coalesce(content, ''));
+
+SELECT title
+FROM articles
+WHERE search_vector @@ to_tsquery('english', 'database & performance');
+
+-- Common Table Expressions (CTE)
+WITH top_students AS (
+  SELECT id, name, gpa
+  FROM students
+  WHERE gpa > 3.8
+),
+student_courses AS (
+  SELECT s.name, c.title
+  FROM top_students s
+  JOIN enrollments e ON s.id = e.student_id
+  JOIN courses c ON e.course_id = c.id
+)
+SELECT * FROM student_courses;
+
+-- Window Functions
+SELECT 
+  name,
+  gpa,
+  RANK() OVER (ORDER BY gpa DESC) as rank,
+  AVG(gpa) OVER () as overall_avg,
+  gpa - AVG(gpa) OVER () as diff_from_avg
+FROM students;
+
+-- Array operations
+SELECT 
+  name,
+  tags,
+  array_length(tags, 1) as tag_count,
+  tags[1] as first_tag
+FROM products
+WHERE 'electronics' = ANY(tags);
+
+-- Partitioning
+CREATE TABLE student_logs (
+  id SERIAL,
+  student_id INTEGER,
+  action VARCHAR(50),
+  log_time TIMESTAMP
+) PARTITION BY RANGE (log_time);
+
+CREATE TABLE logs_2024_01 PARTITION OF student_logs
+FOR VALUES FROM ('2024-01-01') TO ('2024-02-01');
+
+CREATE TABLE logs_2024_02 PARTITION OF student_logs
+FOR VALUES FROM ('2024-02-01') TO ('2024-03-01');</code></pre>
+          </div>
+        </div>
+
+        <!-- Performance Tuning -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Performance Tuning</h3>
+          <p class="text-slate-300 mb-4">Optimize queries and database performance</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-sql">-- Query analysis with EXPLAIN
+EXPLAIN ANALYZE 
+SELECT * FROM students WHERE city = 'London';
+
+-- Check table statistics
+ANALYZE students;
+
+-- Vacuum to reclaim space and update statistics
+VACUUM ANALYZE students;
+
+-- Check index usage
+SELECT 
+  schemaname,
+  tablename,
+  indexname,
+  idx_scan as index_scans
+FROM pg_stat_user_indexes
+ORDER BY idx_scan DESC;
+
+-- Find slow queries
+SELECT 
+  query,
+  calls,
+  total_time,
+  mean_time,
+  rows
+FROM pg_stat_statements
+ORDER BY mean_time DESC
+LIMIT 10;
+
+-- Configuration tuning
+-- postgresql.conf settings:
+-- shared_buffers = 25% of RAM
+-- work_mem = 256MB
+-- maintenance_work_mem = 1GB
+-- effective_cache_size = 75% of RAM
+
+-- Check current settings
+SELECT name, setting, unit
+FROM pg_settings
+WHERE name IN ('shared_buffers', 'work_mem', 'maintenance_work_mem');
+
+-- Monitor database activity
+SELECT 
+  datname,
+  numbackends,
+  xact_commit,
+  xact_rollback
+FROM pg_stat_database;
+
+-- Check table bloat
+SELECT 
+  schemaname,
+  tablename,
+  n_dead_tup,
+  n_live_tup,
+  round(n_dead_tup::numeric / (n_live_tup + n_dead_tup) * 100, 2) as dead_percent
+FROM pg_stat_user_tables
+ORDER BY dead_percent DESC;
+
+-- Force index usage
+SET enable_seqscan = off;
+SELECT * FROM students WHERE city = 'London';
+SET enable_seqscan = on;
+
+-- Create partial index for better performance
+CREATE INDEX idx_active_courses ON courses(id) 
+WHERE is_active = true;</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cheat Sheet Section -->
+  <section class="course-section py-5 bg-dark-800">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">PostgreSQL Commands Cheat Sheet</h2>
+      
+      <div class="glass rounded-xl p-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="space-y-4">
+            <h3 class="text-lg font-semibold text-green-400 mb-3">📊 Database Operations</h3>
+            <div class="space-y-2">
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Create database</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">CREATE DATABASE name;</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">List databases</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">\l</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Connect to DB</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">\c dbname</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Drop database</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">DROP DATABASE name;</code>
+              </div>
+            </div>
+          </div>
+          
+          <div class="space-y-4">
+            <h3 class="text-lg font-semibold text-blue-400 mb-3">📝 Table Operations</h3>
+            <div class="space-y-2">
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Create table</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">CREATE TABLE name (...);</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">List tables</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">\dt</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Describe table</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">\d tablename</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Drop table</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">DROP TABLE name;</code>
+              </div>
+            </div>
+          </div>
+          
+          <div class="space-y-4">
+            <h3 class="text-lg font-semibold text-purple-400 mb-3">🔍 Query Operations</h3>
+            <div class="space-y-2">
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Select data</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">SELECT * FROM table;</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Insert data</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">INSERT INTO table VALUES (...);</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Update data</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">UPDATE table SET col=val;</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Delete data</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">DELETE FROM table;</code>
+              </div>
+            </div>
+          </div>
+          
+          <div class="space-y-4">
+            <h3 class="text-lg font-semibold text-yellow-400 mb-3">⚡ Performance</h3>
+            <div class="space-y-2">
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Create index</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">CREATE INDEX idx ON table(col);</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Explain query</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">EXPLAIN ANALYZE SELECT...</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Vacuum table</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">VACUUM ANALYZE table;</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Check stats</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">ANALYZE table;</code>
+              </div>
+            </div>
+          </div>
+          
+          <div class="space-y-4">
+            <h3 class="text-lg font-semibold text-red-400 mb-3">🔧 Administration</h3>
+            <div class="space-y-2">
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Backup DB</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">pg_dump dbname > file.sql</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Restore DB</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">psql dbname < file.sql</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Create user</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">CREATE USER name;</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Grant privileges</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">GRANT SELECT ON table TO user;</code>
+              </div>
+            </div>
+          </div>
+          
+          <div class="space-y-4">
+            <h3 class="text-lg font-semibold text-indigo-400 mb-3">🔄 Advanced</h3>
+            <div class="space-y-2">
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Create view</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">CREATE VIEW name AS SELECT...</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Transaction</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">BEGIN; ... COMMIT;</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Create function</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">CREATE FUNCTION name()...</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">JSON query</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">SELECT data->>'key' FROM table;</code>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mt-6 p-4 bg-blue-900/30 rounded-lg">
+          <h4 class="font-semibold text-blue-300 mb-2">💡 Pro Tips</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+            <div class="space-y-2">
+              <div><code>SELECT * FROM pg_stat_activity;</code> - View active connections</div>
+              <div><code>SELECT pg_size_pretty(pg_total_relation_size('table'));</code> - Table size</div>
+              <div><code>REINDEX TABLE table_name;</code> - Rebuild corrupted indexes</div>
+            </div>
+            <div class="space-y-2">
+              <div><code>SELECT version();</code> - Check PostgreSQL version</div>
+              <div><code>SHOW shared_buffers;</code> - View configuration</div>
+              <div><code>pg_basebackup</code> - Physical backup tool</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Navigation -->
+  <div class="max-w-6xl mx-auto px-6 py-8">
+    <div class="glass rounded-xl p-6 sticky bottom-6">
+      <h3 class="font-semibold text-neon-300 mb-4">Course Navigation</h3>
+      <div class="flex flex-wrap gap-3">
+        <a href="#basics" class="px-4 py-2 rounded-lg bg-slate-800/40 hover:bg-slate-700/40 transition text-sm">Basics</a>
+        <a href="#project" class="px-4 py-2 rounded-lg bg-slate-800/40 hover:bg-slate-700/40 transition text-sm">Real Project</a>
+        <button onclick="showCheatSheet()" class="px-4 py-2 rounded-lg bg-postgresql-500 hover:bg-postgresql-600 transition text-sm">Cheat Sheet</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="glass border-t border-slate-800 mt-20">
+    <div class="max-w-6xl mx-auto px-6 py-8 text-center">
+      <div class="flex items-center justify-center gap-6 mb-4">
+        <a href="/" class="text-slate-300 hover:text-neon-500 transition">Home</a>
+        <a href="#basics" class="text-slate-300 hover:text-neon-500 transition">Course</a>
+        <a href="https://github.com/JUSAIR-JSR" target="_blank" class="text-slate-300 hover:text-neon-500 transition">GitHub</a>
+      </div>
+      <p class="text-slate-500 text-sm">© 2023 PostgreSQL Course - Complete Beginner to Advanced Guide</p>
+    </div>
+  </footer>
+
+  <!-- Cheat Sheet Modal -->
+  <div id="cheat-sheet" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-50 p-4">
+    <div class="glass rounded-xl p-6 max-w-4xl max-h-[80vh] overflow-y-auto">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-2xl font-bold text-neon-300">PostgreSQL Cheat Sheet</h3>
+        <button onclick="hideCheatSheet()" class="text-slate-400 hover:text-white">
+          <i class="fas fa-times text-2xl"></i>
+        </button>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h4 class="font-semibold text-green-400 mb-3">Basic Commands</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">\l</code>
+            <code class="block bg-slate-800 p-2 rounded">\c database</code>
+            <code class="block bg-slate-800 p-2 rounded">\dt</code>
+            <code class="block bg-slate-800 p-2 rounded">\d table</code>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-blue-400 mb-3">Data Types</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">SERIAL</code>
+            <code class="block bg-slate-800 p-2 rounded">VARCHAR(n)</code>
+            <code class="block bg-slate-800 p-2 rounded">INTEGER</code>
+            <code class="block bg-slate-800 p-2 rounded">JSONB</code>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-yellow-400 mb-3">CRUD Operations</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">INSERT INTO table VALUES (...)</code>
+            <code class="block bg-slate-800 p-2 rounded">SELECT * FROM table</code>
+            <code class="block bg-slate-800 p-2 rounded">UPDATE table SET col=val</code>
+            <code class="block bg-slate-800 p-2 rounded">DELETE FROM table</code>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-purple-400 mb-3">Joins</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">INNER JOIN</code>
+            <code class="block bg-slate-800 p-2 rounded">LEFT JOIN</code>
+            <code class="block bg-slate-800 p-2 rounded">RIGHT JOIN</code>
+            <code class="block bg-slate-800 p-2 rounded">FULL OUTER JOIN</code>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-red-400 mb-3">Performance</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">CREATE INDEX</code>
+            <code class="block bg-slate-800 p-2 rounded">EXPLAIN ANALYZE</code>
+            <code class="block bg-slate-800 p-2 rounded">VACUUM ANALYZE</code>
+            <code class="block bg-slate-800 p-2 rounded">SET enable_seqscan = off</code>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-indigo-400 mb-3">Administration</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">pg_dump dbname</code>
+            <code class="block bg-slate-800 p-2 rounded">CREATE USER name</code>
+            <code class="block bg-slate-800 p-2 rounded">GRANT SELECT ON table</code>
+            <code class="block bg-slate-800 p-2 rounded">REVOKE DELETE FROM user</code>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Initialize syntax highlighting
+    hljs.highlightAll();
+
+    // Copy button functionality
+    document.querySelectorAll('.copy-btn').forEach(button => {
+      button.addEventListener('click', function() {
+        const codeBlock = this.closest('.code-container').querySelector('code');
+        const textArea = document.createElement('textarea');
+        textArea.value = codeBlock.textContent;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        
+        // Visual feedback
+        const originalText = this.innerHTML;
+        this.innerHTML = '<i class="fas fa-check mr-1"></i>Copied!';
+        setTimeout(() => {
+          this.innerHTML = originalText;
+        }, 2000);
+      });
+    });
+
+    // Cheat sheet functions
+    function showCheatSheet() {
+      document.getElementById('cheat-sheet').classList.remove('hidden');
+      document.getElementById('cheat-sheet').classList.add('flex');
+    }
+
+    function hideCheatSheet() {
+      document.getElementById('cheat-sheet').classList.add('hidden');
+      document.getElementById('cheat-sheet').classList.remove('flex');
+    }
+
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>

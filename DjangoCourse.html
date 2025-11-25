@@ -1,0 +1,1629 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Django Course - Complete Beginner to Advanced</title>
+  <meta name="description" content="Complete Django course with web development, REST APIs, and deployment examples" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Highlight.js for syntax highlighting -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+  
+  <!-- Pyodide for Python execution in browser -->
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js"></script>
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            neon: {
+              50: '#f3f7ff',
+              100: '#e6f0ff',
+              300: '#99ccff',
+              500: '#00d0ff',
+              600: '#00a8d9',
+              700: '#00a3cc',
+              800: '#007399'
+            },
+            dark: {
+              900: '#0a0f1c',
+              800: '#0f172a',
+              700: '#1e293b'
+            },
+            django: {
+              500: '#092e20',
+              600: '#0d4a2f',
+              700: '#0c6138'
+            }
+          },
+          animation: {
+            'float': 'float 6s ease-in-out infinite',
+            'pulse-glow': 'pulse-glow 2s ease-in-out infinite alternate',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    .neon-text { 
+      text-shadow: 0 0 8px rgba(0,208,255,0.15), 0 0 18px rgba(0,208,255,0.06); 
+    }
+    
+    .glass {
+      background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .code-container {
+      position: relative;
+    }
+    
+    .copy-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    
+    .code-container:hover .copy-btn {
+      opacity: 1;
+    }
+    
+    .preview-frame {
+      background: white;
+      border-radius: 0.5rem;
+      border: 1px solid rgba(255,255,255,0.1);
+      min-height: 200px;
+    }
+    
+    .component-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .component-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .terminal {
+      background: #1a1b26;
+      color: #c0caf5;
+      font-family: 'Fira Code', monospace;
+      border-radius: 0.5rem;
+      padding: 1rem;
+    }
+    
+    .terminal .prompt {
+      color: #7dcfff;
+    }
+    
+    .terminal .command {
+      color: #9ece6a;
+    }
+    
+    .python-editor {
+      background: #1e293b;
+      color: #c0caf5;
+      font-family: 'Fira Code', monospace;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      min-height: 200px;
+      border: 1px solid #374151;
+    }
+    
+    .python-output {
+      background: #0f172a;
+      color: #10b981;
+      font-family: 'Fira Code', monospace;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      min-height: 100px;
+      border: 1px solid #374151;
+    }
+    
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.5);
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: rgba(0, 208, 255, 0.3);
+      border-radius: 4px;
+    }
+    
+    .course-section {
+      scroll-margin-top: 100px;
+    }
+    
+    /* Animation for live examples */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .animate-fade-in {
+      animation: fadeInUp 0.6s ease-out;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    @keyframes pulse-glow {
+      0% { box-shadow: 0 0 20px rgba(0, 208, 255, 0.4); }
+      100% { box-shadow: 0 0 30px rgba(0, 208, 255, 0.8), 0 0 40px rgba(0, 208, 255, 0.4); }
+    }
+    
+    .django-badge {
+      background: linear-gradient(135deg, #092e20, #0d4a2f);
+      color: white;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-dark-900 via-dark-800 to-dark-900 text-slate-200 min-h-screen">
+
+  <!-- Navigation -->
+  <nav class="glass border-b border-slate-800 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-django-500 to-django-600 flex items-center justify-center">
+          <i class="fab fa-python text-white text-lg"></i>
+        </div>
+        <div>
+          <h1 class="text-lg font-bold neon-text">Django Course</h1>
+          <p class="text-xs text-slate-400">Beginner to Advanced</p>
+        </div>
+      </a>
+
+      <div class="flex items-center gap-4">
+        <a href="/" class="px-4 py-2 rounded-lg text-sm hover:bg-slate-800/40 transition">
+          <i class="fas fa-home mr-2"></i>Home
+        </a>
+        <a href="#basics" class="px-4 py-2 rounded-lg text-sm bg-slate-800/40 border border-neon-500/30">
+          <i class="fas fa-book mr-2"></i>Course
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="max-w-7xl mx-auto px-6 py-16 text-center">
+    <div class="max-w-3xl mx-auto">
+      <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800/40 border border-slate-700/40 text-sm mb-6">
+        <i class="fas fa-leaf text-green-400"></i>
+        Complete Django Web Framework Course
+      </span>
+      <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight text-white neon-text mb-6">
+        Master Django
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-green-400 block">The Python Web Framework</span>
+      </h1>
+      <p class="text-slate-300 text-lg mb-8">Learn Django web development with interactive examples, REST APIs, authentication, databases, and real-world projects. Build your skills step by step.</p>
+      
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href="#basics" class="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r from-django-500 to-django-600 font-medium hover:scale-105 transition-transform">
+          <i class="fas fa-play"></i>
+          Start Learning
+        </a>
+        <a href="#live-editor" class="inline-flex items-center gap-3 px-6 py-3 rounded-full border border-slate-700/40 hover:border-neon-500 transition glass">
+          <i class="fas fa-code"></i>
+          Live Editor
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Django Basics Section -->
+  <section id="basics" class="course-section py-5">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">Django Basics</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Setup & Installation -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4 flex items-center gap-2">
+            <i class="fas fa-download"></i>
+            Setup & Installation
+          </h3>
+          <p class="text-slate-300 mb-4">Get Django installed and create your first project</p>
+          
+          <div class="terminal mb-4">
+            <div class="flex items-center gap-2 mb-2">
+              <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+              <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+              <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+            </div>
+            <div class="space-y-2 text-sm">
+              <div><span class="prompt">$</span> <span class="command">pip install django</span></div>
+              <div class="text-blue-300">Installing Django...</div>
+              <div><span class="prompt">$</span> <span class="command">django-admin --version</span></div>
+              <div class="text-green-300">4.2.1</div>
+              <div><span class="prompt">$</span> <span class="command">django-admin startproject mysite</span></div>
+              <div class="text-gray-400"># Create new Django project</div>
+            </div>
+          </div>
+          
+          <div class="p-4 bg-green-900/30 rounded-lg">
+            <h4 class="font-semibold text-green-300 mb-2">🚀 Quick Start</h4>
+            <div class="code-container bg-slate-800 rounded p-3">
+              <pre><code class="language-bash"># Create and run Django project
+django-admin startproject myproject
+cd myproject
+python manage.py runserver
+
+# Create a Django app
+python manage.py startapp myapp
+
+# Make migrations and migrate
+python manage.py makemigrations
+python manage.py migrate
+
+# Create superuser for admin
+python manage.py createsuperuser</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project Structure -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Project Structure</h3>
+          <p class="text-slate-300 mb-4">Understanding Django's project and app structure</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-python">myproject/
+├── manage.py
+└── myproject/
+    ├── __init__.py
+    ├── settings.py
+    ├── urls.py
+    ├── wsgi.py
+    └── asgi.py
+
+myapp/
+├── migrations/
+├── __init__.py
+├── admin.py
+├── apps.py
+├── models.py
+├── tests.py
+├── views.py
+└── urls.py</code></pre>
+          </div>
+          
+          <div class="mt-4 p-4 bg-blue-900/30 rounded-lg">
+            <h4 class="font-semibold text-blue-300 mb-2">📁 Key Files Explained</h4>
+            <ul class="text-sm text-blue-200 space-y-1">
+              <li><code>settings.py</code> - Project configuration</li>
+              <li><code>urls.py</code> - URL routing</li>
+              <li><code>views.py</code> - Request handling logic</li>
+              <li><code>models.py</code> - Database models</li>
+              <li><code>admin.py</code> - Admin panel configuration</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Views & URLs -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Views & URLs</h3>
+          <p class="text-slate-300 mb-4">Creating views and routing URLs</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-python"># myapp/views.py
+from django.http import HttpResponse
+from django.shortcuts import render
+
+def home(request):
+    return HttpResponse("Hello Django!")
+
+def about(request):
+    return render(request, 'about.html')
+
+def user_profile(request, username):
+    context = {'username': username}
+    return render(request, 'profile.html', context)
+
+# myapp/urls.py
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.home, name='home'),
+    path('about/', views.about, name='about'),
+    path('user/&lt;str:username&gt;/', views.user_profile, name='profile'),
+]
+
+# myproject/urls.py
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('myapp.urls')),
+]</code></pre>
+          </div>
+        </div>
+
+        <!-- Templates -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Templates & Template Tags</h3>
+          <p class="text-slate-300 mb-4">Creating HTML templates with Django template language</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-html">&lt;!-- base.html --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;{% block title %}My Site{% endblock %}&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;nav&gt;
+        &lt;a href="{% url 'home' %}"&gt;Home&lt;/a&gt;
+        &lt;a href="{% url 'about' %}"&gt;About&lt;/a&gt;
+    &lt;/nav&gt;
+    
+    {% block content %}
+    {% endblock %}
+&lt;/body&gt;
+&lt;/html&gt;
+
+&lt;!-- home.html --&gt;
+{% extends 'base.html' %}
+
+{% block title %}Home - My Site{% endblock %}
+
+{% block content %}
+&lt;h1&gt;Welcome {{ user.username }}!&lt;/h1&gt;
+
+{% if messages %}
+    {% for message in messages %}
+        &lt;div class="alert"&gt;{{ message }}&lt;/div&gt;
+    {% endfor %}
+{% endif %}
+
+&lt;ul&gt;
+{% for item in items %}
+    &lt;li&gt;{{ item.name }} - ${{ item.price }}&lt;/li&gt;
+{% empty %}
+    &lt;li&gt;No items available&lt;/li&gt;
+{% endfor %}
+&lt;/ul&gt;
+{% endblock %}</code></pre>
+          </div>
+          
+          <div class="mt-4 p-4 bg-purple-900/30 rounded-lg">
+            <h4 class="font-semibold text-purple-300 mb-2">🔧 Template Tags</h4>
+            <ul class="text-sm text-purple-200 space-y-1">
+              <li><code>{{ variable }}</code> - Output variable</li>
+              <li><code>{% tag %}</code> - Execute template tag</li>
+              <li><code>{% for %}</code> - Loop through items</li>
+              <li><code>{% if %}</code> - Conditional statements</li>
+              <li><code>{% url %}</code> - Generate URL</li>
+              <li><code>{% extends %}</code> - Template inheritance</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Models & Database Section -->
+  <section class="course-section py-5 bg-dark-800">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">Models & Database</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Django Models -->
+        <div class="glass rounded-xl p-6 component-card">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Django Models</h3>
+          <p class="text-slate-300 mb-4">Creating database models with Django ORM</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-python"># myapp/models.py
+from django.db import models
+from django.contrib.auth.models import User
+
+class Category(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField(blank=True)
+    
+    def __str__(self):
+        return self.name
+
+class Product(models.Model):
+    STATUS_CHOICES = [
+        ('draft', 'Draft'),
+        ('published', 'Published'),
+        ('archived', 'Archived'),
+    ]
+    
+    name = models.CharField(max_length=200)
+    description = models.TextField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='draft')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name_plural = "Products"
+    
+    def __str__(self):
+        return self.name
+
+class Review(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='reviews')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    rating = models.IntegerField(choices=[(i, i) for i in range(1, 6)])
+    comment = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f"Review for {self.product.name} by {self.user.username}"</code></pre>
+          </div>
+        </div>
+
+        <!-- Django ORM -->
+        <div class="glass rounded-xl p-6 component-card">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Django ORM Queries</h3>
+          <p class="text-slate-300 mb-4">Querying the database with Django's ORM</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-python"># Create objects
+category = Category.objects.create(name="Electronics")
+product = Product.objects.create(
+    name="Laptop", 
+    price=999.99, 
+    category=category
+)
+
+# Get all objects
+all_products = Product.objects.all()
+
+# Filter objects
+published_products = Product.objects.filter(status='published')
+cheap_products = Product.objects.filter(price__lt=100)
+electronics = Product.objects.filter(category__name="Electronics")
+
+# Get single object
+try:
+    product = Product.objects.get(id=1)
+except Product.DoesNotExist:
+    product = None
+
+# Update objects
+Product.objects.filter(status='draft').update(status='published')
+product.price = 899.99
+product.save()
+
+# Delete objects
+product.delete()
+
+# Complex queries
+from django.db.models import Q, Count, Avg
+
+# OR queries
+products = Product.objects.filter(
+    Q(price__lt=100) | Q(category__name="Electronics")
+)
+
+# Aggregation
+from django.db.models import Avg, Count
+stats = Product.objects.aggregate(
+    avg_price=Avg('price'),
+    total_products=Count('id')
+)
+
+# Annotations
+categories = Category.objects.annotate(
+    product_count=Count('product')
+)</code></pre>
+          </div>
+        </div>
+
+        <!-- Migrations -->
+        <div class="glass rounded-xl p-6 component-card">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Migrations</h3>
+          <p class="text-slate-300 mb-4">Managing database schema changes</p>
+          
+          <div class="terminal mb-4">
+            <div class="flex items-center gap-2 mb-2">
+              <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+              <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+              <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+            </div>
+            <div class="space-y-2 text-sm">
+              <div><span class="prompt">$</span> <span class="command">python manage.py makemigrations</span></div>
+              <div class="text-blue-300">Migrations for 'myapp':</div>
+              <div class="text-blue-300">  myapp/migrations/0001_initial.py</div>
+              <div><span class="prompt">$</span> <span class="command">python manage.py migrate</span></div>
+              <div class="text-green-300">Applying migrations... OK</div>
+              <div><span class="prompt">$</span> <span class="command">python manage.py showmigrations</span></div>
+              <div class="text-gray-400"># Show migration status</div>
+            </div>
+          </div>
+          
+          <div class="p-4 bg-yellow-900/30 rounded-lg">
+            <h4 class="font-semibold text-yellow-300 mb-2">⚠️ Migration Best Practices</h4>
+            <ul class="text-sm text-yellow-200 space-y-1">
+              <li>Always create migrations when changing models</li>
+              <li>Test migrations on a copy of your database first</li>
+              <li>Use <code>migrate --plan</code> to see what will be applied</li>
+              <li>Never edit migration files manually after they're applied</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Admin Panel -->
+        <div class="glass rounded-xl p-6 component-card">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Admin Panel</h3>
+          <p class="text-slate-300 mb-4">Customizing Django's built-in admin interface</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-python"># myapp/admin.py
+from django.contrib import admin
+from .models import Category, Product, Review
+
+class ProductInline(admin.TabularInline):
+    model = Product
+    extra = 1
+
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ['name', 'product_count']
+    search_fields = ['name']
+    inlines = [ProductInline]
+    
+    def product_count(self, obj):
+        return obj.product_set.count()
+    product_count.short_description = 'Products'
+
+@admin.register(Product)
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ['name', 'category', 'price', 'status', 'created_at']
+    list_filter = ['category', 'status', 'created_at']
+    search_fields = ['name', 'description']
+    list_editable = ['price', 'status']
+    readonly_fields = ['created_at', 'updated_at']
+    fieldsets = (
+        (None, {
+            'fields': ('name', 'description', 'category')
+        }),
+        ('Pricing', {
+            'fields': ('price', 'status')
+        }),
+        ('Metadata', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
+
+@admin.register(Review)
+class ReviewAdmin(admin.ModelAdmin):
+    list_display = ['product', 'user', 'rating', 'created_at']
+    list_filter = ['rating', 'created_at']
+    search_fields = ['product__name', 'user__username']</code></pre>
+          </div>
+          
+          <div class="mt-4 p-4 bg-green-900/30 rounded-lg">
+            <h4 class="font-semibold text-green-300 mb-2">👑 Admin Features</h4>
+            <ul class="text-sm text-green-200 space-y-1">
+              <li>Automatic CRUD interface for models</li>
+              <li>Custom list displays and filters</li>
+              <li>Search functionality</li>
+              <li>Bulk actions</li>
+              <li>Permission-based access control</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Forms & Authentication Section -->
+  <section class="course-section py-5">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">Forms & Authentication</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Django Forms -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Django Forms</h3>
+          <p class="text-slate-300 mb-4">Creating and handling forms in Django</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-python"># myapp/forms.py
+from django import forms
+from .models import Product, Review
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+
+class ProductForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ['name', 'description', 'price', 'category', 'status']
+        widgets = {
+            'description': forms.Textarea(attrs={'rows': 4}),
+            'price': forms.NumberInput(attrs={'step': '0.01'}),
+        }
+    
+    def clean_price(self):
+        price = self.cleaned_data.get('price')
+        if price and price <= 0:
+            raise forms.ValidationError("Price must be greater than zero.")
+        return price
+
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = ['rating', 'comment']
+        widgets = {
+            'comment': forms.Textarea(attrs={'rows': 3}),
+        }
+
+class CustomUserCreationForm(UserCreationForm):
+    email = forms.EmailField(required=True)
+    
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password1', 'password2']
+    
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.email = self.cleaned_data['email']
+        if commit:
+            user.save()
+        return user
+
+# myapp/views.py
+from django.shortcuts import render, redirect, get_object_or_404
+from .forms import ProductForm, ReviewForm
+from .models import Product
+
+def create_product(request):
+    if request.method == 'POST':
+        form = ProductForm(request.POST)
+        if form.is_valid():
+            product = form.save()
+            return redirect('product_detail', pk=product.pk)
+    else:
+        form = ProductForm()
+    
+    return render(request, 'product_form.html', {'form': form})
+
+def add_review(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.product = product
+            review.user = request.user
+            review.save()
+            return redirect('product_detail', pk=product.id)
+    else:
+        form = ReviewForm()
+    
+    return render(request, 'review_form.html', {'form': form, 'product': product})</code></pre>
+          </div>
+        </div>
+
+        <!-- Authentication -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Authentication System</h3>
+          <p class="text-slate-300 mb-4">User authentication and authorization</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-python"># myapp/views.py
+from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib import messages
+from .forms import CustomUserCreationForm
+
+def register(request):
+    if request.method == 'POST':
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            messages.success(request, 'Registration successful!')
+            return redirect('home')
+    else:
+        form = CustomUserCreationForm()
+    return render(request, 'register.html', {'form': form})
+
+def user_login(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                messages.info(request, f"You are now logged in as {username}.")
+                return redirect('home')
+            else:
+                messages.error(request, "Invalid username or password.")
+        else:
+            messages.error(request, "Invalid username or password.")
+    form = AuthenticationForm()
+    return render(request, 'login.html', {'form': form})
+
+def user_logout(request):
+    logout(request)
+    messages.info(request, "You have successfully logged out.")
+    return redirect('home')
+
+@login_required
+def profile(request):
+    return render(request, 'profile.html')
+
+@permission_required('myapp.add_product')
+def create_product(request):
+    # Only users with add_product permission can access this view
+    pass
+
+# Template example with authentication
+"""
+{% if user.is_authenticated %}
+    &lt;p&gt;Welcome, {{ user.username }}!&lt;/p&gt;
+    &lt;a href="{% url 'logout' %}"&gt;Logout&lt;/a&gt;
+{% else %}
+    &lt;a href="{% url 'login' %}"&gt;Login&lt;/a&gt;
+    &lt;a href="{% url 'register' %}"&gt;Register&lt;/a&gt;
+{% endif %}
+"""</code></pre>
+          </div>
+          
+          <div class="mt-4 p-4 bg-blue-900/30 rounded-lg">
+            <h4 class="font-semibold text-blue-300 mb-2">🔐 Authentication Decorators</h4>
+            <ul class="text-sm text-blue-200 space-y-1">
+              <li><code>@login_required</code> - Requires user to be logged in</li>
+              <li><code>@permission_required</code> - Requires specific permission</li>
+              <li><code>@user_passes_test</code> - Custom user test</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Class-Based Views -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Class-Based Views</h3>
+          <p class="text-slate-300 mb-4">Using Django's class-based views for common patterns</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-python"># myapp/views.py
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
+from .models import Product
+from .forms import ProductForm
+
+class ProductListView(ListView):
+    model = Product
+    template_name = 'product_list.html'
+    context_object_name = 'products'
+    paginate_by = 10
+    
+    def get_queryset(self):
+        return Product.objects.filter(status='published')
+
+class ProductDetailView(DetailView):
+    model = Product
+    template_name = 'product_detail.html'
+    context_object_name = 'product'
+
+class ProductCreateView(LoginRequiredMixin, CreateView):
+    model = Product
+    form_class = ProductForm
+    template_name = 'product_form.html'
+    success_url = reverse_lazy('product_list')
+    
+    def form_valid(self, form):
+        # Add custom logic here if needed
+        return super().form_valid(form)
+
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
+    model = Product
+    form_class = ProductForm
+    template_name = 'product_form.html'
+    
+    def get_success_url(self):
+        return reverse_lazy('product_detail', kwargs={'pk': self.object.pk})
+
+class ProductDeleteView(LoginRequiredMixin, DeleteView):
+    model = Product
+    template_name = 'product_confirm_delete.html'
+    success_url = reverse_lazy('product_list')
+
+# myapp/urls.py
+from django.urls import path
+from .views import ProductListView, ProductDetailView, ProductCreateView
+
+urlpatterns = [
+    path('products/', ProductListView.as_view(), name='product_list'),
+    path('products/&lt;int:pk&gt;/', ProductDetailView.as_view(), name='product_detail'),
+    path('products/create/', ProductCreateView.as_view(), name='product_create'),
+]</code></pre>
+          </div>
+        </div>
+
+        <!-- Messages Framework -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Messages Framework</h3>
+          <p class="text-slate-300 mb-4">Displaying feedback messages to users</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-python"># In views.py
+from django.contrib import messages
+
+def some_view(request):
+    # Different message levels
+    messages.debug(request, 'Debug message')
+    messages.info(request, 'Info message')
+    messages.success(request, 'Success message!')
+    messages.warning(request, 'Warning message')
+    messages.error(request, 'Error message')
+    
+    return redirect('some_page')
+
+# In templates
+"""
+{% if messages %}
+&lt;div class="messages"&gt;
+    {% for message in messages %}
+    &lt;div class="alert alert-{{ message.tags }}"&gt;
+        {{ message }}
+    &lt;/div&gt;
+    {% endfor %}
+&lt;/div&gt;
+{% endif %}
+"""
+
+# Custom message tags
+from django.contrib.messages import constants as messages
+
+MESSAGE_TAGS = {
+    messages.DEBUG: 'secondary',
+    messages.INFO: 'info',
+    messages.SUCCESS: 'success',
+    messages.WARNING: 'warning',
+    messages.ERROR: 'danger',
+}</code></pre>
+          </div>
+          
+          <div class="mt-4 p-4 bg-purple-900/30 rounded-lg">
+            <h4 class="font-semibold text-purple-300 mb-2">💬 Message Levels</h4>
+            <ul class="text-sm text-purple-200 space-y-1">
+              <li><code>DEBUG</code> - Development-related messages</li>
+              <li><code>INFO</code> - Informational messages</li>
+              <li><code>SUCCESS</code> - Action was successful</li>
+              <li><code>WARNING</code> - Something needs attention</li>
+              <li><code>ERROR</code> - Action failed or error occurred</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Advanced Django Section -->
+  <section class="course-section py-5 bg-dark-800">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">Advanced Django</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Django REST Framework -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Django REST Framework</h3>
+          <p class="text-slate-300 mb-4">Building REST APIs with DRF</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-python"># Install DRF first
+# pip install djangorestframework
+
+# settings.py
+INSTALLED_APPS = [
+    ...,
+    'rest_framework',
+]
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 20
+}
+
+# serializers.py
+from rest_framework import serializers
+from .models import Product, Review
+
+class ReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = ['id', 'user', 'rating', 'comment', 'created_at']
+
+class ProductSerializer(serializers.ModelSerializer):
+    reviews = ReviewSerializer(many=True, read_only=True)
+    
+    class Meta:
+        model = Product
+        fields = ['id', 'name', 'description', 'price', 'category', 'status', 'reviews']
+
+# views.py
+from rest_framework import viewsets, permissions
+from .models import Product
+from .serializers import ProductSerializer
+
+class ProductViewSet(viewsets.ModelViewSet):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    
+    def perform_create(self, serializer):
+        serializer.save()
+
+# Function-based API views
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+
+@api_view(['GET', 'POST'])
+def product_list(request):
+    if request.method == 'GET':
+        products = Product.objects.all()
+        serializer = ProductSerializer(products, many=True)
+        return Response(serializer.data)
+    
+    elif request.method == 'POST':
+        serializer = ProductSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# urls.py
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import ProductViewSet
+
+router = DefaultRouter()
+router.register(r'products', ProductViewSet)
+
+urlpatterns = [
+    path('api/', include(router.urls)),
+    path('api-auth/', include('rest_framework.urls')),
+]</code></pre>
+          </div>
+        </div>
+
+        <!-- Deployment & Production -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Deployment & Production</h3>
+          <p class="text-slate-300 mb-4">Preparing Django for production deployment</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-python"># settings.py - Production settings
+import os
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+DEBUG = False
+
+ALLOWED_HOSTS = ['yourdomain.com', 'www.yourdomain.com']
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'HOST': os.environ.get('DB_HOST'),
+        'PORT': os.environ.get('DB_PORT', '5432'),
+    }
+}
+
+# Security settings
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Static files
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
+# Media files
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Logging
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'django_errors.log'),
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+    },
+}</code></pre>
+          </div>
+          
+          <div class="mt-4 p-4 bg-yellow-900/30 rounded-lg">
+            <h4 class="font-semibold text-yellow-300 mb-2">🚀 Deployment Checklist</h4>
+            <ul class="text-sm text-yellow-200 space-y-1">
+              <li>Set <code>DEBUG = False</code></li>
+              <li>Configure <code>ALLOWED_HOSTS</code></li>
+              <li>Set up production database</li>
+              <li>Configure static and media files</li>
+              <li>Set up proper logging</li>
+              <li>Use environment variables for secrets</li>
+              <li>Enable HTTPS and security headers</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Testing -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Testing</h3>
+          <p class="text-slate-300 mb-4">Writing tests for Django applications</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-python"># tests.py
+from django.test import TestCase, Client
+from django.urls import reverse
+from django.contrib.auth.models import User
+from .models import Product, Category
+from .forms import ProductForm
+
+class ProductModelTest(TestCase):
+    def setUp(self):
+        self.category = Category.objects.create(name="Test Category")
+        self.product = Product.objects.create(
+            name="Test Product",
+            description="Test Description",
+            price=99.99,
+            category=self.category
+        )
+    
+    def test_product_creation(self):
+        self.assertEqual(self.product.name, "Test Product")
+        self.assertEqual(self.product.price, 99.99)
+        self.assertEqual(self.product.category.name, "Test Category")
+    
+    def test_product_str_method(self):
+        self.assertEqual(str(self.product), "Test Product")
+
+class ProductViewTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.user = User.objects.create_user(
+            username='testuser',
+            password='testpass123'
+        )
+        self.category = Category.objects.create(name="Test Category")
+    
+    def test_product_list_view(self):
+        response = self.client.get(reverse('product_list'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'product_list.html')
+    
+    def test_product_create_view_authenticated(self):
+        self.client.login(username='testuser', password='testpass123')
+        response = self.client.post(reverse('product_create'), {
+            'name': 'New Product',
+            'description': 'New Description',
+            'price': 49.99,
+            'category': self.category.id,
+        })
+        self.assertEqual(response.status_code, 302)  # Redirect after success
+        self.assertTrue(Product.objects.filter(name='New Product').exists())
+    
+    def test_product_create_view_unauthenticated(self):
+        response = self.client.get(reverse('product_create'))
+        self.assertEqual(response.status_code, 302)  # Redirect to login
+
+class ProductFormTest(TestCase):
+    def test_valid_form(self):
+        category = Category.objects.create(name="Test Category")
+        form_data = {
+            'name': 'Test Product',
+            'description': 'Test Description',
+            'price': 99.99,
+            'category': category.id,
+        }
+        form = ProductForm(data=form_data)
+        self.assertTrue(form.is_valid())
+    
+    def test_invalid_price(self):
+        category = Category.objects.create(name="Test Category")
+        form_data = {
+            'name': 'Test Product',
+            'description': 'Test Description',
+            'price': -10.00,  # Invalid price
+            'category': category.id,
+        }
+        form = ProductForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('price', form.errors)</code></pre>
+          </div>
+          
+          <div class="mt-4 p-4 bg-green-900/30 rounded-lg">
+            <h4 class="font-semibold text-green-300 mb-2">🧪 Running Tests</h4>
+            <div class="terminal">
+              <div class="flex items-center gap-2 mb-2">
+                <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+              </div>
+              <div class="space-y-1 text-sm">
+                <div><span class="prompt">$</span> <span class="command">python manage.py test</span></div>
+                <div class="text-green-300">Running tests...</div>
+                <div class="text-green-300">OK (passed 10 tests)</div>
+                <div><span class="prompt">$</span> <span class="command">python manage.py test myapp.tests.ProductViewTest</span></div>
+                <div class="text-gray-400"># Run specific test class</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Performance & Optimization -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Performance & Optimization</h3>
+          <p class="text-slate-300 mb-4">Optimizing Django applications for better performance</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-python"># Using select_related and prefetch_related
+# Bad: N+1 query problem
+products = Product.objects.all()
+for product in products:
+    print(product.category.name)  # Database query for each product
+
+# Good: Using select_related
+products = Product.objects.select_related('category').all()
+for product in products:
+    print(product.category.name)  # No additional queries
+
+# For reverse relationships (prefetch_related)
+categories = Category.objects.prefetch_related('product_set').all()
+for category in categories:
+    for product in category.product_set.all():
+        print(product.name)  # No additional queries
+
+# Using values() and values_list() for specific fields
+# Instead of loading full objects
+product_names = Product.objects.values_list('name', flat=True)
+product_data = Product.objects.values('name', 'price')
+
+# Database indexing
+class Product(models.Model):
+    name = models.CharField(max_length=200, db_index=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        indexes = [
+            models.Index(fields=['created_at']),
+            models.Index(fields=['price', 'status']),
+        ]
+
+# Caching with Django
+from django.core.cache import cache
+from django.views.decorators.cache import cache_page
+
+@cache_page(60 * 15)  # Cache for 15 minutes
+def expensive_view(request):
+    # Expensive operations here
+    return render(request, 'expensive_template.html')
+
+# Manual caching
+def get_expensive_data():
+    data = cache.get('expensive_data')
+    if data is None:
+        data = expensive_calculation()
+        cache.set('expensive_data', data, 60 * 60)  # Cache for 1 hour
+    return data
+
+# Using django-debug-toolbar
+# Install: pip install django-debug-toolbar
+
+# settings.py
+if DEBUG:
+    INSTALLED_APPS += ['debug_toolbar']
+    MIDDLEWARE = ['debug_toolbar.middleware.DebugToolbarMiddleware'] + MIDDLEWARE
+    INTERNAL_IPS = ['127.0.0.1']
+
+# Database connection optimization
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        # ... other settings
+        'CONN_MAX_AGE': 600,  # Reuse connections for 10 minutes
+    }
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Live Django Editor -->
+  <section id="live-editor" class="course-section py-5">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">Live Django Code Editor</h2>
+      
+      <div class="glass rounded-xl p-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div>
+            <h3 class="text-xl font-semibold text-neon-300 mb-4">Write Django Code</h3>
+            <div class="python-editor" contenteditable="true" id="python-editor"># Welcome to Django Live Editor!
+# Write your Django code here and click "Run Code"
+
+# Example: Django model
+from django.db import models
+
+class BlogPost(models.Model):
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    published_date = models.DateTimeField(auto_now_add=True)
+    is_published = models.BooleanField(default=False)
+    
+    def __str__(self):
+        return self.title
+    
+    def get_excerpt(self, length=100):
+        return self.content[:length] + "..." if len(self.content) > length else self.content
+
+# Example: Django view
+from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponse
+
+def blog_post_list(request):
+    posts = BlogPost.objects.filter(is_published=True)
+    return render(request, 'blog/post_list.html', {'posts': posts})
+
+def blog_post_detail(request, post_id):
+    post = get_object_or_404(BlogPost, id=post_id, is_published=True)
+    return render(request, 'blog/post_detail.html', {'post': post})
+
+# Example: Django form
+from django import forms
+
+class ContactForm(forms.Form):
+    name = forms.CharField(max_length=100)
+    email = forms.EmailField()
+    message = forms.CharField(widget=forms.Textarea)
+    
+    def clean_message(self):
+        message = self.cleaned_data['message']
+        if len(message) < 10:
+            raise forms.ValidationError("Message must be at least 10 characters long.")
+        return message
+
+# Try adding your own Django code below!</div>
+            <button onclick="runLivePythonCode()" class="w-full mt-4 px-4 py-3 bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-lg font-semibold hover:scale-105 transition-transform">
+              <i class="fas fa-play mr-2"></i>Run Code
+            </button>
+          </div>
+          
+          <div>
+            <h3 class="text-xl font-semibold text-neon-300 mb-4">Output</h3>
+            <div class="python-output h-64" id="live-python-output">
+              # Django code output will appear here
+              <br>
+              # Try writing some Django code and click "Run Code"
+            </div>
+            <div class="mt-4 p-4 bg-purple-900/30 rounded-lg">
+              <h4 class="font-semibold text-purple-300 mb-2">💡 Django Tips:</h4>
+              <ul class="text-sm text-purple-200 space-y-1">
+                <li>• Use Django's ORM for database operations</li>
+                <li>• Always validate forms with is_valid()</li>
+                <li>• Use class-based views for common patterns</li>
+                <li>• Leverage Django's built-in authentication</li>
+                <li>• Test your views, models, and forms</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Navigation -->
+  <div class="max-w-6xl mx-auto px-6 py-8">
+    <div class="glass rounded-xl p-6 sticky bottom-6">
+      <h3 class="font-semibold text-neon-300 mb-4">Course Navigation</h3>
+      <div class="flex flex-wrap gap-3">
+        <a href="#basics" class="px-4 py-2 rounded-lg bg-slate-800/40 hover:bg-slate-700/40 transition text-sm">Basics</a>
+        <a href="#live-editor" class="px-4 py-2 rounded-lg bg-slate-800/40 hover:bg-slate-700/40 transition text-sm">Live Editor</a>
+        <button onclick="showCheatSheet()" class="px-4 py-2 rounded-lg bg-django-500 hover:bg-django-600 transition text-sm">Cheat Sheet</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="glass border-t border-slate-800 mt-20">
+    <div class="max-w-6xl mx-auto px-6 py-8 text-center">
+      <div class="flex items-center justify-center gap-6 mb-4">
+        <a href="/" class="text-slate-300 hover:text-neon-500 transition">Home</a>
+        <a href="#basics" class="text-slate-300 hover:text-neon-500 transition">Course</a>
+        <a href="https://github.com/JUSAIR-JSR" target="_blank" class="text-slate-300 hover:text-neon-500 transition">GitHub</a>
+      </div>
+      <p class="text-slate-500 text-sm">© 2023 Django Course - Complete Beginner to Advanced</p>
+    </div>
+  </footer>
+
+  <!-- Cheat Sheet Modal -->
+  <div id="cheat-sheet" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-50 p-4">
+    <div class="glass rounded-xl p-6 max-w-4xl max-h-[80vh] overflow-y-auto">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-2xl font-bold text-neon-300">Django Cheat Sheet</h3>
+        <button onclick="hideCheatSheet()" class="text-slate-400 hover:text-white">
+          <i class="fas fa-times text-2xl"></i>
+        </button>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h4 class="font-semibold text-green-400 mb-3">Project Setup</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">django-admin startproject myproject</code>
+            <code class="block bg-slate-800 p-2 rounded">python manage.py startapp myapp</code>
+            <code class="block bg-slate-800 p-2 rounded">python manage.py runserver</code>
+            <code class="block bg-slate-800 p-2 rounded">python manage.py migrate</code>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-blue-400 mb-3">Models & Database</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">models.CharField(max_length=100)</code>
+            <code class="block bg-slate-800 p-2 rounded">models.ForeignKey(OtherModel)</code>
+            <code class="block bg-slate-800 p-2 rounded">python manage.py makemigrations</code>
+            <code class="block bg-slate-800 p-2 rounded">Model.objects.filter(field=value)</code>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-yellow-400 mb-3">Views & URLs</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">def view(request): return response</code>
+            <code class="block bg-slate-800 p-2 rounded">path('url/', views.view_name)</code>
+            <code class="block bg-slate-800 p-2 rounded">render(request, 'template.html')</code>
+            <code class="block bg-slate-800 p-2 rounded">@login_required</code>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-purple-400 mb-3">Templates</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">{{ variable }}</code>
+            <code class="block bg-slate-800 p-2 rounded">{% for item in list %}</code>
+            <code class="block bg-slate-800 p-2 rounded">{% if condition %}</code>
+            <code class="block bg-slate-800 p-2 rounded">{% extends 'base.html' %}</code>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-red-400 mb-3">Forms</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">class MyForm(forms.Form):</code>
+            <code class="block bg-slate-800 p-2 rounded">form.is_valid()</code>
+            <code class="block bg-slate-800 p-2 rounded">form.save()</code>
+            <code class="block bg-slate-800 p-2 rounded">{{ form.as_p }}</code>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-indigo-400 mb-3">Admin</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">@admin.register(Model)</code>
+            <code class="block bg-slate-800 p-2 rounded">list_display = ['field1', 'field2']</code>
+            <code class="block bg-slate-800 p-2 rounded">python manage.py createsuperuser</code>
+            <code class="block bg-slate-800 p-2 rounded">search_fields = ['name']</code>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Initialize syntax highlighting
+    hljs.highlightAll();
+
+    // Initialize Pyodide for Python execution
+    let pyodide;
+    async function initializePyodide() {
+      pyodide = await loadPyodide();
+      console.log("Pyodide loaded successfully");
+    }
+    
+    // Initialize on page load
+    initializePyodide();
+
+    // Function to run Python code examples
+    async function runPythonCode(section) {
+      const codeElement = document.getElementById(`${section}-code`);
+      const outputElement = document.getElementById(`${section}-output`);
+      
+      if (codeElement && outputElement && pyodide) {
+        const code = codeElement.textContent;
+        outputElement.innerHTML = '<div class="text-green-400">Running Python code...</div>';
+        
+        try {
+          // Clear any previous output
+          pyodide.runPython(`
+            import sys
+            from io import StringIO
+            sys.stdout = StringIO()
+          `);
+          
+          // Run the code
+          await pyodide.runPythonAsync(code);
+          
+          // Capture the output
+          const output = pyodide.runPython("sys.stdout.getvalue()");
+          outputElement.innerHTML = `<div class="text-green-400">Output:</div><div class="mt-2 whitespace-pre-wrap">${output}</div>`;
+        } catch (error) {
+          outputElement.innerHTML = `<div class="text-red-400">Error:</div><div class="mt-2 text-red-300">${error.message}</div>`;
+        }
+      }
+    }
+
+    // Function to run live Python code
+    async function runLivePythonCode() {
+      const editor = document.getElementById('python-editor');
+      const outputElement = document.getElementById('live-python-output');
+      
+      if (editor && outputElement && pyodide) {
+        const code = editor.textContent || editor.innerText;
+        outputElement.innerHTML = '<div class="text-green-400">Running Python code...</div>';
+        
+        try {
+          // Clear any previous output
+          pyodide.runPython(`
+            import sys
+            from io import StringIO
+            sys.stdout = StringIO()
+          `);
+          
+          // Run the code
+          await pyodide.runPythonAsync(code);
+          
+          // Capture the output
+          const output = pyodide.runPython("sys.stdout.getvalue()");
+          outputElement.innerHTML = `<div class="text-green-400">Output:</div><div class="mt-2 whitespace-pre-wrap">${output}</div>`;
+        } catch (error) {
+          outputElement.innerHTML = `<div class="text-red-400">Error:</div><div class="mt-2 text-red-300">${error.message}</div>`;
+        }
+      }
+    }
+
+    // Copy button functionality
+    document.querySelectorAll('.copy-btn').forEach(button => {
+      if (!button.innerHTML.includes('fa-play')) {
+        button.addEventListener('click', function() {
+          const codeBlock = this.closest('.code-container').querySelector('code');
+          const textArea = document.createElement('textarea');
+          textArea.value = codeBlock.textContent;
+          document.body.appendChild(textArea);
+          textArea.select();
+          document.execCommand('copy');
+          document.body.removeChild(textArea);
+          
+          // Visual feedback
+          const originalText = this.innerHTML;
+          this.innerHTML = '<i class="fas fa-check mr-1"></i>Copied!';
+          setTimeout(() => {
+            this.innerHTML = originalText;
+          }, 2000);
+        });
+      }
+    });
+
+    // Cheat sheet functions
+    function showCheatSheet() {
+      document.getElementById('cheat-sheet').classList.remove('hidden');
+      document.getElementById('cheat-sheet').classList.add('flex');
+    }
+
+    function hideCheatSheet() {
+      document.getElementById('cheat-sheet').classList.add('hidden');
+      document.getElementById('cheat-sheet').classList.remove('flex');
+    }
+
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>

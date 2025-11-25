@@ -1,0 +1,1265 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Python Course - Complete Beginner to Advanced</title>
+  <meta name="description" content="Complete Python course with web development, data science, and automation examples" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Highlight.js for syntax highlighting -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+  
+  <!-- Pyodide for Python execution in browser -->
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js"></script>
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            neon: {
+              50: '#f3f7ff',
+              100: '#e6f0ff',
+              300: '#99ccff',
+              500: '#00d0ff',
+              600: '#00a8d9',
+              700: '#00a3cc',
+              800: '#007399'
+            },
+            dark: {
+              900: '#0a0f1c',
+              800: '#0f172a',
+              700: '#1e293b'
+            },
+            python: {
+              500: '#3776ab',
+              600: '#2d5d87'
+            }
+          },
+          animation: {
+            'float': 'float 6s ease-in-out infinite',
+            'pulse-glow': 'pulse-glow 2s ease-in-out infinite alternate',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    .neon-text { 
+      text-shadow: 0 0 8px rgba(0,208,255,0.15), 0 0 18px rgba(0,208,255,0.06); 
+    }
+    
+    .glass {
+      background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .code-container {
+      position: relative;
+    }
+    
+    .copy-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    
+    .code-container:hover .copy-btn {
+      opacity: 1;
+    }
+    
+    .preview-frame {
+      background: white;
+      border-radius: 0.5rem;
+      border: 1px solid rgba(255,255,255,0.1);
+      min-height: 200px;
+    }
+    
+    .component-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .component-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .terminal {
+      background: #1a1b26;
+      color: #c0caf5;
+      font-family: 'Fira Code', monospace;
+      border-radius: 0.5rem;
+      padding: 1rem;
+    }
+    
+    .terminal .prompt {
+      color: #7dcfff;
+    }
+    
+    .terminal .command {
+      color: #9ece6a;
+    }
+    
+    .python-editor {
+      background: #1e293b;
+      color: #c0caf5;
+      font-family: 'Fira Code', monospace;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      min-height: 200px;
+      border: 1px solid #374151;
+    }
+    
+    .python-output {
+      background: #0f172a;
+      color: #10b981;
+      font-family: 'Fira Code', monospace;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      min-height: 100px;
+      border: 1px solid #374151;
+    }
+    
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.5);
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: rgba(0, 208, 255, 0.3);
+      border-radius: 4px;
+    }
+    
+    .course-section {
+      scroll-margin-top: 100px;
+    }
+    
+    /* Animation for live examples */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .animate-fade-in {
+      animation: fadeInUp 0.6s ease-out;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    @keyframes pulse-glow {
+      0% { box-shadow: 0 0 20px rgba(0, 208, 255, 0.4); }
+      100% { box-shadow: 0 0 30px rgba(0, 208, 255, 0.8), 0 0 40px rgba(0, 208, 255, 0.4); }
+    }
+    
+    .python-badge {
+      background: linear-gradient(135deg, #3776ab, #2d5d87);
+      color: white;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-dark-900 via-dark-800 to-dark-900 text-slate-200 min-h-screen">
+
+  <!-- Navigation -->
+  <nav class="glass border-b border-slate-800 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-python-500 to-python-600 flex items-center justify-center">
+          <i class="fab fa-python text-white text-lg"></i>
+        </div>
+        <div>
+          <h1 class="text-lg font-bold neon-text">Python Course</h1>
+          <p class="text-xs text-slate-400">Beginner to Advanced</p>
+        </div>
+      </a>
+
+      <div class="flex items-center gap-4">
+        <a href="/" class="px-4 py-2 rounded-lg text-sm hover:bg-slate-800/40 transition">
+          <i class="fas fa-home mr-2"></i>Home
+        </a>
+        <a href="#basics" class="px-4 py-2 rounded-lg text-sm bg-slate-800/40 border border-neon-500/30">
+          <i class="fas fa-book mr-2"></i>Course
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="max-w-7xl mx-auto px-6 py-16 text-center">
+    <div class="max-w-3xl mx-auto">
+      <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800/40 border border-slate-700/40 text-sm mb-6">
+        <i class="fas fa-star text-neon-500"></i>
+        Complete Python Programming Course
+      </span>
+      <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight text-white neon-text mb-6">
+        Master Python
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-python-500 to-python-600 block">From Basics to Advanced</span>
+      </h1>
+      <p class="text-slate-300 text-lg mb-8">Learn Python programming with interactive examples, web development, data science, automation, and real-world projects. Build your skills step by step.</p>
+      
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href="#basics" class="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r from-python-500 to-python-600 font-medium hover:scale-105 transition-transform">
+          <i class="fas fa-play"></i>
+          Start Learning
+        </a>
+        <a href="#live-editor" class="inline-flex items-center gap-3 px-6 py-3 rounded-full border border-slate-700/40 hover:border-neon-500 transition glass">
+          <i class="fas fa-code"></i>
+          Live Editor
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Python Basics Section -->
+  <section id="basics" class="course-section py-5">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">Python Basics</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Setup & Installation -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4 flex items-center gap-2">
+            <i class="fas fa-download"></i>
+            Setup & Installation
+          </h3>
+          <p class="text-slate-300 mb-4">Get Python installed and running on your system</p>
+          
+          <div class="terminal mb-4">
+            <div class="flex items-center gap-2 mb-2">
+              <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+              <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+              <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+            </div>
+            <div class="space-y-2 text-sm">
+              <div><span class="prompt">$</span> <span class="command">python --version</span></div>
+              <div class="text-blue-300">Python 3.11.4</div>
+              <div><span class="prompt">$</span> <span class="command">python script.py</span></div>
+              <div class="text-gray-400"># Run Python file</div>
+              <div><span class="prompt">$</span> <span class="command">python</span></div>
+              <div class="text-gray-400"># Start Python interpreter</div>
+            </div>
+          </div>
+          
+          <div class="p-4 bg-green-900/30 rounded-lg">
+            <h4 class="font-semibold text-green-300 mb-2">📦 Package Management</h4>
+            <div class="code-container bg-slate-800 rounded p-3">
+              <pre><code class="language-bash"># Install packages
+pip install package_name
+
+# Install from requirements.txt
+pip install -r requirements.txt
+
+# Create virtual environment
+python -m venv myenv
+source myenv/bin/activate  # Mac/Linux
+myenv\Scripts\activate     # Windows</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- Variables & Data Types -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Variables & Data Types</h3>
+          <p class="text-slate-300 mb-4">Python's dynamic typing and basic data types</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition" onclick="runPythonCode('variables')">
+              <i class="fas fa-play mr-1"></i>Run
+            </button>
+            <pre><code class="language-python" id="variables-code"># Basic variables
+name = "Jusair"
+age = 20
+height = 5.9
+is_student = True
+
+print("Name:", name)
+print("Age:", age)
+print("Height:", height)
+print("Is Student:", is_student)
+
+# Type checking
+print("Type of name:", type(name))
+print("Type of age:", type(age))
+print("Type of height:", type(height))
+print("Type of is_student:", type(is_student))
+
+# Multiple assignment
+x, y, z = 10, 20, 30
+print("x =", x, "y =", y, "z =", z)
+
+# Constants (convention)
+PI = 3.14159
+MAX_USERS = 100</code></pre>
+          </div>
+          
+          <div class="python-output mt-4" id="variables-output"></div>
+        </div>
+
+        <!-- Strings & Operations -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Strings & Operations</h3>
+          <p class="text-slate-300 mb-4">String manipulation and common operations</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition" onclick="runPythonCode('strings')">
+              <i class="fas fa-play mr-1"></i>Run
+            </button>
+            <pre><code class="language-python" id="strings-code"># String basics
+text = "Hello Python World"
+print("Original:", text)
+print("Uppercase:", text.upper())
+print("Lowercase:", text.lower())
+print("Title case:", text.title())
+
+# String methods
+print("Length:", len(text))
+print("Starts with 'Hello':", text.startswith("Hello"))
+print("Ends with 'World':", text.endswith("World"))
+print("Find 'Python':", text.find("Python"))
+
+# String formatting
+name = "Alice"
+age = 25
+print(f"My name is {name} and I'm {age} years old")
+print("My name is {} and I'm {} years old".format(name, age))
+
+# String slicing
+text = "Python Programming"
+print("First 6 characters:", text[:6])
+print("Last 11 characters:", text[-11:])
+print("Every second character:", text[::2])
+
+# String operations
+s1 = "Hello"
+s2 = "World"
+print("Concatenation:", s1 + " " + s2)
+print("Repetition:", s1 * 3)</code></pre>
+          </div>
+          
+          <div class="python-output mt-4" id="strings-output"></div>
+        </div>
+
+        <!-- Lists & Collections -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Lists & Collections</h3>
+          <p class="text-slate-300 mb-4">Working with lists, tuples, sets, and dictionaries</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition" onclick="runPythonCode('collections')">
+              <i class="fas fa-play mr-1"></i>Run
+            </button>
+            <pre><code class="language-python" id="collections-code"># Lists (mutable)
+fruits = ["apple", "banana", "mango", "orange"]
+print("Fruits:", fruits)
+fruits.append("grape")
+print("After append:", fruits)
+fruits.insert(1, "kiwi")
+print("After insert:", fruits)
+print("Sliced:", fruits[1:4])
+
+# List comprehension
+numbers = [1, 2, 3, 4, 5]
+squares = [x**2 for x in numbers]
+print("Numbers:", numbers)
+print("Squares:", squares)
+
+# Tuples (immutable)
+colors = ("red", "blue", "green")
+print("Colors tuple:", colors)
+print("First color:", colors[0])
+
+# Sets (unique elements)
+unique_numbers = {1, 2, 2, 3, 3, 4, 5}
+print("Unique numbers:", unique_numbers)
+
+# Dictionaries (key-value pairs)
+user = {
+    "name": "John Doe",
+    "age": 30,
+    "email": "john@example.com"
+}
+print("User dictionary:", user)
+print("User name:", user["name"])
+user["city"] = "New York"
+print("Updated user:", user)
+
+# Dictionary methods
+print("Keys:", user.keys())
+print("Values:", user.values())</code></pre>
+          </div>
+          
+          <div class="python-output mt-4" id="collections-output"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Control Flow Section -->
+  <section class="course-section py-5 bg-dark-800">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">Control Flow & Functions</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Conditional Statements -->
+        <div class="glass rounded-xl p-6 component-card">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Conditional Statements</h3>
+          <p class="text-slate-300 mb-4">If/else statements and logical operations</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition" onclick="runPythonCode('conditionals')">
+              <i class="fas fa-play mr-1"></i>Run
+            </button>
+            <pre><code class="language-python" id="conditionals-code"># Basic if/else
+age = 18
+if age >= 18:
+    print("You are an adult")
+else:
+    print("You are a minor")
+
+# Multiple conditions
+score = 85
+if score >= 90:
+    grade = "A"
+elif score >= 80:
+    grade = "B"
+elif score >= 70:
+    grade = "C"
+else:
+    grade = "F"
+
+print(f"Score: {score}, Grade: {grade}")
+
+# Logical operators
+temperature = 25
+is_sunny = True
+
+if temperature > 20 and is_sunny:
+    print("Perfect weather for a walk!")
+elif temperature > 20 and not is_sunny:
+    print("Warm but cloudy")
+else:
+    print("Stay inside")
+
+# Ternary operator
+age = 20
+status = "adult" if age >= 18 else "minor"
+print(f"Age {age}: {status}")
+
+# Membership testing
+fruits = ["apple", "banana", "orange"]
+if "apple" in fruits:
+    print("Apple is in the list")
+
+if "grape" not in fruits:
+    print("Grape is not in the list")</code></pre>
+          </div>
+          
+          <div class="python-output mt-4" id="conditionals-output"></div>
+        </div>
+
+        <!-- Loops -->
+        <div class="glass rounded-xl p-6 component-card">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Loops</h3>
+          <p class="text-slate-300 mb-4">For loops, while loops, and loop control</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition" onclick="runPythonCode('loops')">
+              <i class="fas fa-play mr-1"></i>Run
+            </button>
+            <pre><code class="language-python" id="loops-code"># For loop with range
+print("Counting from 1 to 5:")
+for i in range(1, 6):
+    print(i)
+
+# For loop with list
+fruits = ["apple", "banana", "cherry"]
+print("\nFruits:")
+for fruit in fruits:
+    print(f"- {fruit}")
+
+# For loop with enumerate
+print("\nFruits with index:")
+for index, fruit in enumerate(fruits):
+    print(f"{index + 1}. {fruit}")
+
+# While loop
+print("\nCountdown:")
+count = 5
+while count > 0:
+    print(count)
+    count -= 1
+print("Blast off!")
+
+# Loop control: break and continue
+print("\nNumbers 1-10 (skip 5):")
+for i in range(1, 11):
+    if i == 5:
+        continue  # Skip 5
+    if i == 8:
+        break     # Stop at 8
+    print(i)
+
+# Nested loops
+print("\nMultiplication table (1-3):")
+for i in range(1, 4):
+    for j in range(1, 4):
+        print(f"{i} x {j} = {i * j}")</code></pre>
+          </div>
+          
+          <div class="python-output mt-4" id="loops-output"></div>
+        </div>
+
+        <!-- Functions -->
+        <div class="glass rounded-xl p-6 component-card">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Functions</h3>
+          <p class="text-slate-300 mb-4">Defining and using functions in Python</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition" onclick="runPythonCode('functions')">
+              <i class="fas fa-play mr-1"></i>Run
+            </button>
+            <pre><code class="language-python" id="functions-code"># Basic function
+def greet(name):
+    return f"Hello, {name}!"
+
+print(greet("Alice"))
+print(greet("Bob"))
+
+# Function with default parameters
+def create_user(name, age, city="Unknown"):
+    return {
+        "name": name,
+        "age": age,
+        "city": city
+    }
+
+user1 = create_user("John", 25)
+user2 = create_user("Sarah", 30, "London")
+print("User 1:", user1)
+print("User 2:", user2)
+
+# Function with variable arguments
+def calculate_sum(*numbers):
+    return sum(numbers)
+
+print("Sum of 1,2,3:", calculate_sum(1, 2, 3))
+print("Sum of 1,2,3,4,5:", calculate_sum(1, 2, 3, 4, 5))
+
+# Lambda functions (anonymous functions)
+square = lambda x: x * x
+double = lambda x: x * 2
+
+print("Square of 5:", square(5))
+print("Double of 10:", double(10))
+
+# Using lambda with map and filter
+numbers = [1, 2, 3, 4, 5]
+squared = list(map(lambda x: x**2, numbers))
+evens = list(filter(lambda x: x % 2 == 0, numbers))
+
+print("Numbers:", numbers)
+print("Squared:", squared)
+print("Even numbers:", evens)
+
+# Recursive function
+def factorial(n):
+    if n == 0:
+        return 1
+    else:
+        return n * factorial(n - 1)
+
+print("Factorial of 5:", factorial(5))</code></pre>
+          </div>
+          
+          <div class="python-output mt-4" id="functions-output"></div>
+        </div>
+
+        <!-- Error Handling -->
+        <div class="glass rounded-xl p-6 component-card">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Error Handling</h3>
+          <p class="text-slate-300 mb-4">Exception handling and debugging</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition" onclick="runPythonCode('errors')">
+              <i class="fas fa-play mr-1"></i>Run
+            </button>
+            <pre><code class="language-python" id="errors-code"># Basic try-except
+try:
+    x = 10 / 0
+except ZeroDivisionError:
+    print("Error: Cannot divide by zero!")
+
+# Multiple exceptions
+try:
+    number = int("abc")
+    result = 10 / number
+except ValueError:
+    print("Error: Invalid number format!")
+except ZeroDivisionError:
+    print("Error: Division by zero!")
+except Exception as e:
+    print(f"Unexpected error: {e}")
+
+# Try-except-else-finally
+def divide_numbers(a, b):
+    try:
+        result = a / b
+    except ZeroDivisionError:
+        print("Cannot divide by zero!")
+        return None
+    except TypeError:
+        print("Both arguments must be numbers!")
+        return None
+    else:
+        print(f"Division successful: {a} / {b} = {result}")
+        return result
+    finally:
+        print("This always executes")
+
+# Test the function
+print("Test 1:", divide_numbers(10, 2))
+print("Test 2:", divide_numbers(10, 0))
+print("Test 3:", divide_numbers(10, "2"))
+
+# Raising exceptions
+def check_age(age):
+    if age < 0:
+        raise ValueError("Age cannot be negative")
+    if age < 18:
+        raise ValueError("Must be 18 or older")
+    return "Access granted"
+
+try:
+    print(check_age(25))
+    print(check_age(16))
+except ValueError as e:
+    print(f"Error: {e}")
+
+# Custom exception
+class NegativeNumberError(Exception):
+    pass
+
+def check_positive(number):
+    if number < 0:
+        raise NegativeNumberError("Number must be positive")
+    return number
+
+try:
+    print(check_positive(5))
+    print(check_positive(-3))
+except NegativeNumberError as e:
+    print(f"Custom error: {e}")</code></pre>
+          </div>
+          
+          <div class="python-output mt-4" id="errors-output"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OOP Section -->
+  <section class="course-section py-5">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">Object-Oriented Programming</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Classes & Objects -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Classes & Objects</h3>
+          <p class="text-slate-300 mb-4">Creating classes, objects, and methods</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition" onclick="runPythonCode('classes')">
+              <i class="fas fa-play mr-1"></i>Run
+            </button>
+            <pre><code class="language-python" id="classes-code"># Basic class
+class Person:
+    # Constructor
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+    
+    # Instance method
+    def introduce(self):
+        return f"Hi, I'm {self.name} and I'm {self.age} years old"
+    
+    # Another method
+    def have_birthday(self):
+        self.age += 1
+        return f"Happy birthday! Now I'm {self.age}"
+
+# Create objects
+person1 = Person("Alice", 25)
+person2 = Person("Bob", 30)
+
+print(person1.introduce())
+print(person2.introduce())
+print(person1.have_birthday())
+
+# Class with class attribute
+class Car:
+    # Class attribute (shared by all instances)
+    wheels = 4
+    
+    def __init__(self, brand, model, year):
+        # Instance attributes
+        self.brand = brand
+        self.model = model
+        self.year = year
+        self.speed = 0
+    
+    def accelerate(self, amount):
+        self.speed += amount
+        return f"Accelerating to {self.speed} km/h"
+    
+    def brake(self, amount):
+        self.speed = max(0, self.speed - amount)
+        return f"Slowing down to {self.speed} km/h"
+    
+    def info(self):
+        return f"{self.year} {self.brand} {self.model}"
+
+# Using the Car class
+my_car = Car("Toyota", "Camry", 2022)
+print(my_car.info())
+print("Wheels:", my_car.wheels)
+print(my_car.accelerate(50))
+print(my_car.brake(20))
+
+# Inheritance
+class ElectricCar(Car):
+    def __init__(self, brand, model, year, battery_size):
+        super().__init__(brand, model, year)
+        self.battery_size = battery_size
+        self.charge_level = 100
+    
+    def charge(self, amount):
+        self.charge_level = min(100, self.charge_level + amount)
+        return f"Charged to {self.charge_level}%"
+    
+    def info(self):  # Method overriding
+        return f"{super().info()} (Electric)"
+
+# Using ElectricCar
+tesla = ElectricCar("Tesla", "Model S", 2023, 100)
+print(tesla.info())
+print(tesla.charge(50))</code></pre>
+          </div>
+          
+          <div class="python-output mt-4" id="classes-output"></div>
+        </div>
+
+        <!-- File Handling -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">File Handling</h3>
+          <p class="text-slate-300 mb-4">Reading and writing files in Python</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition" onclick="runPythonCode('files')">
+              <i class="fas fa-play mr-1"></i>Run
+            </button>
+            <pre><code class="language-python" id="files-code"># Writing to a file
+print("Writing to file...")
+with open("example.txt", "w") as file:
+    file.write("Hello, Python!\n")
+    file.write("This is a sample file.\n")
+    file.write("Python file handling is easy!\n")
+
+print("File written successfully!")
+
+# Reading from a file
+print("\nReading entire file:")
+with open("example.txt", "r") as file:
+    content = file.read()
+    print(content)
+
+print("\nReading line by line:")
+with open("example.txt", "r") as file:
+    for line_num, line in enumerate(file, 1):
+        print(f"Line {line_num}: {line.strip()}")
+
+# Appending to a file
+print("\nAppending to file...")
+with open("example.txt", "a") as file:
+    file.write("This line was appended!\n")
+
+print("Content after appending:")
+with open("example.txt", "r") as file:
+    print(file.read())
+
+# Working with CSV files
+import csv
+
+# Writing CSV
+print("\nCreating CSV file...")
+with open("data.csv", "w", newline='') as file:
+    writer = csv.writer(file)
+    writer.writerow(["Name", "Age", "City"])
+    writer.writerow(["Alice", 25, "New York"])
+    writer.writerow(["Bob", 30, "London"])
+    writer.writerow(["Charlie", 35, "Tokyo"])
+
+# Reading CSV
+print("Reading CSV file:")
+with open("data.csv", "r") as file:
+    reader = csv.reader(file)
+    for row in reader:
+        print(row)
+
+# Working with JSON
+import json
+
+# Writing JSON
+data = {
+    "name": "John Doe",
+    "age": 30,
+    "hobbies": ["reading", "coding", "gaming"],
+    "address": {
+        "street": "123 Main St",
+        "city": "Boston"
+    }
+}
+
+print("\nWriting JSON file...")
+with open("data.json", "w") as file:
+    json.dump(data, file, indent=2)
+
+# Reading JSON
+print("Reading JSON file:")
+with open("data.json", "r") as file:
+    loaded_data = json.load(file)
+    print(json.dumps(loaded_data, indent=2))</code></pre>
+          </div>
+          
+          <div class="python-output mt-4" id="files-output"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Advanced Python Section -->
+  <section class="course-section py-5 bg-dark-800">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">Advanced Python & Libraries</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Popular Libraries -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Popular Python Libraries</h3>
+          <p class="text-slate-300 mb-4">Essential libraries for different domains</p>
+          
+          <div class="space-y-4">
+            <div class="flex items-center gap-3 p-3 bg-slate-800/50 rounded-lg">
+              <i class="fas fa-chart-bar text-blue-400 text-xl"></i>
+              <div>
+                <h4 class="font-semibold">Data Science</h4>
+                <p class="text-sm text-slate-400">numpy, pandas, matplotlib</p>
+              </div>
+            </div>
+            
+            <div class="flex items-center gap-3 p-3 bg-slate-800/50 rounded-lg">
+              <i class="fas fa-brain text-purple-400 text-xl"></i>
+              <div>
+                <h4 class="font-semibold">Machine Learning</h4>
+                <p class="text-sm text-slate-400">scikit-learn, tensorflow, pytorch</p>
+              </div>
+            </div>
+            
+            <div class="flex items-center gap-3 p-3 bg-slate-800/50 rounded-lg">
+              <i class="fas fa-globe text-green-400 text-xl"></i>
+              <div>
+                <h4 class="font-semibold">Web Development</h4>
+                <p class="text-sm text-slate-400">flask, django, fastapi</p>
+              </div>
+            </div>
+            
+            <div class="flex items-center gap-3 p-3 bg-slate-800/50 rounded-lg">
+              <i class="fas fa-robot text-yellow-400 text-xl"></i>
+              <div>
+                <h4 class="font-semibold">Automation</h4>
+                <p class="text-sm text-slate-400">selenium, pyautogui, requests</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mt-6 code-container bg-slate-900 rounded-lg p-4">
+            <pre><code class="language-python"># Example: Using requests library
+import requests
+
+# Make API request
+response = requests.get('https://api.github.com/users/octocat')
+if response.status_code == 200:
+    data = response.json()
+    print(f"User: {data['login']}")
+    print(f"Name: {data['name']}")
+    print(f"Followers: {data['followers']}")
+
+# Example: Using datetime
+from datetime import datetime, timedelta
+
+now = datetime.now()
+print(f"Current time: {now}")
+tomorrow = now + timedelta(days=1)
+print(f"Tomorrow: {tomorrow.date()}")</code></pre>
+          </div>
+        </div>
+
+        <!-- Flask Web Framework -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Flask Web Framework</h3>
+          <p class="text-slate-300 mb-4">Building web applications with Flask</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-python"># app.py
+from flask import Flask, jsonify, request, render_template
+
+app = Flask(__name__)
+
+# Basic route
+@app.route('/')
+def home():
+    return "Welcome to Flask!"
+
+# JSON API route
+@app.route('/api/users')
+def get_users():
+    users = [
+        {"id": 1, "name": "Alice", "email": "alice@example.com"},
+        {"id": 2, "name": "Bob", "email": "bob@example.com"}
+    ]
+    return jsonify(users)
+
+# Route with parameters
+@app.route('/api/users/<int:user_id>')
+def get_user(user_id):
+    user = {"id": user_id, "name": "John Doe", "email": "john@example.com"}
+    return jsonify(user)
+
+# POST route
+@app.route('/api/users', methods=['POST'])
+def create_user():
+    data = request.get_json()
+    # Process the data (save to database, etc.)
+    new_user = {
+        "id": 3,
+        "name": data.get('name'),
+        "email": data.get('email')
+    }
+    return jsonify(new_user), 201
+
+# Template rendering
+@app.route('/hello/<name>')
+def hello(name):
+    return render_template('hello.html', name=name)
+
+if __name__ == '__main__':
+    app.run(debug=True)</code></pre>
+          </div>
+          
+          <div class="mt-4 p-4 bg-blue-900/30 rounded-lg">
+            <h4 class="font-semibold text-blue-300 mb-2">🚀 Running Flask</h4>
+            <div class="terminal">
+              <div class="flex items-center gap-2 mb-2">
+                <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+              </div>
+              <div class="space-y-1 text-sm">
+                <div><span class="prompt">$</span> <span class="command">pip install flask</span></div>
+                <div><span class="prompt">$</span> <span class="command">python app.py</span></div>
+                <div class="text-blue-300"># Running on http://127.0.0.1:5000</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Live Python Editor -->
+  <section id="live-editor" class="course-section py-5">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">Live Python Editor</h2>
+      
+      <div class="glass rounded-xl p-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div>
+            <h3 class="text-xl font-semibold text-neon-300 mb-4">Write Python Code</h3>
+            <div class="python-editor" contenteditable="true" id="python-editor"># Welcome to Python Live Editor!
+# Write your Python code here and click "Run Code"
+
+def greet(name):
+    return f"Hello, {name}! Welcome to Python."
+
+# Test the function
+print(greet("Developer"))
+
+# Calculate factorial
+def factorial(n):
+    if n == 0:
+        return 1
+    else:
+        return n * factorial(n - 1)
+
+print(f"Factorial of 5 is: {factorial(5)}")
+
+# List comprehension example
+numbers = [1, 2, 3, 4, 5]
+squares = [x**2 for x in numbers]
+print(f"Numbers: {numbers}")
+print(f"Squares: {squares}")
+
+# Try adding your own code below!</div>
+            <button onclick="runLivePythonCode()" class="w-full mt-4 px-4 py-3 bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-lg font-semibold hover:scale-105 transition-transform">
+              <i class="fas fa-play mr-2"></i>Run Code
+            </button>
+          </div>
+          
+          <div>
+            <h3 class="text-xl font-semibold text-neon-300 mb-4">Output</h3>
+            <div class="python-output h-64" id="live-python-output">
+              # Python output will appear here
+              <br>
+              # Try writing some Python code and click "Run Code"
+            </div>
+            <div class="mt-4 p-4 bg-purple-900/30 rounded-lg">
+              <h4 class="font-semibold text-purple-300 mb-2">💡 Python Tips:</h4>
+              <ul class="text-sm text-purple-200 space-y-1">
+                <li>• Use print() to see output</li>
+                <li>• Try creating functions and classes</li>
+                <li>• Experiment with list comprehensions</li>
+                <li>• Test error handling with try/except</li>
+                <li>• Explore Python's built-in functions</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Navigation -->
+  <div class="max-w-6xl mx-auto px-6 py-8">
+    <div class="glass rounded-xl p-6 sticky bottom-6">
+      <h3 class="font-semibold text-neon-300 mb-4">Course Navigation</h3>
+      <div class="flex flex-wrap gap-3">
+        <a href="#basics" class="px-4 py-2 rounded-lg bg-slate-800/40 hover:bg-slate-700/40 transition text-sm">Basics</a>
+        <a href="#live-editor" class="px-4 py-2 rounded-lg bg-slate-800/40 hover:bg-slate-700/40 transition text-sm">Live Editor</a>
+        <button onclick="showCheatSheet()" class="px-4 py-2 rounded-lg bg-python-500 hover:bg-python-600 transition text-sm">Cheat Sheet</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="glass border-t border-slate-800 mt-20">
+    <div class="max-w-6xl mx-auto px-6 py-8 text-center">
+      <div class="flex items-center justify-center gap-6 mb-4">
+        <a href="/" class="text-slate-300 hover:text-neon-500 transition">Home</a>
+        <a href="#basics" class="text-slate-300 hover:text-neon-500 transition">Course</a>
+        <a href="https://github.com/JUSAIR-JSR" target="_blank" class="text-slate-300 hover:text-neon-500 transition">GitHub</a>
+      </div>
+      <p class="text-slate-500 text-sm">© 2023 Python Course - Complete Beginner to Advanced</p>
+    </div>
+  </footer>
+
+  <!-- Cheat Sheet Modal -->
+  <div id="cheat-sheet" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-50 p-4">
+    <div class="glass rounded-xl p-6 max-w-4xl max-h-[80vh] overflow-y-auto">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-2xl font-bold text-neon-300">Python Cheat Sheet</h3>
+        <button onclick="hideCheatSheet()" class="text-slate-400 hover:text-white">
+          <i class="fas fa-times text-2xl"></i>
+        </button>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h4 class="font-semibold text-green-400 mb-3">Basic Syntax</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">name = "Python"</code>
+            <code class="block bg-slate-800 p-2 rounded">age = 25</code>
+            <code class="block bg-slate-800 p-2 rounded">if age >= 18: print("Adult")</code>
+            <code class="block bg-slate-800 p-2 rounded">for i in range(5): print(i)</code>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-blue-400 mb-3">Data Structures</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">list = [1, 2, 3]</code>
+            <code class="block bg-slate-800 p-2 rounded">tuple = (1, 2, 3)</code>
+            <code class="block bg-slate-800 p-2 rounded">dict = {"key": "value"}</code>
+            <code class="block bg-slate-800 p-2 rounded">set = {1, 2, 3}</code>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-yellow-400 mb-3">Functions</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">def func(): return</code>
+            <code class="block bg-slate-800 p-2 rounded">lambda x: x*2</code>
+            <code class="block bg-slate-800 p-2 rounded">map(func, list)</code>
+            <code class="block bg-slate-800 p-2 rounded">filter(func, list)</code>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-purple-400 mb-3">File Handling</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">with open("file.txt") as f:</code>
+            <code class="block bg-slate-800 p-2 rounded">f.read() / f.write()</code>
+            <code class="block bg-slate-800 p-2 rounded">import json</code>
+            <code class="block bg-slate-800 p-2 rounded">import csv</code>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Initialize syntax highlighting
+    hljs.highlightAll();
+
+    // Initialize Pyodide for Python execution
+    let pyodide;
+    async function initializePyodide() {
+      pyodide = await loadPyodide();
+      console.log("Pyodide loaded successfully");
+    }
+    
+    // Initialize on page load
+    initializePyodide();
+
+    // Function to run Python code examples
+    async function runPythonCode(section) {
+      const codeElement = document.getElementById(`${section}-code`);
+      const outputElement = document.getElementById(`${section}-output`);
+      
+      if (codeElement && outputElement && pyodide) {
+        const code = codeElement.textContent;
+        outputElement.innerHTML = '<div class="text-green-400">Running Python code...</div>';
+        
+        try {
+          // Clear any previous output
+          pyodide.runPython(`
+            import sys
+            from io import StringIO
+            sys.stdout = StringIO()
+          `);
+          
+          // Run the code
+          await pyodide.runPythonAsync(code);
+          
+          // Capture the output
+          const output = pyodide.runPython("sys.stdout.getvalue()");
+          outputElement.innerHTML = `<div class="text-green-400">Output:</div><div class="mt-2 whitespace-pre-wrap">${output}</div>`;
+        } catch (error) {
+          outputElement.innerHTML = `<div class="text-red-400">Error:</div><div class="mt-2 text-red-300">${error.message}</div>`;
+        }
+      }
+    }
+
+    // Function to run live Python code
+    async function runLivePythonCode() {
+      const editor = document.getElementById('python-editor');
+      const outputElement = document.getElementById('live-python-output');
+      
+      if (editor && outputElement && pyodide) {
+        const code = editor.textContent || editor.innerText;
+        outputElement.innerHTML = '<div class="text-green-400">Running Python code...</div>';
+        
+        try {
+          // Clear any previous output
+          pyodide.runPython(`
+            import sys
+            from io import StringIO
+            sys.stdout = StringIO()
+          `);
+          
+          // Run the code
+          await pyodide.runPythonAsync(code);
+          
+          // Capture the output
+          const output = pyodide.runPython("sys.stdout.getvalue()");
+          outputElement.innerHTML = `<div class="text-green-400">Output:</div><div class="mt-2 whitespace-pre-wrap">${output}</div>`;
+        } catch (error) {
+          outputElement.innerHTML = `<div class="text-red-400">Error:</div><div class="mt-2 text-red-300">${error.message}</div>`;
+        }
+      }
+    }
+
+    // Copy button functionality
+    document.querySelectorAll('.copy-btn').forEach(button => {
+      if (!button.innerHTML.includes('fa-play')) {
+        button.addEventListener('click', function() {
+          const codeBlock = this.closest('.code-container').querySelector('code');
+          const textArea = document.createElement('textarea');
+          textArea.value = codeBlock.textContent;
+          document.body.appendChild(textArea);
+          textArea.select();
+          document.execCommand('copy');
+          document.body.removeChild(textArea);
+          
+          // Visual feedback
+          const originalText = this.innerHTML;
+          this.innerHTML = '<i class="fas fa-check mr-1"></i>Copied!';
+          setTimeout(() => {
+            this.innerHTML = originalText;
+          }, 2000);
+        });
+      }
+    });
+
+    // Cheat sheet functions
+    function showCheatSheet() {
+      document.getElementById('cheat-sheet').classList.remove('hidden');
+      document.getElementById('cheat-sheet').classList.add('flex');
+    }
+
+    function hideCheatSheet() {
+      document.getElementById('cheat-sheet').classList.add('hidden');
+      document.getElementById('cheat-sheet').classList.remove('flex');
+    }
+
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>

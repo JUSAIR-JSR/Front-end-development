@@ -1,0 +1,664 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CSS Course - Frontend Development</title>
+  <meta name="description" content="Complete CSS course with interactive examples and live previews" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Highlight.js for syntax highlighting -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            neon: {
+              50: '#f3f7ff',
+              100: '#e6f0ff',
+              300: '#99ccff',
+              500: '#00d0ff',
+              600: '#00a8d9',
+              700: '#00a3cc',
+              800: '#007399'
+            },
+            glass: 'rgba(255,255,255,0.06)',
+            dark: {
+              900: '#0a0f1c',
+              800: '#0f172a',
+              700: '#1e293b'
+            }
+          },
+          animation: {
+            'bounce-slow': 'bounce 3s infinite',
+            'pulse-glow': 'pulse-glow 2s ease-in-out infinite alternate',
+            'spin-slow': 'spin 3s linear infinite',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    .neon-text { 
+      text-shadow: 0 0 8px rgba(0,208,255,0.15), 0 0 18px rgba(0,208,255,0.06); 
+    }
+    .glass { 
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); 
+      backdrop-filter: blur(6px); 
+    }
+    
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.5);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(0, 208, 255, 0.3);
+      border-radius: 4px;
+    }
+    
+    /* Code block styling */
+    .code-container {
+      position: relative;
+    }
+    .copy-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .code-container:hover .copy-btn {
+      opacity: 1;
+    }
+    
+    /* Preview styling */
+    .preview-frame {
+      border: 1px solid rgba(255,255,255,0.1);
+      background: white;
+      min-height: 200px;
+    }
+    
+    /* Animation keyframes */
+    @keyframes pulse-glow {
+      0% { box-shadow: 0 0 20px rgba(0, 208, 255, 0.4); }
+      100% { box-shadow: 0 0 30px rgba(0, 208, 255, 0.8), 0 0 40px rgba(0, 208, 255, 0.4); }
+    }
+    
+    /* Custom animations for examples */
+    @keyframes slideIn {
+      from { transform: translateX(-100px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    
+    @keyframes colorChange {
+      0% { background-color: #ff6b6b; }
+      50% { background-color: #4ecdc4; }
+      100% { background-color: #ff6b6b; }
+    }
+    
+    .animate-slide-in {
+      animation: slideIn 0.5s ease-out;
+    }
+    
+    .animate-color-change {
+      animation: colorChange 2s infinite;
+    }
+    
+    /* Section transitions */
+    .course-section {
+      scroll-margin-top: 100px;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-dark-900 via-dark-800 to-dark-900 text-slate-200 min-h-screen">
+
+  <!-- Navigation -->
+  <nav class="glass border-b border-slate-800 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-[#00d0ff] to-[#7c4dff] flex items-center justify-center">
+          <i class="fab fa-css3-alt text-dark-900"></i>
+        </div>
+        <div>
+          <h1 class="text-lg font-bold neon-text">CSS Course</h1>
+          <p class="text-xs text-slate-400">Frontend Development</p>
+        </div>
+      </a>
+
+      <div class="flex items-center gap-4">
+        <a href="/" class="px-4 py-2 rounded-lg text-sm hover:bg-slate-800/40 transition">
+          <i class="fas fa-home mr-2"></i>Home
+        </a>
+        <a href="#course-content" class="px-4 py-2 rounded-lg text-sm bg-slate-800/40 border border-neon-500/30">
+          <i class="fas fa-book mr-2"></i>Course Content
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="max-w-7xl mx-auto px-6 py-16 text-center">
+    <div class="max-w-3xl mx-auto">
+      <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800/40 border border-slate-700/40 text-sm mb-6">
+        <i class="fas fa-star text-neon-500"></i>
+        Complete CSS Course
+      </span>
+      <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight text-white neon-text mb-6">
+        Master CSS
+        <span class="text-neon-500 block">Styling & Animations</span>
+      </h1>
+      <p class="text-slate-300 text-lg mb-8">Learn CSS with interactive examples, live previews, and modern techniques. From basics to advanced animations.</p>
+      
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href="#course-content" class="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r from-[#00d0ff] to-[#6b5bff] font-medium hover:scale-105 transition-transform">
+          <i class="fas fa-play"></i>
+          Start Learning
+        </a>
+        <a href="#animations" class="inline-flex items-center gap-3 px-6 py-3 rounded-full border border-slate-700/40 hover:border-neon-500 transition glass">
+          <i class="fas fa-magic"></i>
+          Animations
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Course Content -->
+  <main id="course-content" class="max-w-6xl mx-auto px-6 py-12">
+    
+    <!-- CSS Methods Section -->
+    <section id="css-methods" class="course-section mb-20">
+      <div class="flex items-center gap-4 mb-8">
+        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center">
+          <i class="fab fa-css3-alt text-purple-400 text-xl"></i>
+        </div>
+        <div>
+          <h2 class="text-3xl font-bold neon-text">CSS Implementation Methods</h2>
+          <p class="text-slate-400">Different ways to add CSS to your HTML</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Internal CSS -->
+        <div class="glass rounded-xl p-6 border border-slate-700/30">
+          <h3 class="font-semibold text-neon-300 mb-4 flex items-center gap-2">
+            <i class="fas fa-code"></i>
+            Internal CSS
+          </h3>
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <pre><code class="language-html">&lt;style&gt;
+h1 {
+  color: green;
+}
+&lt;/style&gt;</code></pre>
+          </div>
+          <p class="text-slate-300 text-sm mt-3">CSS written inside the HTML file using &lt;style&gt; tags</p>
+        </div>
+
+        <!-- Inline CSS -->
+        <div class="glass rounded-xl p-6 border border-slate-700/30">
+          <h3 class="font-semibold text-neon-300 mb-4 flex items-center gap-2">
+            <i class="fas fa-tag"></i>
+            Inline CSS
+          </h3>
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <pre><code class="language-html">&lt;h1 style="color: red;"&gt;
+  Hello World
+&lt;/h1&gt;</code></pre>
+          </div>
+          <p class="text-slate-300 text-sm mt-3">CSS applied directly to HTML elements using style attribute</p>
+        </div>
+
+        <!-- External CSS -->
+        <div class="glass rounded-xl p-6 border border-slate-700/30">
+          <h3 class="font-semibold text-neon-300 mb-4 flex items-center gap-2">
+            <i class="fas fa-file-code"></i>
+            External CSS
+          </h3>
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <pre><code class="language-html">&lt;link rel="stylesheet" 
+      href="style.css"&gt;</code></pre>
+          </div>
+          <p class="text-slate-300 text-sm mt-3">CSS in separate files linked to HTML</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Basic Properties Section -->
+    <section id="basic-properties" class="course-section mb-20">
+      <h2 class="text-2xl font-bold neon-text mb-8">Basic CSS Properties</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Color & Background -->
+        <div class="glass rounded-xl p-6 border border-slate-700/30">
+          <h3 class="font-semibold text-neon-300 mb-4">Color & Background</h3>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="code-container bg-slate-900 rounded-lg p-4">
+              <pre><code class="language-css">color: red;
+color: #ff0000;
+color: rgb(255,0,0);</code></pre>
+            </div>
+            <div class="code-container bg-slate-900 rounded-lg p-4">
+              <pre><code class="language-css">background: green;
+background-color: aqua;</code></pre>
+            </div>
+          </div>
+          <div class="preview-frame rounded-lg p-4 bg-white text-gray-800 mt-4">
+            <div class="space-y-4">
+              <h4 class="text-red-500 font-bold">Red Text</h4>
+              <div class="bg-green-500 p-4 text-white">Green Background</div>
+              <div class="bg-blue-300 p-4">Aqua Background</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Border & Outline -->
+        <div class="glass rounded-xl p-6 border border-slate-700/30">
+          <h3 class="font-semibold text-neon-300 mb-4">Border & Outline</h3>
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <pre><code class="language-css">border: 2px solid red;
+border: 2px dashed red;
+border: 2px dotted red;
+outline: 2px solid blue;</code></pre>
+          </div>
+          <div class="preview-frame rounded-lg p-4 bg-white mt-4">
+            <div class="space-y-4">
+              <div class="border-2 border-red-500 p-4">Solid Border</div>
+              <div class="border-2 border-red-500 border-dashed p-4">Dashed Border</div>
+              <div class="border-2 border-red-500 border-dotted p-4">Dotted Border</div>
+              <div class="outline outline-2 outline-blue-500 p-4">Blue Outline</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Text & Font -->
+        <div class="glass rounded-xl p-6 border border-slate-700/30">
+          <h3 class="font-semibold text-neon-300 mb-4">Text & Font Properties</h3>
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <pre><code class="language-css">text-align: center;
+font-size: 15px;
+font-family: serif;
+font-weight: 500;
+font-style: italic;</code></pre>
+          </div>
+          <div class="preview-frame rounded-lg p-4 bg-white text-gray-800 mt-4">
+            <div class="text-center">
+              <p class="text-lg font-serif italic font-medium">Centered Serif Italic Text</p>
+              <p class="text-sm font-bold">Bold Small Text</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Box Model -->
+        <div class="glass rounded-xl p-6 border border-slate-700/30">
+          <h3 class="font-semibold text-neon-300 mb-4">Box Model (Margin & Padding)</h3>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="code-container bg-slate-900 rounded-lg p-4">
+              <pre><code class="language-css">margin: 50px;
+margin-top: 50px;
+padding: 50px;
+padding-left: 50px;</code></pre>
+            </div>
+          </div>
+          <div class="preview-frame rounded-lg p-4 bg-white mt-4">
+            <div class="bg-blue-200 p-8 m-8 border-2 border-blue-500">
+              <div class="bg-red-200 p-4 border border-red-500">
+                Content with padding and margin
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Layout & Display Section -->
+    <section id="layout-display" class="course-section mb-20">
+      <h2 class="text-2xl font-bold neon-text mb-8">Layout & Display Properties</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Display -->
+        <div class="glass rounded-xl p-6 border border-slate-700/30">
+          <h3 class="font-semibold text-neon-300 mb-4">Display Property</h3>
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <pre><code class="language-css">display: flex;
+display: grid;
+display: block;
+display: inline;</code></pre>
+          </div>
+          <div class="preview-frame rounded-lg p-4 bg-white mt-4">
+            <div class="space-y-4">
+              <div class="flex gap-2 bg-gray-200 p-2">
+                <div class="bg-blue-500 p-2 text-white">Flex</div>
+                <div class="bg-blue-500 p-2 text-white">Items</div>
+              </div>
+              <div class="inline bg-red-500 p-2 text-white">Inline</div>
+              <div class="inline bg-red-500 p-2 text-white">Elements</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Flexbox -->
+        <div class="glass rounded-xl p-6 border border-slate-700/30">
+          <h3 class="font-semibold text-neon-300 mb-4">Flexbox Alignment</h3>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="code-container bg-slate-900 rounded-lg p-4">
+              <pre><code class="language-css">justify-content: center;
+align-items: center;</code></pre>
+            </div>
+          </div>
+          <div class="preview-frame rounded-lg p-4 bg-white mt-4">
+            <div class="flex justify-center items-center h-24 bg-gray-200">
+              <div class="bg-green-500 p-3 text-white">Centered</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Overflow -->
+        <div class="glass rounded-xl p-6 border border-slate-700/30">
+          <h3 class="font-semibold text-neon-300 mb-4">Overflow</h3>
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <pre><code class="language-css">overflow: scroll;
+overflow: hidden;</code></pre>
+          </div>
+          <div class="preview-frame rounded-lg p-4 bg-white mt-4">
+            <div class="h-24 overflow-y-scroll border-2 border-gray-300 p-2">
+              <p class="mb-4">This content is longer than the container...</p>
+              <p class="mb-4">Scroll to see more text...</p>
+              <p class="mb-4">Additional content here...</p>
+              <p>Bottom of the scrollable area</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Z-index -->
+        <div class="glass rounded-xl p-6 border border-slate-700/30">
+          <h3 class="font-semibold text-neon-300 mb-4">Z-index & Positioning</h3>
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <pre><code class="language-css">position: relative;
+z-index: 1;
+position: absolute;
+z-index: -1;</code></pre>
+          </div>
+          <div class="preview-frame rounded-lg p-4 bg-white mt-4 relative h-32">
+            <div class="absolute top-4 left-4 w-20 h-20 bg-green-500 z-10 flex items-center justify-center text-white text-sm">
+              z-index: 1
+            </div>
+            <div class="absolute top-8 left-8 w-20 h-20 bg-red-500 z-0 flex items-center justify-center text-white text-sm">
+              z-index: -1
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Advanced Properties Section -->
+    <section id="advanced-properties" class="course-section mb-20">
+      <h2 class="text-2xl font-bold neon-text mb-8">Advanced CSS Properties</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Opacity & URL -->
+        <div class="glass rounded-xl p-6 border border-slate-700/30">
+          <h3 class="font-semibold text-neon-300 mb-4">Opacity & Background Image</h3>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="code-container bg-slate-900 rounded-lg p-4">
+              <pre><code class="language-css">opacity: 0.5;
+background: url(image.jpg);</code></pre>
+            </div>
+          </div>
+          <div class="preview-frame rounded-lg p-4 bg-white mt-4">
+            <div class="flex gap-4">
+              <div class="w-16 h-16 bg-blue-500 opacity-100 flex items-center justify-center text-white text-xs">100%</div>
+              <div class="w-16 h-16 bg-blue-500 opacity-50 flex items-center justify-center text-white text-xs">50%</div>
+              <div class="w-16 h-16 bg-blue-500 opacity-20 flex items-center justify-center text-white text-xs">20%</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pseudo-classes -->
+        <div class="glass rounded-xl p-6 border border-slate-700/30">
+          <h3 class="font-semibold text-neon-300 mb-4">Pseudo-classes (Hover & Focus)</h3>
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <pre><code class="language-css">button:hover {
+  background: red;
+}
+button:focus {
+  background: blue;
+}</code></pre>
+          </div>
+          <div class="preview-frame rounded-lg p-4 bg-white mt-4">
+            <div class="space-y-4">
+              <button class="bg-black text-white px-4 py-2 rounded hover:bg-red-600 transition">Hover Me</button>
+              <input type="text" class="border-2 border-gray-300 px-3 py-2 rounded focus:border-blue-500 focus:outline-none" placeholder="Focus here">
+            </div>
+          </div>
+        </div>
+
+        <!-- Gradients & Shadows -->
+        <div class="glass rounded-xl p-6 border border-slate-700/30">
+          <h3 class="font-semibold text-neon-300 mb-4">Gradients & Shadows</h3>
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <pre><code class="language-css">background: linear-gradient(
+  green, blue, red
+);
+box-shadow: 1px 1px 60px blue;</code></pre>
+          </div>
+          <div class="preview-frame rounded-lg p-4 bg-white mt-4">
+            <div class="space-y-4">
+              <div class="h-16 bg-gradient-to-r from-green-400 to-blue-500 rounded"></div>
+              <div class="h-16 bg-gradient-to-r from-purple-400 to-pink-500 rounded shadow-lg shadow-blue-500/50"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Backdrop & Object Fit -->
+        <div class="glass rounded-xl p-6 border border-slate-700/30">
+          <h3 class="font-semibold text-neon-300 mb-4">Backdrop Filter & Object Fit</h3>
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <pre><code class="language-css">backdrop-filter: blur(10px);
+object-fit: cover;
+object-fit: contain;</code></pre>
+          </div>
+          <div class="preview-frame rounded-lg p-4 bg-white mt-4">
+            <div class="relative h-32 bg-gray-300 rounded overflow-hidden">
+              <div class="absolute inset-0 bg-blue-500/20 backdrop-blur-sm flex items-center justify-center">
+                <span class="text-black font-bold">Blurred Background</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Animations Section -->
+    <section id="animations" class="course-section mb-20">
+      <div class="text-center mb-12">
+        <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-900/20 border border-green-700/30 text-sm">
+          <i class="fas fa-magic text-green-400"></i>
+          CSS Animations & Transforms
+        </span>
+        <h2 class="text-3xl font-bold neon-text mt-4">Modern CSS Animations</h2>
+        <p class="text-slate-400 mt-2">Bring your websites to life with CSS animations</p>
+      </div>
+
+      <!-- Transitions -->
+      <div class="mb-12">
+        <h3 class="text-xl font-bold text-neon-300 mb-6">CSS Transitions</h3>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div class="code-container bg-slate-900 rounded-xl p-6 border border-slate-700/30">
+            <pre><code class="language-css">.button {
+  transition: transform 0.3s ease, 
+              background-color 0.3s ease;
+}
+.button:hover {
+  transform: scale(1.2);
+  background-color: #2980b9;
+}</code></pre>
+          </div>
+          <div class="glass rounded-xl p-6 border border-slate-700/30 flex items-center justify-center">
+            <button class="bg-blue-500 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition-all duration-300 hover:scale-110">
+              Hover to Scale
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Transforms -->
+      <div class="mb-12">
+        <h3 class="text-xl font-bold text-neon-300 mb-6">CSS Transforms</h3>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div class="code-container bg-slate-900 rounded-xl p-6 border border-slate-700/30">
+            <pre><code class="language-css">.card:hover {
+  transform: rotate(10deg) scale(1.1);
+}</code></pre>
+          </div>
+          <div class="glass rounded-xl p-6 border border-slate-700/30 flex items-center justify-center">
+            <div class="w-32 h-32 bg-orange-500 rounded-lg transition-transform duration-300 hover:rotate-12 hover:scale-110 flex items-center justify-center text-white">
+              Hover Me
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Keyframe Animations -->
+      <div class="mb-12">
+        <h3 class="text-xl font-bold text-neon-300 mb-6">Keyframe Animations</h3>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div class="code-container bg-slate-900 rounded-xl p-6 border border-slate-700/30">
+            <pre><code class="language-css">@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-50px); }
+}
+.ball {
+  animation: bounce 1s infinite ease-in-out;
+}</code></pre>
+          </div>
+          <div class="glass rounded-xl p-6 border border-slate-700/30 flex items-center justify-center">
+            <div class="w-16 h-16 bg-red-500 rounded-full animate-bounce"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Responsive Design -->
+      <div>
+        <h3 class="text-xl font-bold text-neon-300 mb-6">Responsive Design with Media Queries</h3>
+        <div class="code-container bg-slate-900 rounded-xl p-6 border border-slate-700/30">
+          <pre><code class="language-css">/* Mobile First Approach */
+.container {
+  padding: 1rem;
+}
+
+/* Tablet */
+@media (min-width: 768px) {
+  .container {
+    padding: 2rem;
+  }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  .container {
+    padding: 3rem;
+  }
+}</code></pre>
+        </div>
+        <div class="glass rounded-xl p-6 border border-slate-700/30 mt-4">
+          <h4 class="font-semibold mb-4">Common Breakpoints</h4>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+            <div class="bg-slate-800 p-3 rounded text-center">
+              <div class="text-neon-300">Mobile</div>
+              <div>&lt; 768px</div>
+            </div>
+            <div class="bg-slate-800 p-3 rounded text-center">
+              <div class="text-neon-300">Tablet</div>
+              <div>768px - 1024px</div>
+            </div>
+            <div class="bg-slate-800 p-3 rounded text-center">
+              <div class="text-neon-300">Desktop</div>
+              <div>1024px - 1440px</div>
+            </div>
+            <div class="bg-slate-800 p-3 rounded text-center">
+              <div class="text-neon-300">Large</div>
+              <div>&gt; 1440px</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quick Navigation -->
+    <div class="glass rounded-xl p-6 border border-slate-700/30 sticky bottom-6">
+      <h3 class="font-semibold text-neon-300 mb-4">Quick Navigation</h3>
+      <div class="flex flex-wrap gap-3">
+        <a href="#css-methods" class="px-4 py-2 rounded-lg bg-slate-800/40 hover:bg-slate-700/40 transition text-sm">CSS Methods</a>
+        <a href="#basic-properties" class="px-4 py-2 rounded-lg bg-slate-800/40 hover:bg-slate-700/40 transition text-sm">Basic Properties</a>
+        <a href="#layout-display" class="px-4 py-2 rounded-lg bg-slate-800/40 hover:bg-slate-700/40 transition text-sm">Layout</a>
+        <a href="#advanced-properties" class="px-4 py-2 rounded-lg bg-slate-800/40 hover:bg-slate-700/40 transition text-sm">Advanced</a>
+        <a href="#animations" class="px-4 py-2 rounded-lg bg-green-900/20 hover:bg-green-800/30 transition text-sm">Animations</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="glass border-t border-slate-800 mt-20">
+    <div class="max-w-6xl mx-auto px-6 py-8 text-center">
+      <div class="flex items-center justify-center gap-6 mb-4">
+        <a href="/" class="text-slate-300 hover:text-neon-500 transition">Home</a>
+        <a href="#course-content" class="text-slate-300 hover:text-neon-500 transition">Course</a>
+        <a href="https://github.com/JUSAIR-JSR" target="_blank" class="text-slate-300 hover:text-neon-500 transition">GitHub</a>
+      </div>
+      <p class="text-slate-500 text-sm">© 2023 CSS Course - Frontend Development</p>
+    </div>
+  </footer>
+
+  <script>
+    // Initialize syntax highlighting
+    hljs.highlightAll();
+    
+    // Copy button functionality
+    document.querySelectorAll('.copy-btn').forEach(button => {
+      button.addEventListener('click', function() {
+        const codeBlock = this.closest('.code-container').querySelector('code');
+        const textArea = document.createElement('textarea');
+        textArea.value = codeBlock.textContent;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        
+        // Visual feedback
+        const originalText = this.innerHTML;
+        this.innerHTML = '<i class="fas fa-check mr-1"></i>Copied!';
+        setTimeout(() => {
+          this.innerHTML = originalText;
+        }, 2000);
+      });
+    });
+    
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>

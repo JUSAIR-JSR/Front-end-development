@@ -1,0 +1,1767 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Git & GitHub Course - Complete Beginner to Advanced</title>
+  <meta name="description" content="Complete Git and GitHub course with branching, pull requests, GitHub Pages, and team workflows" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Highlight.js for syntax highlighting -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            neon: {
+              50: '#f3f7ff',
+              100: '#e6f0ff',
+              300: '#99ccff',
+              500: '#00d0ff',
+              600: '#00a8d9',
+              700: '#00a3cc',
+              800: '#007399'
+            },
+            dark: {
+              900: '#0a0f1c',
+              800: '#0f172a',
+              700: '#1e293b'
+            },
+            git: {
+              500: '#f05032',
+              600: '#e34c26',
+              700: '#c74521'
+            },
+            github: {
+              500: '#333333',
+              600: '#24292e',
+              700: '#1b1f23'
+            }
+          },
+          animation: {
+            'float': 'float 6s ease-in-out infinite',
+            'pulse-glow': 'pulse-glow 2s ease-in-out infinite alternate',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    .neon-text { 
+      text-shadow: 0 0 8px rgba(0,208,255,0.15), 0 0 18px rgba(0,208,255,0.06); 
+    }
+    
+    .glass {
+      background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .code-container {
+      position: relative;
+    }
+    
+    .copy-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    
+    .code-container:hover .copy-btn {
+      opacity: 1;
+    }
+    
+    .terminal {
+      background: #1a1b26;
+      color: #c0caf5;
+      font-family: 'Fira Code', monospace;
+      border-radius: 0.5rem;
+      padding: 1rem;
+    }
+    
+    .terminal .prompt {
+      color: #7dcfff;
+    }
+    
+    .terminal .command {
+      color: #9ece6a;
+    }
+    
+    .terminal .comment {
+      color: #565f89;
+    }
+    
+    .git-output {
+      background: #0f172a;
+      color: #10b981;
+      font-family: 'Fira Code', monospace;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      min-height: 100px;
+      border: 1px solid #374151;
+    }
+    
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.5);
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: rgba(0, 208, 255, 0.3);
+      border-radius: 4px;
+    }
+    
+    .course-section {
+      scroll-margin-top: 100px;
+    }
+    
+    /* Animation for live examples */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .animate-fade-in {
+      animation: fadeInUp 0.6s ease-out;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    @keyframes pulse-glow {
+      0% { box-shadow: 0 0 20px rgba(0, 208, 255, 0.4); }
+      100% { box-shadow: 0 0 30px rgba(0, 208, 255, 0.8), 0 0 40px rgba(0, 208, 255, 0.4); }
+    }
+    
+    .git-badge {
+      background: linear-gradient(135deg, #f05032, #e34c26);
+      color: white;
+    }
+    
+    .github-badge {
+      background: linear-gradient(135deg, #333333, #24292e);
+      color: white;
+    }
+    
+    .branch-visual {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 10px 0;
+    }
+    
+    .branch-node {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #10b981;
+    }
+    
+    .branch-line {
+      flex: 1;
+      height: 2px;
+      background: #374151;
+    }
+    
+    .conflict-marker {
+      background: #7f1d1d;
+      color: #fca5a5;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-dark-900 via-dark-800 to-dark-900 text-slate-200 min-h-screen">
+
+  <!-- Navigation -->
+  <nav class="glass border-b border-slate-800 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-git-500 to-git-600 flex items-center justify-center">
+          <i class="fab fa-git-alt text-white text-lg"></i>
+        </div>
+        <div>
+          <h1 class="text-lg font-bold neon-text">Git & GitHub Course</h1>
+          <p class="text-xs text-slate-400">Beginner to Advanced</p>
+        </div>
+      </a>
+
+      <div class="flex items-center gap-4">
+        <a href="/" class="px-4 py-2 rounded-lg text-sm hover:bg-slate-800/40 transition">
+          <i class="fas fa-home mr-2"></i>Home
+        </a>
+        <a href="#basics" class="px-4 py-2 rounded-lg text-sm bg-slate-800/40 border border-neon-500/30">
+          <i class="fas fa-book mr-2"></i>Course
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="max-w-7xl mx-auto px-6 py-16 text-center">
+    <div class="max-w-3xl mx-auto">
+      <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800/40 border border-slate-700/40 text-sm mb-6">
+        <i class="fab fa-git-alt text-git-500"></i>
+        Complete Git & GitHub Course
+      </span>
+      <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight text-white neon-text mb-6">
+        Master Git & GitHub
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-git-500 to-git-600 block">Version Control Made Easy</span>
+      </h1>
+      <p class="text-slate-300 text-lg mb-8">Learn Git version control and GitHub collaboration with practical examples, branching strategies, pull requests, and real-world workflows. Master professional development practices.</p>
+      
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href="#basics" class="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r from-git-500 to-git-600 font-medium hover:scale-105 transition-transform">
+          <i class="fas fa-play"></i>
+          Start Learning
+        </a>
+        <a href="#workflow" class="inline-flex items-center gap-3 px-6 py-3 rounded-full border border-slate-700/40 hover:border-neon-500 transition glass">
+          <i class="fas fa-code-branch"></i>
+          Workflow Guide
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Git Basics Section -->
+  <section id="basics" class="course-section py-5">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">Git Basics</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Setup & Installation -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4 flex items-center gap-2">
+            <i class="fas fa-download"></i>
+            Setup & Installation
+          </h3>
+          <p class="text-slate-300 mb-4">Get Git installed and configured on your system</p>
+          
+          <div class="terminal mb-4">
+            <div class="flex items-center gap-2 mb-2">
+              <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+              <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+              <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+            </div>
+            <div class="space-y-2 text-sm">
+              <div><span class="prompt">$</span> <span class="command">git --version</span></div>
+              <div class="text-blue-300">git version 2.39.1</div>
+              <div><span class="prompt">$</span> <span class="command">git config --global user.name "Your Name"</span></div>
+              <div class="comment"># Set your username</div>
+              <div><span class="prompt">$</span> <span class="command">git config --global user.email "your@email.com"</span></div>
+              <div class="comment"># Set your email</div>
+              <div><span class="prompt">$</span> <span class="command">git config --list</span></div>
+              <div class="comment"># View configuration</div>
+            </div>
+          </div>
+          
+          <div class="p-4 bg-green-900/30 rounded-lg">
+            <h4 class="font-semibold text-green-300 mb-2">🚀 Quick Start Guide</h4>
+            <div class="code-container bg-slate-800 rounded p-3">
+              <pre><code class="language-bash"># Initialize a new repository
+git init
+
+# Add all files to staging
+git add .
+
+# Commit changes
+git commit -m "Initial commit"
+
+# Add remote repository
+git remote add origin https://github.com/user/repo.git
+
+# Push to remote
+git push -u origin main</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- First Repository -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Create Your First Repository</h3>
+          <p class="text-slate-300 mb-4">Initialize a Git repository and make your first commit</p>
+          
+          <div class="space-y-4">
+            <div class="p-4 bg-blue-900/30 rounded-lg">
+              <h4 class="font-semibold text-blue-300 mb-2">Option A: Local Repository</h4>
+              <div class="terminal">
+                <div class="flex items-center gap-2 mb-2">
+                  <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                  <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                  <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                </div>
+                <div class="space-y-1 text-sm">
+                  <div><span class="prompt">$</span> <span class="command">mkdir myproject</span></div>
+                  <div><span class="prompt">$</span> <span class="command">cd myproject</span></div>
+                  <div><span class="prompt">$</span> <span class="command">git init</span></div>
+                  <div class="text-green-300">Initialized empty Git repository</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="p-4 bg-purple-900/30 rounded-lg">
+              <h4 class="font-semibold text-purple-300 mb-2">Option B: Clone from GitHub</h4>
+              <div class="terminal">
+                <div class="flex items-center gap-2 mb-2">
+                  <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                  <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                  <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                </div>
+                <div class="space-y-1 text-sm">
+                  <div><span class="prompt">$</span> <span class="command">git clone https://github.com/user/repo.git</span></div>
+                  <div class="text-green-300">Cloning into 'repo'...</div>
+                  <div><span class="prompt">$</span> <span class="command">cd repo</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mt-4 p-4 bg-yellow-900/30 rounded-lg">
+            <h4 class="font-semibold text-yellow-300 mb-2">📁 Repository Structure</h4>
+            <div class="text-sm text-yellow-200">
+              <div class="font-mono">myproject/</div>
+              <div class="font-mono ml-4">├── .git/ <span class="text-slate-400"># Git database (hidden)</span></div>
+              <div class="font-mono ml-4">├── README.md</div>
+              <div class="font-mono ml-4">├── src/</div>
+              <div class="font-mono ml-4">└── .gitignore</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Basic Git Commands -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Basic Git Commands</h3>
+          <p class="text-slate-300 mb-4">Essential commands for daily Git workflow</p>
+          
+          <div class="space-y-4">
+            <div class="terminal">
+              <div class="flex items-center gap-2 mb-2">
+                <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+              </div>
+              <div class="space-y-2 text-sm">
+                <div><span class="prompt">$</span> <span class="command">git status</span></div>
+                <div class="text-blue-300">On branch main</div>
+                <div class="text-blue-300">No commits yet</div>
+                <div class="text-blue-300">Untracked files: index.html</div>
+                
+                <div><span class="prompt">$</span> <span class="command">git add index.html</span></div>
+                <div class="comment"># Stage specific file</div>
+                
+                <div><span class="prompt">$</span> <span class="command">git add .</span></div>
+                <div class="comment"># Stage all files</div>
+                
+                <div><span class="prompt">$</span> <span class="command">git commit -m "Add homepage"</span></div>
+                <div class="text-green-300">[main (root-commit) abc123] Add homepage</div>
+                <div class="text-green-300">1 file changed, 15 insertions(+)</div>
+                
+                <div><span class="prompt">$</span> <span class="command">git log --oneline</span></div>
+                <div class="text-blue-300">abc1234 Add homepage</div>
+                <div class="text-blue-300">def5678 Initial commit</div>
+              </div>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-4 text-sm">
+              <div class="p-3 bg-slate-800/50 rounded-lg">
+                <h5 class="font-semibold text-green-400 mb-1">Check Status</h5>
+                <code class="text-xs">git status</code>
+                <p class="text-slate-400 mt-1">See changed files</p>
+              </div>
+              <div class="p-3 bg-slate-800/50 rounded-lg">
+                <h5 class="font-semibold text-blue-400 mb-1">Stage Files</h5>
+                <code class="text-xs">git add .</code>
+                <p class="text-slate-400 mt-1">Prepare files for commit</p>
+              </div>
+              <div class="p-3 bg-slate-800/50 rounded-lg">
+                <h5 class="font-semibold text-purple-400 mb-1">Commit Changes</h5>
+                <code class="text-xs">git commit -m "message"</code>
+                <p class="text-slate-400 mt-1">Save changes to history</p>
+              </div>
+              <div class="p-3 bg-slate-800/50 rounded-lg">
+                <h5 class="font-semibold text-yellow-400 mb-1">View History</h5>
+                <code class="text-xs">git log</code>
+                <p class="text-slate-400 mt-1">See commit history</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Working with Remote -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Working with Remote Repositories</h3>
+          <p class="text-slate-300 mb-4">Connect local repository to GitHub and sync changes</p>
+          
+          <div class="terminal mb-4">
+            <div class="flex items-center gap-2 mb-2">
+              <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+              <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+              <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+            </div>
+            <div class="space-y-2 text-sm">
+              <div><span class="prompt">$</span> <span class="command">git remote add origin https://github.com/user/repo.git</span></div>
+              <div class="comment"># Connect to remote repository</div>
+              
+              <div><span class="prompt">$</span> <span class="command">git remote -v</span></div>
+              <div class="text-blue-300">origin  https://github.com/user/repo.git (fetch)</div>
+              <div class="text-blue-300">origin  https://github.com/user/repo.git (push)</div>
+              
+              <div><span class="prompt">$</span> <span class="command">git branch -M main</span></div>
+              <div class="comment"># Rename branch to main</div>
+              
+              <div><span class="prompt">$</span> <span class="command">git push -u origin main</span></div>
+              <div class="text-green-300">Enumerating objects: 5, done.</div>
+              <div class="text-green-300">Writing objects: 100% (5/5), 534 bytes | 534.00 KiB/s</div>
+              <div class="text-green-300">To https://github.com/user/repo.git</div>
+              <div class="text-green-300">* [new branch] main -> main</div>
+              
+              <div><span class="prompt">$</span> <span class="command">git pull origin main</span></div>
+              <div class="comment"># Get latest changes from remote</div>
+              
+              <div><span class="prompt">$</span> <span class="command">git fetch</span></div>
+              <div class="comment"># Download objects without merging</div>
+            </div>
+          </div>
+          
+          <div class="p-4 bg-blue-900/30 rounded-lg">
+            <h4 class="font-semibold text-blue-300 mb-2">🔄 Push vs Pull</h4>
+            <div class="text-sm text-blue-200 space-y-2">
+              <div><span class="font-semibold">git push</span> - Upload your commits to remote repository</div>
+              <div><span class="font-semibold">git pull</span> - Download and merge changes from remote</div>
+              <div><span class="font-semibold">git fetch</span> - Download changes without merging</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Branching & Merging Section -->
+  <section class="course-section py-5 bg-dark-800">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">Branching & Merging</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Branching Basics -->
+        <div class="glass rounded-xl p-6 component-card">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Branching Basics</h3>
+          <p class="text-slate-300 mb-4">Create and manage branches for feature development</p>
+          
+          <div class="terminal mb-4">
+            <div class="flex items-center gap-2 mb-2">
+              <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+              <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+              <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+            </div>
+            <div class="space-y-2 text-sm">
+              <div><span class="prompt">$</span> <span class="command">git branch</span></div>
+              <div class="text-blue-300">* main</div>
+              <div class="comment"># List all branches</div>
+              
+              <div><span class="prompt">$</span> <span class="command">git branch feature-login</span></div>
+              <div class="comment"># Create new branch</div>
+              
+              <div><span class="prompt">$</span> <span class="command">git checkout feature-login</span></div>
+              <div class="text-green-300">Switched to branch 'feature-login'</div>
+              <div class="comment"># Switch to branch</div>
+              
+              <div><span class="prompt">$</span> <span class="command">git checkout -b feature-payment</span></div>
+              <div class="text-green-300">Switched to a new branch 'feature-payment'</div>
+              <div class="comment"># Create and switch in one command</div>
+              
+              <div><span class="prompt">$</span> <span class="command">git branch -d feature-old</span></div>
+              <div class="text-green-300">Deleted branch feature-old</div>
+              <div class="comment"># Delete branch</div>
+              
+              <div><span class="prompt">$</span> <span class="command">git branch -D feature-broken</span></div>
+              <div class="comment"># Force delete unmerged branch</div>
+            </div>
+          </div>
+          
+          <div class="p-4 bg-green-900/30 rounded-lg">
+            <h4 class="font-semibold text-green-300 mb-2">🌿 Branch Visualization</h4>
+            <div class="space-y-2">
+              <div class="branch-visual">
+                <div class="branch-node bg-green-500"></div>
+                <div class="text-sm">main</div>
+              </div>
+              <div class="branch-visual">
+                <div class="branch-node bg-blue-500"></div>
+                <div class="branch-line"></div>
+                <div class="text-sm">feature-login</div>
+              </div>
+              <div class="branch-visual">
+                <div class="branch-node bg-purple-500"></div>
+                <div class="branch-line"></div>
+                <div class="text-sm">feature-payment</div>
+              </div>
+              <div class="branch-visual">
+                <div class="branch-node bg-yellow-500"></div>
+                <div class="branch-line"></div>
+                <div class="text-sm">bugfix-issue</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Merging -->
+        <div class="glass rounded-xl p-6 component-card">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Merging Branches</h3>
+          <p class="text-slate-300 mb-4">Combine changes from different branches</p>
+          
+          <div class="terminal mb-4">
+            <div class="flex items-center gap-2 mb-2">
+              <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+              <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+              <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+            </div>
+            <div class="space-y-2 text-sm">
+              <div><span class="prompt">$</span> <span class="command">git checkout main</span></div>
+              <div class="text-green-300">Switched to branch 'main'</div>
+              
+              <div><span class="prompt">$</span> <span class="command">git merge feature-login</span></div>
+              <div class="text-green-300">Updating a1b2c3..d4e5f6</div>
+              <div class="text-green-300">Fast-forward</div>
+              <div class="text-green-300">README.md | 2 +-</div>
+              <div class="text-green-300">1 file changed, 1 insertion(+), 1 deletion(-)</div>
+              
+              <div><span class="prompt">$</span> <span class="command">git merge --no-ff feature-payment</span></div>
+              <div class="text-green-300">Merge made by the 'recursive' strategy.</div>
+              <div class="text-green-300">payment.js | 45 ++++++++++++++++++</div>
+              <div class="text-green-300">1 file changed, 45 insertions(+)</div>
+              
+              <div><span class="prompt">$</span> <span class="command">git log --oneline --graph --all</span></div>
+              <div class="text-blue-300">*   d4e5f6 Merge branch 'feature-payment'</div>
+              <div class="text-blue-300">|\ </div>
+              <div class="text-blue-300">| * c3b2a1 Add payment functionality</div>
+              <div class="text-blue-300">|/ </div>
+              <div class="text-blue-300">* a1b2c3 Update login feature</div>
+              <div class="text-blue-300">* f0e1d2 Initial commit</div>
+            </div>
+          </div>
+          
+          <div class="p-4 bg-blue-900/30 rounded-lg">
+            <h4 class="font-semibold text-blue-300 mb-2">🔄 Merge Types</h4>
+            <div class="text-sm text-blue-200 space-y-2">
+              <div><span class="font-semibold">Fast-forward merge</span> - When no new changes on target branch</div>
+              <div><span class="font-semibold">Three-way merge</span> - Creates a merge commit when branches have diverged</div>
+              <div><span class="font-semibold">--no-ff</span> - Always create merge commit (recommended for feature branches)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Merge Conflicts -->
+        <div class="glass rounded-xl p-6 component-card">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Resolving Merge Conflicts</h3>
+          <p class="text-slate-300 mb-4">Handle conflicts when Git can't automatically merge</p>
+          
+          <div class="space-y-4">
+            <div class="p-4 bg-red-900/30 rounded-lg">
+              <h4 class="font-semibold text-red-300 mb-2">⚠️ Conflict Detected</h4>
+              <div class="terminal">
+                <div class="flex items-center gap-2 mb-2">
+                  <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                  <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                  <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                </div>
+                <div class="space-y-2 text-sm">
+                  <div><span class="prompt">$</span> <span class="command">git merge feature-header</span></div>
+                  <div class="text-yellow-300">Auto-merging index.html</div>
+                  <div class="text-red-300">CONFLICT (content): Merge conflict in index.html</div>
+                  <div class="text-red-300">Automatic merge failed; fix conflicts and then commit the result.</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="p-4 bg-yellow-900/30 rounded-lg">
+              <h4 class="font-semibold text-yellow-300 mb-2">🔧 Conflict Markers</h4>
+              <div class="code-container bg-slate-800 rounded p-3">
+                <pre><code class="language-html">&lt;!-- index.html --&gt;
+&lt;header&gt;
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+    &lt;h1&gt;Welcome to My Site&lt;/h1&gt;
+=======
+    &lt;h1&gt;Welcome to Our Awesome Site&lt;/h1&gt;
+    &lt;nav&gt;...&lt;/nav&gt;
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; feature-header
+&lt;/header&gt;</code></pre>
+              </div>
+              <div class="text-sm text-yellow-200 mt-2 space-y-1">
+                <div><span class="conflict-marker">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</span> - Your current changes</div>
+                <div><span class="conflict-marker">=======</span> - Separator</div>
+                <div><span class="conflict-marker">&gt;&gt;&gt;&gt;&gt;&gt;&gt; feature-header</span> - Incoming changes</div>
+              </div>
+            </div>
+            
+            <div class="p-4 bg-green-900/30 rounded-lg">
+              <h4 class="font-semibold text-green-300 mb-2">✅ Resolving Conflicts</h4>
+              <div class="terminal">
+                <div class="flex items-center gap-2 mb-2">
+                  <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                  <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                  <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                </div>
+                <div class="space-y-2 text-sm">
+                  <div><span class="prompt">$</span> <span class="command"># Edit the file and remove conflict markers</span></div>
+                  <div><span class="prompt">$</span> <span class="command">git add index.html</span></div>
+                  <div><span class="prompt">$</span> <span class="command">git commit -m "Resolve header conflict"</span></div>
+                  <div class="text-green-300">[main 123abcd] Resolve header conflict</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Git Log & History -->
+        <div class="glass rounded-xl p-6 component-card">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Git Log & History</h3>
+          <p class="text-slate-300 mb-4">Explore commit history and understand project evolution</p>
+          
+          <div class="terminal mb-4">
+            <div class="flex items-center gap-2 mb-2">
+              <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+              <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+              <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+            </div>
+            <div class="space-y-2 text-sm">
+              <div><span class="prompt">$</span> <span class="command">git log</span></div>
+              <div class="text-blue-300">commit d4e5f67890ab (HEAD -> main)</div>
+              <div class="text-blue-300">Author: John Doe &lt;john@example.com&gt;</div>
+              <div class="text-blue-300">Date:   Mon Jan 15 10:30:45 2024</div>
+              <div class="text-blue-300 ml-4">Add payment feature</div>
+              <div class="text-blue-300">commit a1b2c3456789</div>
+              <div class="text-blue-300">Author: John Doe &lt;john@example.com&gt;</div>
+              <div class="text-blue-300">Date:   Mon Jan 15 09:15:20 2024</div>
+              <div class="text-blue-300 ml-4">Update login page</div>
+              
+              <div><span class="prompt">$</span> <span class="command">git log --oneline</span></div>
+              <div class="text-green-300">d4e5f67 Add payment feature</div>
+              <div class="text-green-300">a1b2c34 Update login page</div>
+              <div class="text-green-300">f0e1d23 Initial commit</div>
+              
+              <div><span class="prompt">$</span> <span class="command">git log --oneline --graph --all</span></div>
+              <div class="text-purple-300">* d4e5f67 (main) Add payment feature</div>
+              <div class="text-purple-300">* a1b2c34 Update login page</div>
+              <div class="text-purple-300">| * c3b2a19 (feature-header) Update header</div>
+              <div class="text-purple-300">|/ </div>
+              <div class="text-purple-300">* f0e1d23 Initial commit</div>
+              
+              <div><span class="prompt">$</span> <span class="command">git log --since="2024-01-01"</span></div>
+              <div class="comment"># Show commits since date</div>
+              
+              <div><span class="prompt">$</span> <span class="command">git log -p</span></div>
+              <div class="comment"># Show patch (diff) for each commit</div>
+              
+              <div><span class="prompt">$</span> <span class="command">git show d4e5f67</span></div>
+              <div class="comment"># Show specific commit details</div>
+            </div>
+          </div>
+          
+          <div class="p-4 bg-purple-900/30 rounded-lg">
+            <h4 class="font-semibold text-purple-300 mb-2">📊 Useful Log Options</h4>
+            <div class="text-sm text-purple-200 space-y-1">
+              <div><code>--oneline</code> - Compact view</div>
+              <div><code>--graph</code> - ASCII branch graph</div>
+              <div><code>--stat</code> - Show file statistics</div>
+              <div><code>-p</code> - Show patch content</div>
+              <div><code>--since="date"</code> - Filter by date</div>
+              <div><code>--author="name"</code> - Filter by author</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GitHub Section -->
+  <section class="course-section py-5">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">GitHub & Collaboration</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- GitHub Basics -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4 flex items-center gap-2">
+            <i class="fab fa-github"></i>
+            GitHub Basics
+          </h3>
+          <p class="text-slate-300 mb-4">Working with GitHub repositories and collaboration features</p>
+          
+          <div class="space-y-4">
+            <div class="p-4 bg-github-700/30 rounded-lg">
+              <h4 class="font-semibold text-white mb-2">📝 Create New Repository</h4>
+              <div class="text-sm text-slate-300 space-y-2">
+                <div>1. Go to <a href="https://github.com" class="text-blue-400 hover:underline">GitHub.com</a></div>
+                <div>2. Click <span class="bg-github-600 px-2 py-1 rounded">+</span> → New repository</div>
+                <div>3. Enter repository name</div>
+                <div>4. Choose Public or Private</div>
+                <div>5. Initialize with README (optional)</div>
+                <div>6. Add .gitignore and license (optional)</div>
+                <div>7. Click Create repository</div>
+              </div>
+            </div>
+            
+            <div class="p-4 bg-blue-900/30 rounded-lg">
+              <h4 class="font-semibold text-blue-300 mb-2">🔗 Connect Local to GitHub</h4>
+              <div class="terminal">
+                <div class="flex items-center gap-2 mb-2">
+                  <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                  <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                  <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                </div>
+                <div class="space-y-1 text-sm">
+                  <div><span class="prompt">$</span> <span class="command">git remote add origin https://github.com/username/repo.git</span></div>
+                  <div><span class="prompt">$</span> <span class="command">git branch -M main</span></div>
+                  <div><span class="prompt">$</span> <span class="command">git push -u origin main</span></div>
+                  <div class="text-green-300">Everything up-to-date</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="p-4 bg-green-900/30 rounded-lg">
+              <h4 class="font-semibold text-green-300 mb-2">🌐 GitHub Features</h4>
+              <div class="grid grid-cols-2 gap-3 text-sm">
+                <div class="flex items-center gap-2">
+                  <i class="fas fa-code-branch text-blue-400"></i>
+                  <span>Branches</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <i class="fas fa-code-pull-request text-purple-400"></i>
+                  <span>Pull Requests</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <i class="fas fa-bug text-red-400"></i>
+                  <span>Issues</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <i class="fas fa-play text-green-400"></i>
+                  <span>Actions (CI/CD)</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <i class="fas fa-project-diagram text-yellow-400"></i>
+                  <span>Projects</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <i class="fas fa-shield-alt text-indigo-400"></i>
+                  <span>Security</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fork, Clone & Pull Requests -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Fork, Clone & Pull Requests</h3>
+          <p class="text-slate-300 mb-4">Contribute to open source projects and collaborate</p>
+          
+          <div class="space-y-4">
+            <div class="p-4 bg-purple-900/30 rounded-lg">
+              <h4 class="font-semibold text-purple-300 mb-2">🍴 Fork a Repository</h4>
+              <div class="text-sm text-purple-200 space-y-2">
+                <div>1. Go to the repository on GitHub</div>
+                <div>2. Click the <span class="bg-purple-600 px-2 py-1 rounded">Fork</span> button</div>
+                <div>3. This creates a copy in your account</div>
+                <div>4. You can now make changes freely</div>
+              </div>
+            </div>
+            
+            <div class="p-4 bg-blue-900/30 rounded-lg">
+              <h4 class="font-semibold text-blue-300 mb-2">📥 Clone Your Fork</h4>
+              <div class="terminal">
+                <div class="flex items-center gap-2 mb-2">
+                  <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                  <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                  <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                </div>
+                <div class="space-y-1 text-sm">
+                  <div><span class="prompt">$</span> <span class="command">git clone https://github.com/your-username/repo.git</span></div>
+                  <div><span class="prompt">$</span> <span class="command">cd repo</span></div>
+                  <div><span class="prompt">$</span> <span class="command">git remote add upstream https://github.com/original-owner/repo.git</span></div>
+                  <div class="comment"># Add original repo as upstream</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="p-4 bg-green-900/30 rounded-lg">
+              <h4 class="font-semibold text-green-300 mb-2">🔄 Create Pull Request</h4>
+              <div class="text-sm text-green-200 space-y-2">
+                <div>1. Create a feature branch: <code>git checkout -b feature-name</code></div>
+                <div>2. Make your changes and commit them</div>
+                <div>3. Push to your fork: <code>git push origin feature-name</code></div>
+                <div>4. Go to your fork on GitHub</div>
+                <div>5. Click <span class="bg-green-600 px-2 py-1 rounded">Compare & pull request</span></div>
+                <div>6. Add description and create PR</div>
+                <div>7. Wait for review and merge</div>
+              </div>
+            </div>
+            
+            <div class="p-4 bg-yellow-900/30 rounded-lg">
+              <h4 class="font-semibold text-yellow-300 mb-2">🔄 Sync with Upstream</h4>
+              <div class="terminal">
+                <div class="flex items-center gap-2 mb-2">
+                  <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                  <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                  <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                </div>
+                <div class="space-y-1 text-sm">
+                  <div><span class="prompt">$</span> <span class="command">git fetch upstream</span></div>
+                  <div><span class="prompt">$</span> <span class="command">git checkout main</span></div>
+                  <div><span class="prompt">$</span> <span class="command">git merge upstream/main</span></div>
+                  <div><span class="prompt">$</span> <span class="command">git push origin main</span></div>
+                  <div class="comment"># Now your fork is up to date</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- GitHub Pages -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">GitHub Pages Hosting</h3>
+          <p class="text-slate-300 mb-4">Deploy static websites for free with GitHub Pages</p>
+          
+          <div class="space-y-4">
+            <div class="p-4 bg-blue-900/30 rounded-lg">
+              <h4 class="font-semibold text-blue-300 mb-2">🌐 User/Organization Site</h4>
+              <div class="text-sm text-blue-200 space-y-2">
+                <div>1. Create repository: <code class="bg-blue-800 px-1 rounded">username.github.io</code></div>
+                <div>2. Add <code>index.html</code> to main branch</div>
+                <div>3. Push to GitHub</div>
+                <div>4. Site is live at: <code class="bg-blue-800 px-1 rounded">https://username.github.io</code></div>
+              </div>
+            </div>
+            
+            <div class="p-4 bg-purple-900/30 rounded-lg">
+              <h4 class="font-semibold text-purple-300 mb-2">📁 Project Site</h4>
+              <div class="text-sm text-purple-200 space-y-2">
+                <div>1. Go to repository Settings</div>
+                <div>2. Click <span class="bg-purple-600 px-2 py-1 rounded">Pages</span> in left sidebar</div>
+                <div>3. Select source branch (usually <code>main</code> or <code>gh-pages</code>)</div>
+                <div>4. Select folder (usually <code>/root</code>)</div>
+                <div>5. Save - site deploys automatically</div>
+                <div>6. Access at: <code class="bg-purple-800 px-1 rounded">https://username.github.io/repo-name</code></div>
+              </div>
+            </div>
+            
+            <div class="p-4 bg-green-900/30 rounded-lg">
+              <h4 class="font-semibold text-green-300 mb-2">📄 Example Structure</h4>
+              <div class="code-container bg-slate-800 rounded p-3">
+                <pre><code class="language-html">my-website/
+├── index.html
+├── about.html
+├── css/
+│   └── style.css
+├── js/
+│   └── script.js
+└── images/
+    └── logo.png</code></pre>
+              </div>
+            </div>
+            
+            <div class="p-4 bg-yellow-900/30 rounded-lg">
+              <h4 class="font-semibold text-yellow-300 mb-2">⚙️ Custom Domain (Optional)</h4>
+              <div class="text-sm text-yellow-200 space-y-2">
+                <div>1. Add <code>CNAME</code> file with your domain</div>
+                <div>2. Configure DNS records:</div>
+                <div class="ml-4">- A records: 185.199.108.153, 185.199.109.153, 185.199.110.153, 185.199.111.153</div>
+                <div class="ml-4">- OR CNAME: username.github.io</div>
+                <div>3. Wait for DNS propagation</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SSH Key Setup -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">SSH Key Setup</h3>
+          <p class="text-slate-300 mb-4">Secure authentication without passwords</p>
+          
+          <div class="space-y-4">
+            <div class="p-4 bg-green-900/30 rounded-lg">
+              <h4 class="font-semibold text-green-300 mb-2">🔑 Generate SSH Key</h4>
+              <div class="terminal">
+                <div class="flex items-center gap-2 mb-2">
+                  <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                  <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                  <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                </div>
+                <div class="space-y-1 text-sm">
+                  <div><span class="prompt">$</span> <span class="command">ssh-keygen -t ed25519 -C "your_email@example.com"</span></div>
+                  <div class="text-blue-300">Generating public/private ed25519 key pair.</div>
+                  <div class="text-blue-300">Enter file in which to save the key (/home/you/.ssh/id_ed25519):</div>
+                  <div><span class="prompt">$</span> <span class="command">[Press Enter]</span></div>
+                  <div class="text-blue-300">Enter passphrase (empty for no passphrase):</div>
+                  <div><span class="prompt">$</span> <span class="command">[Enter secure passphrase]</span></div>
+                  <div class="text-green-300">Your identification has been saved in /home/you/.ssh/id_ed25519</div>
+                  <div class="text-green-300">Your public key has been saved in /home/you/.ssh/id_ed25519.pub</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="p-4 bg-blue-900/30 rounded-lg">
+              <h4 class="font-semibold text-blue-300 mb-2">📋 Copy Public Key</h4>
+              <div class="terminal">
+                <div class="flex items-center gap-2 mb-2">
+                  <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                  <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                  <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                </div>
+                <div class="space-y-1 text-sm">
+                  <div><span class="prompt">$</span> <span class="command">cat ~/.ssh/id_ed25519.pub</span></div>
+                  <div class="text-blue-300">ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI... your_email@example.com</div>
+                  <div><span class="prompt">$</span> <span class="command"># Copy the entire output</span></div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="p-4 bg-purple-900/30 rounded-lg">
+              <h4 class="font-semibold text-purple-300 mb-2">🔗 Add to GitHub</h4>
+              <div class="text-sm text-purple-200 space-y-2">
+                <div>1. Go to GitHub Settings</div>
+                <div>2. Click <span class="bg-purple-600 px-2 py-1 rounded">SSH and GPG keys</span></div>
+                <div>3. Click <span class="bg-purple-600 px-2 py-1 rounded">New SSH key</span></div>
+                <div>4. Add title (e.g., "My Laptop")</div>
+                <div>5. Paste your public key</div>
+                <div>6. Click Add SSH key</div>
+              </div>
+            </div>
+            
+            <div class="p-4 bg-yellow-900/30 rounded-lg">
+              <h4 class="font-semibold text-yellow-300 mb-2">✅ Test Connection</h4>
+              <div class="terminal">
+                <div class="flex items-center gap-2 mb-2">
+                  <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                  <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                  <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                </div>
+                <div class="space-y-1 text-sm">
+                  <div><span class="prompt">$</span> <span class="command">ssh -T git@github.com</span></div>
+                  <div class="text-green-300">Hi username! You've successfully authenticated, but GitHub does not provide shell access.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Advanced Git Section -->
+  <section class="course-section py-5 bg-dark-800">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">Advanced Git</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Undoing Changes -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Undoing Changes</h3>
+          <p class="text-slate-300 mb-4">Revert changes at different stages</p>
+          
+          <div class="space-y-4">
+            <div class="p-4 bg-red-900/30 rounded-lg">
+              <h4 class="font-semibold text-red-300 mb-2">↩️ Undo Unstaged Changes</h4>
+              <div class="terminal">
+                <div class="flex items-center gap-2 mb-2">
+                  <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                  <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                  <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                </div>
+                <div class="space-y-1 text-sm">
+                  <div><span class="prompt">$</span> <span class="command">git checkout -- file.txt</span></div>
+                  <div class="comment"># Restore file to last commit state</div>
+                  
+                  <div><span class="prompt">$</span> <span class="command">git restore file.txt</span></div>
+                  <div class="comment"># Newer way (Git 2.23+)</div>
+                  
+                  <div><span class="prompt">$</span> <span class="command">git restore .</span></div>
+                  <div class="comment"># Restore all files</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="p-4 bg-yellow-900/30 rounded-lg">
+              <h4 class="font-semibold text-yellow-300 mb-2">📦 Undo Staged Changes</h4>
+              <div class="terminal">
+                <div class="flex items-center gap-2 mb-2">
+                  <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                  <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                  <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                </div>
+                <div class="space-y-1 text-sm">
+                  <div><span class="prompt">$</span> <span class="command">git reset file.txt</span></div>
+                  <div class="comment"># Unstage specific file</div>
+                  
+                  <div><span class="prompt">$</span> <span class="command">git reset</span></div>
+                  <div class="comment"># Unstage all files</div>
+                  
+                  <div><span class="prompt">$</span> <span class="command">git restore --staged file.txt</span></div>
+                  <div class="comment"># Newer way (Git 2.23+)</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="p-4 bg-purple-900/30 rounded-lg">
+              <h4 class="font-semibold text-purple-300 mb-2">⏪ Undo Commits</h4>
+              <div class="terminal">
+                <div class="flex items-center gap-2 mb-2">
+                  <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                  <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                  <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                </div>
+                <div class="space-y-1 text-sm">
+                  <div><span class="prompt">$</span> <span class="command">git reset --soft HEAD~1</span></div>
+                  <div class="comment"># Keep changes staged</div>
+                  
+                  <div><span class="prompt">$</span> <span class="command">git reset --mixed HEAD~1</span></div>
+                  <div class="comment"># Keep changes unstaged (default)</div>
+                  
+                  <div><span class="prompt">$</span> <span class="command">git reset --hard HEAD~1</span></div>
+                  <div class="comment"># Discard all changes (dangerous!)</div>
+                  
+                  <div><span class="prompt">$</span> <span class="command">git revert HEAD</span></div>
+                  <div class="comment"># Create new commit that undoes changes</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="p-4 bg-blue-900/30 rounded-lg">
+              <h4 class="font-semibold text-blue-300 mb-2">🔄 Reset vs Revert</h4>
+              <div class="text-sm text-blue-200 space-y-2">
+                <div><span class="font-semibold">git reset</span> - Rewrites history (dangerous for shared branches)</div>
+                <div><span class="font-semibold">git revert</span> - Safe for shared branches, creates new commit</div>
+                <div><span class="font-semibold">Use reset</span> for local branches, personal work</div>
+                <div><span class="font-semibold">Use revert</span> for public branches, team work</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- .gitignore -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">.gitignore File</h3>
+          <p class="text-slate-300 mb-4">Ignore files that shouldn't be tracked</p>
+          
+          <div class="space-y-4">
+            <div class="p-4 bg-green-900/30 rounded-lg">
+              <h4 class="font-semibold text-green-300 mb-2">📝 Create .gitignore</h4>
+              <div class="terminal">
+                <div class="flex items-center gap-2 mb-2">
+                  <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                  <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                  <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                </div>
+                <div class="space-y-1 text-sm">
+                  <div><span class="prompt">$</span> <span class="command">touch .gitignore</span></div>
+                  <div><span class="prompt">$</span> <span class="command"># Edit the file with your rules</span></div>
+                  <div><span class="prompt">$</span> <span class="command">git add .gitignore</span></div>
+                  <div><span class="prompt">$</span> <span class="command">git commit -m "Add .gitignore"</span></div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="p-4 bg-blue-900/30 rounded-lg">
+              <h4 class="font-semibold text-blue-300 mb-2">📋 Common .gitignore Patterns</h4>
+              <div class="code-container bg-slate-800 rounded p-3">
+                <pre><code class="language-bash"># Dependencies
+node_modules/
+vendor/
+__pycache__/
+
+# Build outputs
+dist/
+build/
+*.exe
+*.dll
+
+# Environment variables
+.env
+.env.local
+
+# Logs
+*.log
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary files
+*.tmp
+*.temp</code></pre>
+              </div>
+            </div>
+            
+            <div class="p-4 bg-purple-900/30 rounded-lg">
+              <h4 class="font-semibold text-purple-300 mb-2">🎯 Pattern Rules</h4>
+              <div class="text-sm text-purple-200 space-y-2">
+                <div><code>*.log</code> - Ignore all .log files</div>
+                <div><code>!important.log</code> - Except important.log</div>
+                <div><code>temp/</code> - Ignore entire directory</div>
+                <div><code>*.py[cod]</code> - Ignore .pyc, .pyo, .pyd</div>
+                <div><code>**/__pycache__</code> - Recursive directory matching</div>
+                <div><code>file?.txt</code> - Ignore file1.txt, file2.txt, etc.</div>
+              </div>
+            </div>
+            
+            <div class="p-4 bg-yellow-900/30 rounded-lg">
+              <h4 class="font-semibold text-yellow-300 mb-2">⚠️ Remove Tracked Files</h4>
+              <div class="terminal">
+                <div class="flex items-center gap-2 mb-2">
+                  <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                  <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                  <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                </div>
+                <div class="space-y-1 text-sm">
+                  <div><span class="prompt">$</span> <span class="command">git rm --cached file.txt</span></div>
+                  <div class="comment"># Stop tracking but keep locally</div>
+                  
+                  <div><span class="prompt">$</span> <span class="command">git rm -r --cached directory/</span></div>
+                  <div class="comment"># Stop tracking directory</div>
+                  
+                  <div><span class="prompt">$</span> <span class="command">git commit -m "Stop tracking files"</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stashing -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Stashing Changes</h3>
+          <p class="text-slate-300 mb-4">Temporarily save work without committing</p>
+          
+          <div class="space-y-4">
+            <div class="p-4 bg-blue-900/30 rounded-lg">
+              <h4 class="font-semibold text-blue-300 mb-2">💾 Basic Stashing</h4>
+              <div class="terminal">
+                <div class="flex items-center gap-2 mb-2">
+                  <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                  <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                  <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                </div>
+                <div class="space-y-1 text-sm">
+                  <div><span class="prompt">$</span> <span class="command">git stash</span></div>
+                  <div class="text-green-300">Saved working directory and index state</div>
+                  <div class="comment"># Stash all changes</div>
+                  
+                  <div><span class="prompt">$</span> <span class="command">git stash push -m "Work in progress"</span></div>
+                  <div class="comment"># Stash with message</div>
+                  
+                  <div><span class="prompt">$</span> <span class="command">git stash list</span></div>
+                  <div class="text-blue-300">stash@{0}: On main: Work in progress</div>
+                  <div class="text-blue-300">stash@{1}: WIP on main: abc1234 Initial commit</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="p-4 bg-green-900/30 rounded-lg">
+              <h4 class="font-semibold text-green-300 mb-2">📤 Applying Stashes</h4>
+              <div class="terminal">
+                <div class="flex items-center gap-2 mb-2">
+                  <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                  <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                  <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                </div>
+                <div class="space-y-1 text-sm">
+                  <div><span class="prompt">$</span> <span class="command">git stash apply</span></div>
+                  <div class="comment"># Apply latest stash, keep in list</div>
+                  
+                  <div><span class="prompt">$</span> <span class="command">git stash pop</span></div>
+                  <div class="comment"># Apply and remove from list</div>
+                  
+                  <div><span class="prompt">$</span> <span class="command">git stash apply stash@{1}</span></div>
+                  <div class="comment"># Apply specific stash</div>
+                  
+                  <div><span class="prompt">$</span> <span class="command">git stash branch new-branch</span></div>
+                  <div class="comment"># Create branch from stash</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="p-4 bg-purple-900/30 rounded-lg">
+              <h4 class="font-semibold text-purple-300 mb-2">🗑️ Managing Stashes</h4>
+              <div class="terminal">
+                <div class="flex items-center gap-2 mb-2">
+                  <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                  <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                  <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                </div>
+                <div class="space-y-1 text-sm">
+                  <div><span class="prompt">$</span> <span class="command">git stash drop</span></div>
+                  <div class="comment"># Delete latest stash</div>
+                  
+                  <div><span class="prompt">$</span> <span class="command">git stash drop stash@{1}</span></div>
+                  <div class="comment"># Delete specific stash</div>
+                  
+                  <div><span class="prompt">$</span> <span class="command">git stash clear</span></div>
+                  <div class="comment"># Delete all stashes</div>
+                  
+                  <div><span class="prompt">$</span> <span class="command">git stash show -p</span></div>
+                  <div class="comment"># Show stash content as patch</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="p-4 bg-yellow-900/30 rounded-lg">
+              <h4 class="font-semibold text-yellow-300 mb-2">🎯 Use Cases</h4>
+              <div class="text-sm text-yellow-200 space-y-2">
+                <div><span class="font-semibold">Switching branches</span> with uncommitted work</div>
+                <div><span class="font-semibold">Emergency fixes</span> on clean working directory</div>
+                <div><span class="font-semibold">Testing changes</span> without affecting current work</div>
+                <div><span class="font-semibold">Temporary backups</span> of work in progress</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Git Workflow -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Git Workflow for Teams</h3>
+          <p class="text-slate-300 mb-4">Professional collaboration patterns</p>
+          
+          <div class="space-y-4">
+            <div class="p-4 bg-green-900/30 rounded-lg">
+              <h4 class="font-semibold text-green-300 mb-2">🌿 Branch Strategy</h4>
+              <div class="space-y-3">
+                <div>
+                  <div class="font-semibold text-green-400">main/master</div>
+                  <div class="text-sm text-green-200">Production-ready code, always deployable</div>
+                </div>
+                <div>
+                  <div class="font-semibold text-blue-400">develop</div>
+                  <div class="text-sm text-blue-200">Integration branch for features</div>
+                </div>
+                <div>
+                  <div class="font-semibold text-purple-400">feature/*</div>
+                  <div class="text-sm text-purple-200">New features, bug fixes, experiments</div>
+                </div>
+                <div>
+                  <div class="font-semibold text-yellow-400">release/*</div>
+                  <div class="text-sm text-yellow-200">Release preparation and testing</div>
+                </div>
+                <div>
+                  <div class="font-semibold text-red-400">hotfix/*</div>
+                  <div class="text-sm text-red-200">Emergency production fixes</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="p-4 bg-blue-900/30 rounded-lg">
+              <h4 class="font-semibold text-blue-300 mb-2">🔄 Feature Workflow</h4>
+              <div class="text-sm text-blue-200 space-y-2">
+                <div>1. <code>git checkout develop</code></div>
+                <div>2. <code>git pull origin develop</code></div>
+                <div>3. <code>git checkout -b feature/new-feature</code></div>
+                <div>4. Make changes and commit</div>
+                <div>5. <code>git push origin feature/new-feature</code></div>
+                <div>6. Create Pull Request to develop</div>
+                <div>7. Code review and testing</div>
+                <div>8. Merge and delete feature branch</div>
+              </div>
+            </div>
+            
+            <div class="p-4 bg-purple-900/30 rounded-lg">
+              <h4 class="font-semibold text-purple-300 mb-2">🏷️ Release Workflow</h4>
+              <div class="text-sm text-purple-200 space-y-2">
+                <div>1. <code>git checkout -b release/v1.2.0 develop</code></div>
+                <div>2. Update version numbers, changelog</div>
+                <div>3. Testing and bug fixes on release branch</div>
+                <div>4. <code>git checkout main</code></div>
+                <div>5. <code>git merge --no-ff release/v1.2.0</code></div>
+                <div>6. <code>git tag -a v1.2.0 -m "Version 1.2.0"</code></div>
+                <div>7. <code>git checkout develop</code></div>
+                <div>8. <code>git merge --no-ff release/v1.2.0</code></div>
+                <div>9. Delete release branch</div>
+              </div>
+            </div>
+            
+            <div class="p-4 bg-red-900/30 rounded-lg">
+              <h4 class="font-semibold text-red-300 mb-2">🚨 Hotfix Workflow</h4>
+              <div class="text-sm text-red-200 space-y-2">
+                <div>1. <code>git checkout -b hotfix/urgent-fix main</code></div>
+                <div>2. Make emergency fix and commit</div>
+                <div>3. <code>git checkout main</code></div>
+                <div>4. <code>git merge --no-ff hotfix/urgent-fix</code></div>
+                <div>5. <code>git tag -a v1.2.1 -m "Hotfix v1.2.1"</code></div>
+                <div>6. <code>git checkout develop</code></div>
+                <div>7. <code>git merge --no-ff hotfix/urgent-fix</code></div>
+                <div>8. Delete hotfix branch</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Real World Project Section -->
+  <section id="workflow" class="course-section py-5">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">Real World Project Example</h2>
+      
+      <div class="glass rounded-xl p-6">
+        <h3 class="text-xl font-semibold text-neon-300 mb-4">Student Management System</h3>
+        <p class="text-slate-300 mb-6">Complete Git workflow for a team project</p>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div>
+            <h4 class="font-semibold text-green-400 mb-3">🌿 Branch Structure</h4>
+            <div class="space-y-3">
+              <div class="branch-visual">
+                <div class="branch-node bg-green-500"></div>
+                <div class="text-sm font-semibold">main</div>
+                <div class="text-xs text-slate-400 ml-2">Production</div>
+              </div>
+              <div class="branch-visual">
+                <div class="branch-node bg-blue-500"></div>
+                <div class="branch-line"></div>
+                <div class="text-sm font-semibold">develop</div>
+                <div class="text-xs text-slate-400 ml-2">Development</div>
+              </div>
+              <div class="branch-visual ml-6">
+                <div class="branch-node bg-purple-500"></div>
+                <div class="branch-line"></div>
+                <div class="text-sm">feature/login</div>
+                <div class="text-xs text-slate-400 ml-2">Authentication system</div>
+              </div>
+              <div class="branch-visual ml-6">
+                <div class="branch-node bg-purple-500"></div>
+                <div class="branch-line"></div>
+                <div class="text-sm">feature/crud</div>
+                <div class="text-xs text-slate-400 ml-2">Student operations</div>
+              </div>
+              <div class="branch-visual ml-6">
+                <div class="branch-node bg-yellow-500"></div>
+                <div class="branch-line"></div>
+                <div class="text-sm">bugfix/insert</div>
+                <div class="text-xs text-slate-400 ml-2">Fix data insertion</div>
+              </div>
+              <div class="branch-visual ml-6">
+                <div class="branch-node bg-purple-500"></div>
+                <div class="branch-line"></div>
+                <div class="text-sm">ui/update</div>
+                <div class="text-xs text-slate-400 ml-2">Interface improvements</div>
+              </div>
+            </div>
+          </div>
+          
+          <div>
+            <h4 class="font-semibold text-blue-400 mb-3">🔄 Team Workflow</h4>
+            <div class="space-y-4">
+              <div class="p-3 bg-slate-800/50 rounded-lg">
+                <h5 class="font-semibold text-green-400 mb-1">Developer A - Login Feature</h5>
+                <div class="text-xs text-slate-400 space-y-1">
+                  <div><code>git checkout -b feature/login develop</code></div>
+                  <div><code>git add . && git commit -m "Add login form"</code></div>
+                  <div><code>git push origin feature/login</code></div>
+                  <div>Create PR → Review → Merge to develop</div>
+                </div>
+              </div>
+              
+              <div class="p-3 bg-slate-800/50 rounded-lg">
+                <h5 class="font-semibold text-blue-400 mb-1">Developer B - CRUD Operations</h5>
+                <div class="text-xs text-slate-400 space-y-1">
+                  <div><code>git checkout -b feature/crud develop</code></div>
+                  <div><code>git add . && git commit -m "Add student CRUD"</code></div>
+                  <div><code>git push origin feature/crud</code></div>
+                  <div>Create PR → Review → Merge to develop</div>
+                </div>
+              </div>
+              
+              <div class="p-3 bg-slate-800/50 rounded-lg">
+                <h5 class="font-semibold text-yellow-400 mb-1">Tester - Bug Fix</h5>
+                <div class="text-xs text-slate-400 space-y-1">
+                  <div><code>git checkout -b bugfix/insert develop</code></div>
+                  <div><code>git add . && git commit -m "Fix data insertion"</code></div>
+                  <div><code>git push origin bugfix/insert</code></div>
+                  <div>Create PR → Review → Merge to develop</div>
+                </div>
+              </div>
+              
+              <div class="p-3 bg-slate-800/50 rounded-lg">
+                <h5 class="font-semibold text-purple-400 mb-1">Release Manager</h5>
+                <div class="text-xs text-slate-400 space-y-1">
+                  <div><code>git checkout -b release/v1.0.0 develop</code></div>
+                  <div><code>git tag -a v1.0.0 -m "Release v1.0.0"</code></div>
+                  <div><code>git checkout main && git merge release/v1.0.0</code></div>
+                  <div><code>git push origin main --tags</code></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mt-6 p-4 bg-green-900/30 rounded-lg">
+          <h4 class="font-semibold text-green-300 mb-2">✅ Best Practices</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+            <div class="space-y-2">
+              <div class="flex items-center gap-2">
+                <i class="fas fa-check text-green-400"></i>
+                <span>Commit often, perfect later</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <i class="fas fa-check text-green-400"></i>
+                <span>Write descriptive commit messages</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <i class="fas fa-check text-green-400"></i>
+                <span>One feature per branch</span>
+              </div>
+            </div>
+            <div class="space-y-2">
+              <div class="flex items-center gap-2">
+                <i class="fas fa-check text-green-400"></i>
+                <span>Review code before merging</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <i class="fas fa-check text-green-400"></i>
+                <span>Test before pushing to main</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <i class="fas fa-check text-green-400"></i>
+                <span>Use semantic versioning</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cheat Sheet Section -->
+  <section class="course-section py-5 bg-dark-800">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">Git Commands Cheat Sheet</h2>
+      
+      <div class="glass rounded-xl p-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="space-y-4">
+            <h3 class="text-lg font-semibold text-green-400 mb-3">📁 Repository</h3>
+            <div class="space-y-2">
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Initialize repo</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">git init</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Clone repo</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">git clone url</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Add remote</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">git remote add origin url</code>
+              </div>
+            </div>
+          </div>
+          
+          <div class="space-y-4">
+            <h3 class="text-lg font-semibold text-blue-400 mb-3">📝 Basic Workflow</h3>
+            <div class="space-y-2">
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Check status</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">git status</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Stage files</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">git add .</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Commit changes</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">git commit -m "msg"</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Push to remote</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">git push</code>
+              </div>
+            </div>
+          </div>
+          
+          <div class="space-y-4">
+            <h3 class="text-lg font-semibold text-purple-400 mb-3">🌿 Branching</h3>
+            <div class="space-y-2">
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">List branches</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">git branch</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Create branch</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">git branch name</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Switch branch</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">git checkout name</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Create & switch</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">git checkout -b name</code>
+              </div>
+            </div>
+          </div>
+          
+          <div class="space-y-4">
+            <h3 class="text-lg font-semibold text-yellow-400 mb-3">🔄 Merging</h3>
+            <div class="space-y-2">
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Merge branch</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">git merge branch</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Merge no-ff</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">git merge --no-ff</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Abort merge</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">git merge --abort</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Rebase</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">git rebase branch</code>
+              </div>
+            </div>
+          </div>
+          
+          <div class="space-y-4">
+            <h3 class="text-lg font-semibold text-red-400 mb-3">↩️ Undoing</h3>
+            <div class="space-y-2">
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Unstage file</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">git reset file</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Undo commit</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">git reset HEAD~1</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Revert commit</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">git revert commit</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Discard changes</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">git checkout -- file</code>
+              </div>
+            </div>
+          </div>
+          
+          <div class="space-y-4">
+            <h3 class="text-lg font-semibold text-indigo-400 mb-3">📊 History</h3>
+            <div class="space-y-2">
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">View log</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">git log</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">One-line log</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">git log --oneline</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Graph log</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">git log --graph</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Show commit</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">git show commit</code>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mt-6 p-4 bg-blue-900/30 rounded-lg">
+          <h4 class="font-semibold text-blue-300 mb-2">💡 Pro Tips</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+            <div class="space-y-2">
+              <div><code>git config --global alias.co checkout</code> - Create shortcuts</div>
+              <div><code>git log --oneline -10</code> - Last 10 commits</div>
+              <div><code>git diff --staged</code> - See staged changes</div>
+            </div>
+            <div class="space-y-2">
+              <div><code>git blame file</code> - See who changed what</div>
+              <div><code>git bisect</code> - Find bug-introducing commit</div>
+              <div><code>git reflog</code> - Recovery from mistakes</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Navigation -->
+  <div class="max-w-6xl mx-auto px-6 py-8">
+    <div class="glass rounded-xl p-6 sticky bottom-6">
+      <h3 class="font-semibold text-neon-300 mb-4">Course Navigation</h3>
+      <div class="flex flex-wrap gap-3">
+        <a href="#basics" class="px-4 py-2 rounded-lg bg-slate-800/40 hover:bg-slate-700/40 transition text-sm">Basics</a>
+        <a href="#workflow" class="px-4 py-2 rounded-lg bg-slate-800/40 hover:bg-slate-700/40 transition text-sm">Workflow</a>
+        <button onclick="showCheatSheet()" class="px-4 py-2 rounded-lg bg-git-500 hover:bg-git-600 transition text-sm">Cheat Sheet</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="glass border-t border-slate-800 mt-20">
+    <div class="max-w-6xl mx-auto px-6 py-8 text-center">
+      <div class="flex items-center justify-center gap-6 mb-4">
+        <a href="/" class="text-slate-300 hover:text-neon-500 transition">Home</a>
+        <a href="#basics" class="text-slate-300 hover:text-neon-500 transition">Course</a>
+        <a href="https://github.com/JUSAIR-JSR" target="_blank" class="text-slate-300 hover:text-neon-500 transition">GitHub</a>
+      </div>
+      <p class="text-slate-500 text-sm">© 2023 Git & GitHub Course - Complete Beginner to Advanced</p>
+    </div>
+  </footer>
+
+  <!-- Cheat Sheet Modal -->
+  <div id="cheat-sheet" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-50 p-4">
+    <div class="glass rounded-xl p-6 max-w-4xl max-h-[80vh] overflow-y-auto">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-2xl font-bold text-neon-300">Git & GitHub Cheat Sheet</h3>
+        <button onclick="hideCheatSheet()" class="text-slate-400 hover:text-white">
+          <i class="fas fa-times text-2xl"></i>
+        </button>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h4 class="font-semibold text-green-400 mb-3">Basic Commands</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">git init</code>
+            <code class="block bg-slate-800 p-2 rounded">git add .</code>
+            <code class="block bg-slate-800 p-2 rounded">git commit -m "msg"</code>
+            <code class="block bg-slate-800 p-2 rounded">git push</code>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-blue-400 mb-3">Branching</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">git branch</code>
+            <code class="block bg-slate-800 p-2 rounded">git checkout -b name</code>
+            <code class="block bg-slate-800 p-2 rounded">git merge branch</code>
+            <code class="block bg-slate-800 p-2 rounded">git branch -d name</code>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-yellow-400 mb-3">Undoing</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">git reset HEAD~1</code>
+            <code class="block bg-slate-800 p-2 rounded">git revert commit</code>
+            <code class="block bg-slate-800 p-2 rounded">git checkout -- file</code>
+            <code class="block bg-slate-800 p-2 rounded">git clean -fd</code>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-purple-400 mb-3">Remote</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">git clone url</code>
+            <code class="block bg-slate-800 p-2 rounded">git remote add origin url</code>
+            <code class="block bg-slate-800 p-2 rounded">git fetch</code>
+            <code class="block bg-slate-800 p-2 rounded">git pull</code>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-red-400 mb-3">Stashing</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">git stash</code>
+            <code class="block bg-slate-800 p-2 rounded">git stash pop</code>
+            <code class="block bg-slate-800 p-2 rounded">git stash list</code>
+            <code class="block bg-slate-800 p-2 rounded">git stash drop</code>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-indigo-400 mb-3">History</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">git log --oneline</code>
+            <code class="block bg-slate-800 p-2 rounded">git log --graph</code>
+            <code class="block bg-slate-800 p-2 rounded">git show commit</code>
+            <code class="block bg-slate-800 p-2 rounded">git diff</code>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Initialize syntax highlighting
+    hljs.highlightAll();
+
+    // Copy button functionality
+    document.querySelectorAll('.copy-btn').forEach(button => {
+      button.addEventListener('click', function() {
+        const codeBlock = this.closest('.code-container').querySelector('code');
+        const textArea = document.createElement('textarea');
+        textArea.value = codeBlock.textContent;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        
+        // Visual feedback
+        const originalText = this.innerHTML;
+        this.innerHTML = '<i class="fas fa-check mr-1"></i>Copied!';
+        setTimeout(() => {
+          this.innerHTML = originalText;
+        }, 2000);
+      });
+    });
+
+    // Cheat sheet functions
+    function showCheatSheet() {
+      document.getElementById('cheat-sheet').classList.remove('hidden');
+      document.getElementById('cheat-sheet').classList.add('flex');
+    }
+
+    function hideCheatSheet() {
+      document.getElementById('cheat-sheet').classList.add('hidden');
+      document.getElementById('cheat-sheet').classList.remove('flex');
+    }
+
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>

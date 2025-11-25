@@ -1,0 +1,2533 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Java Course - Complete Beginner to Advanced</title>
+  <meta name="description" content="Complete Java course with OOP, Collections, Multithreading, JDBC, and projects" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Highlight.js for syntax highlighting -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            neon: {
+              50: '#f3f7ff',
+              100: '#e6f0ff',
+              300: '#99ccff',
+              500: '#00d0ff',
+              600: '#00a8d9',
+              700: '#00a3cc',
+              800: '#007399'
+            },
+            dark: {
+              900: '#0a0f1c',
+              800: '#0f172a',
+              700: '#1e293b'
+            },
+            java: {
+              500: '#ed8b00',
+              600: '#d67c00',
+              700: '#b36600'
+            }
+          },
+          animation: {
+            'float': 'float 6s ease-in-out infinite',
+            'pulse-glow': 'pulse-glow 2s ease-in-out infinite alternate',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    .neon-text { 
+      text-shadow: 0 0 8px rgba(0,208,255,0.15), 0 0 18px rgba(0,208,255,0.06); 
+    }
+    
+    .glass {
+      background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .code-container {
+      position: relative;
+    }
+    
+    .copy-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    
+    .code-container:hover .copy-btn {
+      opacity: 1;
+    }
+    
+    .preview-frame {
+      background: white;
+      border-radius: 0.5rem;
+      border: 1px solid rgba(255,255,255,0.1);
+      min-height: 200px;
+    }
+    
+    .component-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .component-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .terminal {
+      background: #1a1b26;
+      color: #c0caf5;
+      font-family: 'Fira Code', monospace;
+      border-radius: 0.5rem;
+      padding: 1rem;
+    }
+    
+    .terminal .prompt {
+      color: #7dcfff;
+    }
+    
+    .terminal .command {
+      color: #9ece6a;
+    }
+    
+    .java-editor {
+      background: #1e293b;
+      color: #c0caf5;
+      font-family: 'Fira Code', monospace;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      min-height: 200px;
+      border: 1px solid #374151;
+    }
+    
+    .java-output {
+      background: #0f172a;
+      color: #10b981;
+      font-family: 'Fira Code', monospace;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      min-height: 100px;
+      border: 1px solid #374151;
+    }
+    
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.5);
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: rgba(0, 208, 255, 0.3);
+      border-radius: 4px;
+    }
+    
+    .course-section {
+      scroll-margin-top: 100px;
+    }
+    
+    /* Animation for live examples */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .animate-fade-in {
+      animation: fadeInUp 0.6s ease-out;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    @keyframes pulse-glow {
+      0% { box-shadow: 0 0 20px rgba(0, 208, 255, 0.4); }
+      100% { box-shadow: 0 0 30px rgba(0, 208, 255, 0.8), 0 0 40px rgba(0, 208, 255, 0.4); }
+    }
+    
+    .java-badge {
+      background: linear-gradient(135deg, #ed8b00, #d67c00);
+      color: white;
+    }
+    
+    .syntax-keyword {
+      color: #ff79c6;
+    }
+    
+    .syntax-type {
+      color: #8be9fd;
+    }
+    
+    .syntax-string {
+      color: #f1fa8c;
+    }
+    
+    .syntax-comment {
+      color: #6272a4;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-dark-900 via-dark-800 to-dark-900 text-slate-200 min-h-screen">
+
+  <!-- Navigation -->
+  <nav class="glass border-b border-slate-800 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-java-500 to-java-600 flex items-center justify-center">
+          <i class="fab fa-java text-white text-lg"></i>
+        </div>
+        <div>
+          <h1 class="text-lg font-bold neon-text">Java Course</h1>
+          <p class="text-xs text-slate-400">Beginner to Advanced</p>
+        </div>
+      </a>
+
+      <div class="flex items-center gap-4">
+        <a href="/" class="px-4 py-2 rounded-lg text-sm hover:bg-slate-800/40 transition">
+          <i class="fas fa-home mr-2"></i>Home
+        </a>
+        <a href="#basics" class="px-4 py-2 rounded-lg text-sm bg-slate-800/40 border border-neon-500/30">
+          <i class="fas fa-book mr-2"></i>Course
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="max-w-7xl mx-auto px-6 py-16 text-center">
+    <div class="max-w-3xl mx-auto">
+      <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800/40 border border-slate-700/40 text-sm mb-6">
+        <i class="fas fa-coffee text-java-500"></i>
+        Complete Java Programming Course
+      </span>
+      <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight text-white neon-text mb-6">
+        Master Java
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-java-500 to-java-600 block">The Language of Enterprise</span>
+      </h1>
+      <p class="text-slate-300 text-lg mb-8">Learn Java programming with interactive examples, OOP concepts, Collections, Multithreading, JDBC, and real-world projects. Build your skills step by step.</p>
+      
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href="#basics" class="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r from-java-500 to-java-600 font-medium hover:scale-105 transition-transform">
+          <i class="fas fa-play"></i>
+          Start Learning
+        </a>
+        <a href="#live-editor" class="inline-flex items-center gap-3 px-6 py-3 rounded-full border border-slate-700/40 hover:border-neon-500 transition glass">
+          <i class="fas fa-code"></i>
+          Live Editor
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Java Basics Section -->
+  <section id="basics" class="course-section py-5">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">Java Basics</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Setup & Installation -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4 flex items-center gap-2">
+            <i class="fas fa-download"></i>
+            Setup & Installation
+          </h3>
+          <p class="text-slate-300 mb-4">Get Java installed and create your first program</p>
+          
+          <div class="terminal mb-4">
+            <div class="flex items-center gap-2 mb-2">
+              <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+              <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+              <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+            </div>
+            <div class="space-y-2 text-sm">
+              <div><span class="prompt">$</span> <span class="command">java -version</span></div>
+              <div class="text-blue-300">java version "17.0.1" 2021-10-19 LTS</div>
+              <div><span class="prompt">$</span> <span class="command">javac Main.java</span></div>
+              <div class="text-gray-400"># Compile Java file</div>
+              <div><span class="prompt">$</span> <span class="command">java Main</span></div>
+              <div class="text-gray-400"># Run Java program</div>
+            </div>
+          </div>
+          
+          <div class="p-4 bg-green-900/30 rounded-lg">
+            <h4 class="font-semibold text-green-300 mb-2">🚀 First Java Program</h4>
+            <div class="code-container bg-slate-800 rounded p-3">
+              <pre><code class="language-java">// Main.java
+class Main {
+    public static void main(String[] args) {
+        System.out.println("Hello Java!");
+    }
+}</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- Variables & Data Types -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Variables & Data Types</h3>
+          <p class="text-slate-300 mb-4">Java's static typing and basic data types</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-java">// Primitive data types
+int age = 20;
+double price = 99.5;
+char grade = 'A';
+boolean isActive = true;
+float weight = 70.5f;
+long population = 7800000000L;
+
+// Reference data types
+String name = "Jusair";
+int[] numbers = {1, 2, 3};
+
+// Type conversion
+int num = 100;
+double decimal = num;  // Implicit casting
+int back = (int) decimal;  // Explicit casting
+
+// Constants
+final double PI = 3.14159;
+final int MAX_USERS = 100;
+
+// Output variables
+System.out.println("Name: " + name);
+System.out.println("Age: " + age);
+System.out.println("Price: $" + price);
+System.out.println("Grade: " + grade);
+System.out.println("Active: " + isActive);</code></pre>
+          </div>
+        </div>
+
+        <!-- Operators -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Operators</h3>
+          <p class="text-slate-300 mb-4">Arithmetic, relational, logical, and assignment operators</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-java">// Arithmetic operators
+int a = 10, b = 3;
+System.out.println("a + b = " + (a + b));  // 13
+System.out.println("a - b = " + (a - b));  // 7
+System.out.println("a * b = " + (a * b));  // 30
+System.out.println("a / b = " + (a / b));  // 3
+System.out.println("a % b = " + (a % b));  // 1
+
+// Relational operators
+System.out.println("a == b: " + (a == b));  // false
+System.out.println("a != b: " + (a != b));  // true
+System.out.println("a > b: " + (a > b));    // true
+System.out.println("a < b: " + (a < b));    // false
+
+// Logical operators
+boolean x = true, y = false;
+System.out.println("x && y: " + (x && y));  // false
+System.out.println("x || y: " + (x || y));  // true
+System.out.println("!x: " + (!x));          // false
+
+// Assignment operators
+int c = 5;
+c += 3;  // c = c + 3 → 8
+c -= 2;  // c = c - 2 → 6
+c *= 2;  // c = c * 2 → 12
+c /= 3;  // c = c / 3 → 4
+
+// Increment/Decrement
+int count = 5;
+System.out.println("count++: " + count++);  // 5 (post-increment)
+System.out.println("++count: " + ++count);  // 7 (pre-increment)</code></pre>
+          </div>
+        </div>
+
+        <!-- Input & Output -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Input & Output</h3>
+          <p class="text-slate-300 mb-4">Getting user input and displaying output</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-java">import java.util.Scanner;
+
+class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        // Reading different types of input
+        System.out.print("Enter your name: ");
+        String name = scanner.nextLine();
+        
+        System.out.print("Enter your age: ");
+        int age = scanner.nextInt();
+        
+        System.out.print("Enter your height (in meters): ");
+        double height = scanner.nextDouble();
+        
+        System.out.print("Are you a student? (true/false): ");
+        boolean isStudent = scanner.nextBoolean();
+        
+        // Clear the buffer
+        scanner.nextLine();
+        
+        System.out.print("Enter your city: ");
+        String city = scanner.nextLine();
+        
+        // Display collected information
+        System.out.println("\n--- User Information ---");
+        System.out.println("Name: " + name);
+        System.out.println("Age: " + age);
+        System.out.println("Height: " + height + "m");
+        System.out.println("Student: " + isStudent);
+        System.out.println("City: " + city);
+        
+        scanner.close();
+    }
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Control Flow Section -->
+  <section class="course-section py-5 bg-dark-800">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">Control Flow</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Conditional Statements -->
+        <div class="glass rounded-xl p-6 component-card">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Conditional Statements</h3>
+          <p class="text-slate-300 mb-4">If/else statements and switch cases</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-java">// If-else statements
+int age = 18;
+if (age >= 18) {
+    System.out.println("You are an adult");
+} else {
+    System.out.println("You are a minor");
+}
+
+// Else-if ladder
+int score = 85;
+if (score >= 90) {
+    System.out.println("Grade: A");
+} else if (score >= 80) {
+    System.out.println("Grade: B");
+} else if (score >= 70) {
+    System.out.println("Grade: C");
+} else {
+    System.out.println("Grade: F");
+}
+
+// Ternary operator
+String status = (age >= 18) ? "adult" : "minor";
+System.out.println("Status: " + status);
+
+// Switch statement
+int day = 3;
+String dayName;
+switch (day) {
+    case 1:
+        dayName = "Monday";
+        break;
+    case 2:
+        dayName = "Tuesday";
+        break;
+    case 3:
+        dayName = "Wednesday";
+        break;
+    case 4:
+        dayName = "Thursday";
+        break;
+    case 5:
+        dayName = "Friday";
+        break;
+    default:
+        dayName = "Weekend";
+}
+System.out.println("Day: " + dayName);
+
+// Enhanced switch (Java 14+)
+String season = "Summer";
+String message = switch (season) {
+    case "Winter" -> "It's cold!";
+    case "Summer" -> "It's hot!";
+    case "Spring", "Autumn" -> "Moderate weather";
+    default -> "Unknown season";
+};
+System.out.println(message);</code></pre>
+          </div>
+        </div>
+
+        <!-- Loops -->
+        <div class="glass rounded-xl p-6 component-card">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Loops</h3>
+          <p class="text-slate-300 mb-4">For loops, while loops, and loop control</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-java">// For loop
+System.out.println("Counting from 1 to 5:");
+for (int i = 1; i <= 5; i++) {
+    System.out.println(i);
+}
+
+// Enhanced for loop (for-each)
+int[] numbers = {1, 2, 3, 4, 5};
+System.out.println("\nNumbers in array:");
+for (int num : numbers) {
+    System.out.println(num);
+}
+
+// While loop
+System.out.println("\nCountdown:");
+int count = 5;
+while (count > 0) {
+    System.out.println(count);
+    count--;
+}
+System.out.println("Blast off!");
+
+// Do-while loop
+int x = 1;
+System.out.println("\nDo-while example:");
+do {
+    System.out.println(x);
+    x++;
+} while (x <= 3);
+
+// Loop control: break and continue
+System.out.println("\nNumbers 1-10 (skip 5):");
+for (int i = 1; i <= 10; i++) {
+    if (i == 5) {
+        continue;  // Skip 5
+    }
+    if (i == 8) {
+        break;     // Stop at 8
+    }
+    System.out.println(i);
+}
+
+// Nested loops
+System.out.println("\nMultiplication table (1-3):");
+for (int i = 1; i <= 3; i++) {
+    for (int j = 1; j <= 3; j++) {
+        System.out.println(i + " x " + j + " = " + (i * j));
+    }
+}
+
+// Labeled break
+outerLoop:
+for (int i = 1; i <= 3; i++) {
+    for (int j = 1; j <= 3; j++) {
+        if (i == 2 && j == 2) {
+            break outerLoop;
+        }
+        System.out.println("i=" + i + ", j=" + j);
+    }
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- Arrays -->
+        <div class="glass rounded-xl p-6 component-card">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Arrays</h3>
+          <p class="text-slate-300 mb-4">Working with single and multi-dimensional arrays</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-java">// Single-dimensional arrays
+int[] numbers = {10, 20, 30, 40, 50};
+String[] names = {"Alice", "Bob", "Charlie"};
+
+// Array declaration and initialization
+int[] scores = new int[5];  // Array of 5 integers
+scores[0] = 95;
+scores[1] = 87;
+scores[2] = 92;
+
+// Accessing array elements
+System.out.println("First number: " + numbers[0]);
+System.out.println("Second name: " + names[1]);
+
+// Array length
+System.out.println("Numbers array length: " + numbers.length);
+
+// Iterating through arrays
+System.out.println("\nAll numbers:");
+for (int i = 0; i < numbers.length; i++) {
+    System.out.println("Index " + i + ": " + numbers[i]);
+}
+
+System.out.println("\nAll names (enhanced for):");
+for (String name : names) {
+    System.out.println(name);
+}
+
+// Multi-dimensional arrays
+int[][] matrix = {
+    {1, 2, 3},
+    {4, 5, 6},
+    {7, 8, 9}
+};
+
+System.out.println("\n2D Array:");
+for (int i = 0; i < matrix.length; i++) {
+    for (int j = 0; j < matrix[i].length; j++) {
+        System.out.print(matrix[i][j] + " ");
+    }
+    System.out.println();
+}
+
+// Array methods
+int[] arr = {5, 2, 8, 1, 9};
+Arrays.sort(arr);  // Sort the array
+System.out.println("\nSorted array: " + Arrays.toString(arr));
+
+// Copying arrays
+int[] copy = Arrays.copyOf(arr, arr.length);
+System.out.println("Copied array: " + Arrays.toString(copy));
+
+// Searching in arrays
+int index = Arrays.binarySearch(arr, 8);
+System.out.println("Index of 8: " + index);</code></pre>
+          </div>
+        </div>
+
+        <!-- Methods -->
+        <div class="glass rounded-xl p-6 component-card">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Methods</h3>
+          <p class="text-slate-300 mb-4">Defining and using methods in Java</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-java">class MethodExamples {
+    
+    // Basic method
+    static void greet() {
+        System.out.println("Hello, World!");
+    }
+    
+    // Method with parameters and return value
+    static int add(int a, int b) {
+        return a + b;
+    }
+    
+    // Method with multiple parameters
+    static String createMessage(String name, int age) {
+        return "Hello " + name + ", you are " + age + " years old";
+    }
+    
+    // Method overloading
+    static int multiply(int a, int b) {
+        return a * b;
+    }
+    
+    static double multiply(double a, double b) {
+        return a * b;
+    }
+    
+    static int multiply(int a, int b, int c) {
+        return a * b * c;
+    }
+    
+    // Method with array parameter
+    static int findMax(int[] numbers) {
+        int max = numbers[0];
+        for (int num : numbers) {
+            if (num > max) {
+                max = num;
+            }
+        }
+        return max;
+    }
+    
+    // Recursive method
+    static int factorial(int n) {
+        if (n == 0) {
+            return 1;
+        }
+        return n * factorial(n - 1);
+    }
+    
+    // Variable arguments (varargs)
+    static int sum(int... numbers) {
+        int total = 0;
+        for (int num : numbers) {
+            total += num;
+        }
+        return total;
+    }
+    
+    public static void main(String[] args) {
+        // Calling methods
+        greet();
+        
+        int result = add(5, 3);
+        System.out.println("5 + 3 = " + result);
+        
+        String message = createMessage("Alice", 25);
+        System.out.println(message);
+        
+        // Method overloading examples
+        System.out.println("Multiply int: " + multiply(4, 5));
+        System.out.println("Multiply double: " + multiply(4.5, 2.5));
+        System.out.println("Multiply three: " + multiply(2, 3, 4));
+        
+        // Array method
+        int[] nums = {3, 7, 2, 9, 1};
+        System.out.println("Max number: " + findMax(nums));
+        
+        // Recursive method
+        System.out.println("Factorial of 5: " + factorial(5));
+        
+        // Varargs method
+        System.out.println("Sum: " + sum(1, 2, 3, 4, 5));
+        System.out.println("Sum: " + sum(10, 20));
+    }
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OOP Section -->
+  <section class="course-section py-5">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">Object-Oriented Programming</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Classes & Objects -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Classes & Objects</h3>
+          <p class="text-slate-300 mb-4">Creating classes, objects, and constructors</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-java">// Basic class
+class Student {
+    // Instance variables (fields)
+    String name;
+    int age;
+    double gpa;
+    
+    // Constructor
+    Student(String name, int age, double gpa) {
+        this.name = name;
+        this.age = age;
+        this.gpa = gpa;
+    }
+    
+    // Default constructor
+    Student() {
+        this.name = "Unknown";
+        this.age = 0;
+        this.gpa = 0.0;
+    }
+    
+    // Method
+    void displayInfo() {
+        System.out.println("Name: " + name);
+        System.out.println("Age: " + age);
+        System.out.println("GPA: " + gpa);
+    }
+    
+    // Method with return value
+    boolean isHonorStudent() {
+        return gpa >= 3.5;
+    }
+}
+
+class Main {
+    public static void main(String[] args) {
+        // Creating objects
+        Student student1 = new Student("Alice", 20, 3.8);
+        Student student2 = new Student("Bob", 22, 3.2);
+        Student student3 = new Student();  // Using default constructor
+        
+        // Using objects
+        student1.displayInfo();
+        System.out.println("Is honor student: " + student1.isHonorStudent());
+        
+        student2.displayInfo();
+        System.out.println("Is honor student: " + student2.isHonorStudent());
+        
+        student3.displayInfo();
+        
+        // Modifying object properties
+        student3.name = "Charlie";
+        student3.age = 21;
+        student3.gpa = 3.9;
+        student3.displayInfo();
+    }
+}
+
+// Class with static members
+class MathUtils {
+    // Static variable (class variable)
+    static int operationCount = 0;
+    
+    // Static method
+    static double calculateCircleArea(double radius) {
+        operationCount++;
+        return Math.PI * radius * radius;
+    }
+    
+    // Static block
+    static {
+        System.out.println("MathUtils class loaded");
+    }
+    
+    static void showOperationCount() {
+        System.out.println("Total operations: " + operationCount);
+    }
+}
+
+class StaticExample {
+    public static void main(String[] args) {
+        // Using static methods without creating objects
+        double area = MathUtils.calculateCircleArea(5.0);
+        System.out.println("Circle area: " + area);
+        
+        MathUtils.calculateCircleArea(3.0);
+        MathUtils.showOperationCount();
+    }
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- Inheritance & Polymorphism -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Inheritance & Polymorphism</h3>
+          <p class="text-slate-300 mb-4">Extending classes and method overriding</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-java">// Inheritance example
+class Animal {
+    String name;
+    
+    Animal(String name) {
+        this.name = name;
+    }
+    
+    void eat() {
+        System.out.println(name + " is eating");
+    }
+    
+    void sleep() {
+        System.out.println(name + " is sleeping");
+    }
+    
+    void makeSound() {
+        System.out.println(name + " makes a sound");
+    }
+}
+
+class Dog extends Animal {
+    String breed;
+    
+    Dog(String name, String breed) {
+        super(name);  // Call parent constructor
+        this.breed = breed;
+    }
+    
+    // Method overriding
+    @Override
+    void makeSound() {
+        System.out.println(name + " barks");
+    }
+    
+    // Additional method
+    void fetch() {
+        System.out.println(name + " is fetching");
+    }
+}
+
+class Cat extends Animal {
+    Cat(String name) {
+        super(name);
+    }
+    
+    @Override
+    void makeSound() {
+        System.out.println(name + " meows");
+    }
+    
+    void climb() {
+        System.out.println(name + " is climbing");
+    }
+}
+
+class InheritanceExample {
+    public static void main(String[] args) {
+        Dog dog = new Dog("Buddy", "Golden Retriever");
+        Cat cat = new Cat("Whiskers");
+        
+        dog.eat();
+        dog.makeSound();
+        dog.fetch();
+        
+        cat.eat();
+        cat.makeSound();
+        cat.climb();
+        
+        // Polymorphism
+        System.out.println("\n--- Polymorphism Example ---");
+        Animal myAnimal = new Dog("Max", "Labrador");
+        myAnimal.makeSound();  // Calls Dog's makeSound()
+        
+        myAnimal = new Cat("Mittens");
+        myAnimal.makeSound();  // Calls Cat's makeSound()
+        
+        // instanceof operator
+        if (myAnimal instanceof Cat) {
+            System.out.println("It's a cat!");
+        }
+    }
+}
+
+// Abstract classes and methods
+abstract class Shape {
+    String color;
+    
+    Shape(String color) {
+        this.color = color;
+    }
+    
+    // Abstract method (must be implemented by subclasses)
+    abstract double calculateArea();
+    
+    // Concrete method
+    void displayColor() {
+        System.out.println("Color: " + color);
+    }
+}
+
+class Circle extends Shape {
+    double radius;
+    
+    Circle(String color, double radius) {
+        super(color);
+        this.radius = radius;
+    }
+    
+    @Override
+    double calculateArea() {
+        return Math.PI * radius * radius;
+    }
+}
+
+class Rectangle extends Shape {
+    double length, width;
+    
+    Rectangle(String color, double length, double width) {
+        super(color);
+        this.length = length;
+        this.width = width;
+    }
+    
+    @Override
+    double calculateArea() {
+        return length * width;
+    }
+}
+
+class AbstractExample {
+    public static void main(String[] args) {
+        Shape circle = new Circle("Red", 5.0);
+        Shape rectangle = new Rectangle("Blue", 4.0, 6.0);
+        
+        circle.displayColor();
+        System.out.println("Circle area: " + circle.calculateArea());
+        
+        rectangle.displayColor();
+        System.out.println("Rectangle area: " + rectangle.calculateArea());
+    }
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- Interfaces -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Interfaces</h3>
+          <p class="text-slate-300 mb-4">Defining and implementing interfaces</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-java">// Basic interface
+interface Vehicle {
+    // Constant (implicitly public static final)
+    int MAX_SPEED = 200;
+    
+    // Abstract methods (implicitly public abstract)
+    void start();
+    void stop();
+    void accelerate(int speed);
+    
+    // Default method (Java 8+)
+    default void honk() {
+        System.out.println("Beep beep!");
+    }
+    
+    // Static method (Java 8+)
+    static void displayMaxSpeed() {
+        System.out.println("Maximum speed: " + MAX_SPEED + " km/h");
+    }
+}
+
+interface Electric {
+    void charge();
+    int getBatteryLevel();
+}
+
+// Class implementing interfaces
+class Car implements Vehicle, Electric {
+    private String model;
+    private int currentSpeed;
+    private int batteryLevel;
+    
+    Car(String model) {
+        this.model = model;
+        this.batteryLevel = 100;
+    }
+    
+    @Override
+    public void start() {
+        System.out.println(model + " is starting");
+        currentSpeed = 0;
+    }
+    
+    @Override
+    public void stop() {
+        System.out.println(model + " is stopping");
+        currentSpeed = 0;
+    }
+    
+    @Override
+    public void accelerate(int speed) {
+        if (speed > MAX_SPEED) {
+            System.out.println("Cannot exceed max speed!");
+            return;
+        }
+        currentSpeed = speed;
+        System.out.println(model + " accelerating to " + speed + " km/h");
+    }
+    
+    @Override
+    public void charge() {
+        batteryLevel = 100;
+        System.out.println(model + " is fully charged");
+    }
+    
+    @Override
+    public int getBatteryLevel() {
+        return batteryLevel;
+    }
+    
+    // Additional method
+    void displayInfo() {
+        System.out.println("Model: " + model);
+        System.out.println("Current Speed: " + currentSpeed + " km/h");
+        System.out.println("Battery Level: " + batteryLevel + "%");
+    }
+}
+
+class InterfaceExample {
+    public static void main(String[] args) {
+        Car tesla = new Car("Tesla Model S");
+        
+        // Using interface methods
+        tesla.start();
+        tesla.accelerate(80);
+        tesla.honk();  // Default method
+        tesla.displayInfo();
+        
+        // Using static method from interface
+        Vehicle.displayMaxSpeed();
+        
+        // Check battery
+        System.out.println("Battery: " + tesla.getBatteryLevel() + "%");
+        tesla.charge();
+        
+        tesla.stop();
+        
+        // Polymorphism with interfaces
+        Vehicle myVehicle = new Car("BMW i8");
+        myVehicle.start();
+        myVehicle.accelerate(100);
+    }
+}
+
+// Functional interface (for lambda expressions)
+@FunctionalInterface
+interface Calculator {
+    int calculate(int a, int b);
+}
+
+class LambdaExample {
+    public static void main(String[] args) {
+        // Lambda expressions
+        Calculator add = (a, b) -> a + b;
+        Calculator multiply = (a, b) -> a * b;
+        Calculator subtract = (a, b) -> a - b;
+        
+        System.out.println("5 + 3 = " + add.calculate(5, 3));
+        System.out.println("5 * 3 = " + multiply.calculate(5, 3));
+        System.out.println("5 - 3 = " + subtract.calculate(5, 3));
+        
+        // Using method reference
+        List<String> names = Arrays.asList("Alice", "Bob", "Charlie");
+        names.forEach(System.out::println);
+    }
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- Encapsulation -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Encapsulation</h3>
+          <p class="text-slate-300 mb-4">Data hiding with access modifiers and getters/setters</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-java">// Bank Account class with encapsulation
+class BankAccount {
+    // Private fields (data hiding)
+    private String accountNumber;
+    private String accountHolder;
+    private double balance;
+    private String password;
+    
+    // Constructor
+    public BankAccount(String accountNumber, String accountHolder, double initialBalance, String password) {
+        this.accountNumber = accountNumber;
+        this.accountHolder = accountHolder;
+        this.balance = initialBalance;
+        this.password = password;
+    }
+    
+    // Public getters
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+    
+    public String getAccountHolder() {
+        return accountHolder;
+    }
+    
+    public double getBalance() {
+        return balance;
+    }
+    
+    // No setter for account number (immutable)
+    
+    // Public methods for operations
+    public void deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+            System.out.println("Deposited: $" + amount);
+            System.out.println("New balance: $" + balance);
+        } else {
+            System.out.println("Invalid deposit amount");
+        }
+    }
+    
+    public void withdraw(double amount, String inputPassword) {
+        if (!authenticate(inputPassword)) {
+            System.out.println("Invalid password!");
+            return;
+        }
+        
+        if (amount > 0 && amount <= balance) {
+            balance -= amount;
+            System.out.println("Withdrawn: $" + amount);
+            System.out.println("New balance: $" + balance);
+        } else {
+            System.out.println("Invalid withdrawal amount or insufficient funds");
+        }
+    }
+    
+    public void transfer(BankAccount recipient, double amount, String inputPassword) {
+        if (!authenticate(inputPassword)) {
+            System.out.println("Invalid password!");
+            return;
+        }
+        
+        if (amount > 0 && amount <= balance) {
+            this.balance -= amount;
+            recipient.balance += amount;
+            System.out.println("Transferred: $" + amount + " to " + recipient.getAccountHolder());
+        } else {
+            System.out.println("Invalid transfer amount or insufficient funds");
+        }
+    }
+    
+    // Private helper method
+    private boolean authenticate(String inputPassword) {
+        return this.password.equals(inputPassword);
+    }
+    
+    // Public method to change password
+    public void changePassword(String oldPassword, String newPassword) {
+        if (authenticate(oldPassword)) {
+            this.password = newPassword;
+            System.out.println("Password changed successfully");
+        } else {
+            System.out.println("Invalid old password");
+        }
+    }
+    
+    // Display account info (without password)
+    public void displayAccountInfo() {
+        System.out.println("Account Number: " + accountNumber);
+        System.out.println("Account Holder: " + accountHolder);
+        System.out.println("Balance: $" + balance);
+    }
+}
+
+class EncapsulationExample {
+    public static void main(String[] args) {
+        // Create bank accounts
+        BankAccount account1 = new BankAccount("123456", "Alice Johnson", 1000.0, "pass123");
+        BankAccount account2 = new BankAccount("789012", "Bob Smith", 500.0, "secret");
+        
+        // Display initial info
+        account1.displayAccountInfo();
+        account2.displayAccountInfo();
+        
+        // Perform operations
+        System.out.println("\n--- Performing Operations ---");
+        account1.deposit(200.0);
+        account1.withdraw(150.0, "pass123");  // Correct password
+        account1.withdraw(100.0, "wrongpass"); // Wrong password
+        
+        // Transfer money
+        account1.transfer(account2, 100.0, "pass123");
+        
+        // Display final info
+        System.out.println("\n--- Final Account Info ---");
+        account1.displayAccountInfo();
+        account2.displayAccountInfo();
+        
+        // Try to access private field directly (this would cause compilation error)
+        // account1.balance = 1000000;  // Error: balance has private access
+        
+        // Change password
+        account1.changePassword("pass123", "newpass456");
+        account1.withdraw(50.0, "newpass456");  // Now works with new password
+    }
+}
+
+// Student class with validation
+class Student {
+    private String name;
+    private int age;
+    private double gpa;
+    
+    public Student(String name, int age, double gpa) {
+        setName(name);
+        setAge(age);
+        setGpa(gpa);
+    }
+    
+    // Getters and setters with validation
+    public String getName() {
+        return name;
+    }
+    
+    public void setName(String name) {
+        if (name != null && !name.trim().isEmpty()) {
+            this.name = name;
+        } else {
+            throw new IllegalArgumentException("Name cannot be empty");
+        }
+    }
+    
+    public int getAge() {
+        return age;
+    }
+    
+    public void setAge(int age) {
+        if (age >= 0 && age <= 120) {
+            this.age = age;
+        } else {
+            throw new IllegalArgumentException("Age must be between 0 and 120");
+        }
+    }
+    
+    public double getGpa() {
+        return gpa;
+    }
+    
+    public void setGpa(double gpa) {
+        if (gpa >= 0.0 && gpa <= 4.0) {
+            this.gpa = gpa;
+        } else {
+            throw new IllegalArgumentException("GPA must be between 0.0 and 4.0");
+        }
+    }
+    
+    @Override
+    public String toString() {
+        return "Student{name='" + name + "', age=" + age + ", gpa=" + gpa + "}";
+    }
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Advanced Java Section -->
+  <section class="course-section py-5 bg-dark-800">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">Advanced Java</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Exception Handling -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Exception Handling</h3>
+          <p class="text-slate-300 mb-4">Handling errors and exceptions in Java</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-java">import java.util.InputMismatchException;
+import java.util.Scanner;
+
+class ExceptionHandlingExample {
+    
+    // Basic try-catch
+    static void divideNumbers(int a, int b) {
+        try {
+            int result = a / b;
+            System.out.println(a + " / " + b + " = " + result);
+        } catch (ArithmeticException e) {
+            System.out.println("Error: Cannot divide by zero!");
+        }
+    }
+    
+    // Multiple catch blocks
+    static void processUserInput() {
+        Scanner scanner = new Scanner(System.in);
+        
+        try {
+            System.out.print("Enter a number: ");
+            int number = scanner.nextInt();
+            System.out.println("You entered: " + number);
+            
+            System.out.print("Enter another number: ");
+            int divisor = scanner.nextInt();
+            int result = number / divisor;
+            System.out.println("Division result: " + result);
+            
+        } catch (InputMismatchException e) {
+            System.out.println("Error: Please enter a valid integer!");
+        } catch (ArithmeticException e) {
+            System.out.println("Error: Cannot divide by zero!");
+        } catch (Exception e) {
+            System.out.println("Unexpected error: " + e.getMessage());
+        } finally {
+            System.out.println("This block always executes");
+            scanner.close();
+        }
+    }
+    
+    // Try-with-resources (Java 7+)
+    static void readFile() {
+        // Automatic resource management
+        try (Scanner fileScanner = new Scanner(System.in)) {
+            System.out.print("Enter file content: ");
+            while (fileScanner.hasNextLine()) {
+                String line = fileScanner.nextLine();
+                if (line.equals("exit")) break;
+                System.out.println("Line: " + line);
+            }
+        } catch (Exception e) {
+            System.out.println("Error reading file: " + e.getMessage());
+        }
+        // Scanner automatically closed
+    }
+    
+    // Throwing exceptions
+    static void checkAge(int age) throws IllegalArgumentException {
+        if (age < 0 || age > 120) {
+            throw new IllegalArgumentException("Age must be between 0 and 120");
+        }
+        System.out.println("Valid age: " + age);
+    }
+    
+    // Custom exception
+    static class InsufficientFundsException extends Exception {
+        public InsufficientFundsException(String message) {
+            super(message);
+        }
+    }
+    
+    static void withdrawMoney(double balance, double amount) throws InsufficientFundsException {
+        if (amount > balance) {
+            throw new InsufficientFundsException(
+                "Insufficient funds! Balance: $" + balance + ", Requested: $" + amount
+            );
+        }
+        System.out.println("Withdrawal successful. New balance: $" + (balance - amount));
+    }
+    
+    public static void main(String[] args) {
+        // Test basic exception handling
+        System.out.println("=== Basic Exception Handling ===");
+        divideNumbers(10, 2);
+        divideNumbers(10, 0);
+        
+        // Test multiple exceptions
+        System.out.println("\n=== Multiple Exceptions ===");
+        processUserInput();
+        
+        // Test try-with-resources
+        System.out.println("\n=== Try-with-Resources ===");
+        readFile();
+        
+        // Test throwing exceptions
+        System.out.println("\n=== Throwing Exceptions ===");
+        try {
+            checkAge(25);
+            checkAge(150);  // This will throw exception
+        } catch (IllegalArgumentException e) {
+            System.out.println("Caught exception: " + e.getMessage());
+        }
+        
+        // Test custom exception
+        System.out.println("\n=== Custom Exception ===");
+        try {
+            withdrawMoney(1000.0, 500.0);
+            withdrawMoney(1000.0, 1500.0);  // This will throw custom exception
+        } catch (InsufficientFundsException e) {
+            System.out.println("Bank error: " + e.getMessage());
+        }
+        
+        // Exception propagation
+        System.out.println("\n=== Exception Propagation ===");
+        try {
+            methodA();
+        } catch (Exception e) {
+            System.out.println("Caught in main: " + e.getMessage());
+        }
+    }
+    
+    static void methodA() {
+        methodB();
+    }
+    
+    static void methodB() {
+        methodC();
+    }
+    
+    static void methodC() {
+        throw new RuntimeException("Exception from methodC");
+    }
+}
+
+// Best practices for exception handling
+class ExceptionBestPractices {
+    
+    // Don't ignore exceptions
+    static void badPractice() {
+        try {
+            int result = 10 / 0;
+        } catch (ArithmeticException e) {
+            // BAD: Empty catch block
+        }
+    }
+    
+    // Good: Log or handle the exception
+    static void goodPractice() {
+        try {
+            int result = 10 / 0;
+        } catch (ArithmeticException e) {
+            System.out.println("Handled division error: " + e.getMessage());
+            // Or log it: logger.error("Division error", e);
+        }
+    }
+    
+    // Use specific exceptions
+    static void specificExceptions() {
+        try {
+            // Some operation that might fail
+        } catch (NumberFormatException e) {
+            // Handle number format issues
+        } catch (NullPointerException e) {
+            // Handle null pointer issues
+        } catch (Exception e) {
+            // General fallback
+        }
+    }
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- Collections Framework -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Collections Framework</h3>
+          <p class="text-slate-300 mb-4">Working with Java Collections (List, Set, Map)</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-java">import java.util.*;
+import java.util.stream.Collectors;
+
+class CollectionsExample {
+    
+    // List examples
+    static void listExamples() {
+        System.out.println("=== LIST EXAMPLES ===");
+        
+        // ArrayList
+        List<String> arrayList = new ArrayList<>();
+        arrayList.add("Apple");
+        arrayList.add("Banana");
+        arrayList.add("Orange");
+        arrayList.add(1, "Mango");  // Insert at specific position
+        
+        System.out.println("ArrayList: " + arrayList);
+        System.out.println("Element at index 2: " + arrayList.get(2));
+        System.out.println("Contains 'Apple': " + arrayList.contains("Apple"));
+        
+        // LinkedList
+        List<Integer> linkedList = new LinkedList<>();
+        linkedList.add(10);
+        linkedList.add(20);
+        linkedList.add(30);
+        System.out.println("LinkedList: " + linkedList);
+        
+        // Iterating through lists
+        System.out.println("\nIterating with for-each:");
+        for (String fruit : arrayList) {
+            System.out.println(fruit);
+        }
+        
+        System.out.println("\nIterating with iterator:");
+        Iterator<String> iterator = arrayList.iterator();
+        while (iterator.hasNext()) {
+            System.out.println(iterator.next());
+        }
+        
+        // List operations
+        arrayList.remove("Banana");
+        arrayList.set(0, "Green Apple");
+        System.out.println("Modified list: " + arrayList);
+        
+        // Sorting
+        Collections.sort(arrayList);
+        System.out.println("Sorted list: " + arrayList);
+    }
+    
+    // Set examples
+    static void setExamples() {
+        System.out.println("\n=== SET EXAMPLES ===");
+        
+        // HashSet (no order)
+        Set<String> hashSet = new HashSet<>();
+        hashSet.add("John");
+        hashSet.add("Alice");
+        hashSet.add("Bob");
+        hashSet.add("John");  // Duplicate, won't be added
+        
+        System.out.println("HashSet: " + hashSet);
+        System.out.println("Size: " + hashSet.size());
+        
+        // TreeSet (sorted order)
+        Set<Integer> treeSet = new TreeSet<>();
+        treeSet.add(50);
+        treeSet.add(10);
+        treeSet.add(30);
+        treeSet.add(20);
+        System.out.println("TreeSet (sorted): " + treeSet);
+        
+        // LinkedHashSet (insertion order)
+        Set<String> linkedHashSet = new LinkedHashSet<>();
+        linkedHashSet.add("First");
+        linkedHashSet.add("Second");
+        linkedHashSet.add("Third");
+        System.out.println("LinkedHashSet: " + linkedHashSet);
+        
+        // Set operations
+        Set<String> set1 = new HashSet<>(Arrays.asList("A", "B", "C"));
+        Set<String> set2 = new HashSet<>(Arrays.asList("B", "C", "D"));
+        
+        // Union
+        Set<String> union = new HashSet<>(set1);
+        union.addAll(set2);
+        System.out.println("Union: " + union);
+        
+        // Intersection
+        Set<String> intersection = new HashSet<>(set1);
+        intersection.retainAll(set2);
+        System.out.println("Intersection: " + intersection);
+        
+        // Difference
+        Set<String> difference = new HashSet<>(set1);
+        difference.removeAll(set2);
+        System.out.println("Difference: " + difference);
+    }
+    
+    // Map examples
+    static void mapExamples() {
+        System.out.println("\n=== MAP EXAMPLES ===");
+        
+        // HashMap
+        Map<String, Integer> hashMap = new HashMap<>();
+        hashMap.put("John", 25);
+        hashMap.put("Alice", 30);
+        hashMap.put("Bob", 35);
+        hashMap.put("John", 26);  // Update existing key
+        
+        System.out.println("HashMap: " + hashMap);
+        System.out.println("Alice's age: " + hashMap.get("Alice"));
+        System.out.println("Contains key 'Bob': " + hashMap.containsKey("Bob"));
+        
+        // TreeMap (sorted by keys)
+        Map<String, Integer> treeMap = new TreeMap<>();
+        treeMap.put("Orange", 5);
+        treeMap.put("Apple", 3);
+        treeMap.put("Banana", 7);
+        System.out.println("TreeMap (sorted): " + treeMap);
+        
+        // LinkedHashMap (insertion order)
+        Map<String, Integer> linkedHashMap = new LinkedHashMap<>();
+        linkedHashMap.put("First", 1);
+        linkedHashMap.put("Second", 2);
+        linkedHashMap.put("Third", 3);
+        System.out.println("LinkedHashMap: " + linkedHashMap);
+        
+        // Iterating through maps
+        System.out.println("\nIterating through HashMap:");
+        for (Map.Entry<String, Integer> entry : hashMap.entrySet()) {
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+        }
+        
+        System.out.println("\nKeys only:");
+        for (String key : hashMap.keySet()) {
+            System.out.println(key);
+        }
+        
+        System.out.println("\nValues only:");
+        for (Integer value : hashMap.values()) {
+            System.out.println(value);
+        }
+        
+        // Map operations
+        hashMap.remove("Bob");
+        System.out.println("After removal: " + hashMap);
+        System.out.println("Map size: " + hashMap.size());
+    }
+    
+    // Queue and Stack examples
+    static void queueStackExamples() {
+        System.out.println("\n=== QUEUE & STACK EXAMPLES ===");
+        
+        // Queue (FIFO)
+        Queue<String> queue = new LinkedList<>();
+        queue.offer("First");
+        queue.offer("Second");
+        queue.offer("Third");
+        
+        System.out.println("Queue: " + queue);
+        System.out.println("Poll: " + queue.poll());  // Remove and return first
+        System.out.println("Queue after poll: " + queue);
+        System.out.println("Peek: " + queue.peek());  // View first without removing
+        
+        // PriorityQueue (sorted queue)
+        Queue<Integer> priorityQueue = new PriorityQueue<>();
+        priorityQueue.offer(50);
+        priorityQueue.offer(10);
+        priorityQueue.offer(30);
+        System.out.println("PriorityQueue: " + priorityQueue);
+        while (!priorityQueue.isEmpty()) {
+            System.out.println("Poll: " + priorityQueue.poll());
+        }
+        
+        // Stack (LIFO)
+        Stack<String> stack = new Stack<>();
+        stack.push("First");
+        stack.push("Second");
+        stack.push("Third");
+        
+        System.out.println("Stack: " + stack);
+        System.out.println("Pop: " + stack.pop());  // Remove and return top
+        System.out.println("Stack after pop: " + stack);
+        System.out.println("Peek: " + stack.peek());  // View top without removing
+    }
+    
+    // Java 8+ Streams with Collections
+    static void streamExamples() {
+        System.out.println("\n=== STREAM EXAMPLES ===");
+        
+        List<String> names = Arrays.asList("John", "Alice", "Bob", "Anna", "Alex");
+        
+        // Filter names starting with 'A'
+        List<String> aNames = names.stream()
+            .filter(name -> name.startsWith("A"))
+            .collect(Collectors.toList());
+        System.out.println("Names starting with 'A': " + aNames);
+        
+        // Convert to uppercase
+        List<String> upperNames = names.stream()
+            .map(String::toUpperCase)
+            .collect(Collectors.toList());
+        System.out.println("Uppercase names: " + upperNames);
+        
+        // Sort names
+        List<String> sortedNames = names.stream()
+            .sorted()
+            .collect(Collectors.toList());
+        System.out.println("Sorted names: " + sortedNames);
+        
+        // Count names with more than 3 characters
+        long count = names.stream()
+            .filter(name -> name.length() > 3)
+            .count();
+        System.out.println("Names with more than 3 chars: " + count);
+        
+        // Find any name starting with 'B'
+        Optional<String> bName = names.stream()
+            .filter(name -> name.startsWith("B"))
+            .findFirst();
+        bName.ifPresent(name -> System.out.println("First B name: " + name));
+        
+        // Group by first letter
+        Map<Character, List<String>> grouped = names.stream()
+            .collect(Collectors.groupingBy(name -> name.charAt(0)));
+        System.out.println("Grouped by first letter: " + grouped);
+    }
+    
+    public static void main(String[] args) {
+        listExamples();
+        setExamples();
+        mapExamples();
+        queueStackExamples();
+        streamExamples();
+    }
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- File Handling -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">File Handling</h3>
+          <p class="text-slate-300 mb-4">Reading and writing files in Java</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-java">import java.io.*;
+import java.nio.file.*;
+import java.util.*;
+
+class FileHandlingExample {
+    
+    // Writing to a file
+    static void writeToFile() {
+        try (FileWriter writer = new FileWriter("example.txt")) {
+            writer.write("Hello Java!\n");
+            writer.write("This is a sample file.\n");
+            writer.write("Java file handling is powerful!\n");
+            System.out.println("File written successfully!");
+        } catch (IOException e) {
+            System.out.println("Error writing to file: " + e.getMessage());
+        }
+    }
+    
+    // Reading from a file
+    static void readFromFile() {
+        System.out.println("\nReading entire file:");
+        try (Scanner scanner = new Scanner(new File("example.txt"))) {
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                System.out.println(line);
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found: " + e.getMessage());
+        }
+    }
+    
+    // Reading with BufferedReader
+    static void readWithBufferedReader() {
+        System.out.println("\nReading with BufferedReader:");
+        try (BufferedReader reader = new BufferedReader(new FileReader("example.txt"))) {
+            String line;
+            int lineNumber = 1;
+            while ((line = reader.readLine()) != null) {
+                System.out.println("Line " + lineNumber + ": " + line);
+                lineNumber++;
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + e.getMessage());
+        }
+    }
+    
+    // Appending to a file
+    static void appendToFile() {
+        try (FileWriter writer = new FileWriter("example.txt", true)) {
+            writer.write("This line was appended!\n");
+            System.out.println("Text appended to file!");
+        } catch (IOException e) {
+            System.out.println("Error appending to file: " + e.getMessage());
+        }
+    }
+    
+    // Using Java NIO (New I/O)
+    static void nioFileOperations() {
+        try {
+            // Read all lines at once
+            List<String> lines = Files.readAllLines(Paths.get("example.txt"));
+            System.out.println("\nFile content using NIO:");
+            for (String line : lines) {
+                System.out.println(line);
+            }
+            
+            // Write with NIO
+            List<String> newLines = Arrays.asList("Line 1", "Line 2", "Line 3");
+            Files.write(Paths.get("nio_example.txt"), newLines);
+            System.out.println("File created with NIO!");
+            
+        } catch (IOException e) {
+            System.out.println("NIO Error: " + e.getMessage());
+        }
+    }
+    
+    // File properties and operations
+    static void fileOperations() {
+        File file = new File("example.txt");
+        
+        if (file.exists()) {
+            System.out.println("\n=== FILE PROPERTIES ===");
+            System.out.println("File name: " + file.getName());
+            System.out.println("Absolute path: " + file.getAbsolutePath());
+            System.out.println("File size: " + file.length() + " bytes");
+            System.out.println("Is readable: " + file.canRead());
+            System.out.println("Is writable: " + file.canWrite());
+            System.out.println("Is directory: " + file.isDirectory());
+            System.out.println("Last modified: " + new Date(file.lastModified()));
+        } else {
+            System.out.println("File does not exist");
+        }
+        
+        // Create directory
+        File dir = new File("my_directory");
+        if (dir.mkdir()) {
+            System.out.println("Directory created: " + dir.getName());
+        }
+        
+        // List files in directory
+        File currentDir = new File(".");
+        System.out.println("\nFiles in current directory:");
+        String[] files = currentDir.list();
+        if (files != null) {
+            for (String fileName : files) {
+                System.out.println(fileName);
+            }
+        }
+    }
+    
+    // Object serialization
+    static class Student implements Serializable {
+        private static final long serialVersionUID = 1L;
+        private String name;
+        private int age;
+        private transient String password;  // Won't be serialized
+        
+        public Student(String name, int age, String password) {
+            this.name = name;
+            this.age = age;
+            this.password = password;
+        }
+        
+        @Override
+        public String toString() {
+            return "Student{name='" + name + "', age=" + age + ", password='" + password + "'}";
+        }
+    }
+    
+    static void serializationExample() {
+        Student student = new Student("Alice", 20, "secret123");
+        
+        // Serialize object to file
+        try (ObjectOutputStream oos = new ObjectOutputStream(
+                new FileOutputStream("student.ser"))) {
+            oos.writeObject(student);
+            System.out.println("Object serialized successfully!");
+        } catch (IOException e) {
+            System.out.println("Serialization error: " + e.getMessage());
+        }
+        
+        // Deserialize object from file
+        try (ObjectInputStream ois = new ObjectInputStream(
+                new FileInputStream("student.ser"))) {
+            Student deserializedStudent = (Student) ois.readObject();
+            System.out.println("Deserialized object: " + deserializedStudent);
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Deserialization error: " + e.getMessage());
+        }
+    }
+    
+    // CSV file handling
+    static void csvFileExample() {
+        // Write CSV
+        try (PrintWriter writer = new PrintWriter("data.csv")) {
+            writer.println("Name,Age,Grade");
+            writer.println("John,25,A");
+            writer.println("Alice,22,B");
+            writer.println("Bob,30,A");
+            System.out.println("CSV file created!");
+        } catch (FileNotFoundException e) {
+            System.out.println("CSV write error: " + e.getMessage());
+        }
+        
+        // Read CSV
+        System.out.println("\nReading CSV file:");
+        try (Scanner scanner = new Scanner(new File("data.csv"))) {
+            boolean isHeader = true;
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                if (isHeader) {
+                    isHeader = false;
+                    continue;  // Skip header
+                }
+                String[] values = line.split(",");
+                System.out.println("Name: " + values[0] + 
+                                 ", Age: " + values[1] + 
+                                 ", Grade: " + values[2]);
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("CSV read error: " + e.getMessage());
+        }
+    }
+    
+    public static void main(String[] args) {
+        writeToFile();
+        readFromFile();
+        readWithBufferedReader();
+        appendToFile();
+        readFromFile();  // Read again to see appended content
+        nioFileOperations();
+        fileOperations();
+        serializationExample();
+        csvFileExample();
+        
+        // Clean up created files
+        try {
+            Files.deleteIfExists(Paths.get("nio_example.txt"));
+            Files.deleteIfExists(Paths.get("student.ser"));
+            Files.deleteIfExists(Paths.get("data.csv"));
+            Files.deleteIfExists(Paths.get("my_directory"));
+        } catch (IOException e) {
+            System.out.println("Cleanup error: " + e.getMessage());
+        }
+    }
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- Multithreading -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Multithreading</h3>
+          <p class="text-slate-300 mb-4">Concurrent programming with threads</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-java">class MultithreadingExample {
+    
+    // Extending Thread class
+    static class MyThread extends Thread {
+        private String threadName;
+        
+        MyThread(String name) {
+            this.threadName = name;
+        }
+        
+        @Override
+        public void run() {
+            for (int i = 1; i <= 5; i++) {
+                System.out.println(threadName + " - Count: " + i);
+                try {
+                    Thread.sleep(1000);  // Pause for 1 second
+                } catch (InterruptedException e) {
+                    System.out.println(threadName + " interrupted");
+                }
+            }
+            System.out.println(threadName + " finished");
+        }
+    }
+    
+    // Implementing Runnable interface
+    static class MyRunnable implements Runnable {
+        private String threadName;
+        
+        MyRunnable(String name) {
+            this.threadName = name;
+        }
+        
+        @Override
+        public void run() {
+            for (int i = 1; i <= 5; i++) {
+                System.out.println(threadName + " - Count: " + i);
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    System.out.println(threadName + " interrupted");
+                }
+            }
+            System.out.println(threadName + " finished");
+        }
+    }
+    
+    // Thread synchronization
+    static class Counter {
+        private int count = 0;
+        
+        // Synchronized method
+        public synchronized void increment() {
+            count++;
+        }
+        
+        // Synchronized block
+        public void decrement() {
+            synchronized (this) {
+                count--;
+            }
+        }
+        
+        public int getCount() {
+            return count;
+        }
+    }
+    
+    static class SyncThread extends Thread {
+        private Counter counter;
+        
+        SyncThread(Counter counter) {
+            this.counter = counter;
+        }
+        
+        @Override
+        public void run() {
+            for (int i = 0; i < 1000; i++) {
+                counter.increment();
+            }
+        }
+    }
+    
+    // Thread pool example
+    static void threadPoolExample() {
+        System.out.println("\n=== THREAD POOL EXAMPLE ===");
+        
+        // Create thread pool with 3 threads
+        ExecutorService executor = Executors.newFixedThreadPool(3);
+        
+        // Submit tasks to thread pool
+        for (int i = 1; i <= 5; i++) {
+            final int taskId = i;
+            executor.submit(() -> {
+                System.out.println("Task " + taskId + " executed by " + 
+                                 Thread.currentThread().getName());
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            });
+        }
+        
+        // Shutdown the executor
+        executor.shutdown();
+        try {
+            // Wait for all tasks to complete
+            if (!executor.awaitTermination(10, TimeUnit.SECONDS)) {
+                executor.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            executor.shutdownNow();
+            Thread.currentThread().interrupt();
+        }
+    }
+    
+    // Callable and Future
+    static void callableExample() {
+        System.out.println("\n=== CALLABLE & FUTURE EXAMPLE ===");
+        
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        
+        // Submit a Callable task
+        Future<Integer> future = executor.submit(() -> {
+            Thread.sleep(2000);
+            return 42;  // Return a result
+        });
+        
+        try {
+            // Get the result (blocks until available)
+            Integer result = future.get();
+            System.out.println("Callable result: " + result);
+        } catch (InterruptedException | ExecutionException e) {
+            System.out.println("Error getting result: " + e.getMessage());
+        }
+        
+        executor.shutdown();
+    }
+    
+    // Producer-Consumer pattern
+    static class SharedBuffer {
+        private Queue<Integer> buffer = new LinkedList<>();
+        private final int CAPACITY = 5;
+        
+        public synchronized void produce(int value) throws InterruptedException {
+            while (buffer.size() == CAPACITY) {
+                wait();  // Wait if buffer is full
+            }
+            buffer.offer(value);
+            System.out.println("Produced: " + value + ", Buffer size: " + buffer.size());
+            notifyAll();  // Notify consumers
+        }
+        
+        public synchronized int consume() throws InterruptedException {
+            while (buffer.isEmpty()) {
+                wait();  // Wait if buffer is empty
+            }
+            int value = buffer.poll();
+            System.out.println("Consumed: " + value + ", Buffer size: " + buffer.size());
+            notifyAll();  // Notify producers
+            return value;
+        }
+    }
+    
+    static void producerConsumerExample() {
+        System.out.println("\n=== PRODUCER-CONSUMER EXAMPLE ===");
+        
+        SharedBuffer buffer = new SharedBuffer();
+        
+        // Producer thread
+        Thread producer = new Thread(() -> {
+            try {
+                for (int i = 1; i <= 10; i++) {
+                    buffer.produce(i);
+                    Thread.sleep(500);
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        });
+        
+        // Consumer thread
+        Thread consumer = new Thread(() -> {
+            try {
+                for (int i = 1; i <= 10; i++) {
+                    buffer.consume();
+                    Thread.sleep(1000);
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        });
+        
+        producer.start();
+        consumer.start();
+        
+        try {
+            producer.join();
+            consumer.join();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+    
+    public static void main(String[] args) {
+        // Basic thread examples
+        System.out.println("=== BASIC THREAD EXAMPLES ===");
+        
+        // Using Thread class
+        MyThread thread1 = new MyThread("Thread-1");
+        MyThread thread2 = new MyThread("Thread-2");
+        
+        // Using Runnable interface
+        Thread thread3 = new Thread(new MyRunnable("Runnable-1"));
+        Thread thread4 = new Thread(new MyRunnable("Runnable-2"));
+        
+        // Start threads
+        thread1.start();
+        thread2.start();
+        thread3.start();
+        thread4.start();
+        
+        // Wait for threads to complete
+        try {
+            thread1.join();
+            thread2.join();
+            thread3.join();
+            thread4.join();
+        } catch (InterruptedException e) {
+            System.out.println("Main thread interrupted");
+        }
+        
+        // Synchronization example
+        System.out.println("\n=== SYNCHRONIZATION EXAMPLE ===");
+        Counter counter = new Counter();
+        
+        Thread[] syncThreads = new Thread[5];
+        for (int i = 0; i < syncThreads.length; i++) {
+            syncThreads[i] = new SyncThread(counter);
+            syncThreads[i].start();
+        }
+        
+        // Wait for all threads to complete
+        for (Thread t : syncThreads) {
+            try {
+                t.join();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+        
+        System.out.println("Final count: " + counter.getCount());
+        
+        // Advanced examples
+        threadPoolExample();
+        callableExample();
+        producerConsumerExample();
+        
+        System.out.println("Main thread finished");
+    }
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Live Java Editor -->
+  <section id="live-editor" class="course-section py-5">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">Live Java Editor</h2>
+      
+      <div class="glass rounded-xl p-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div>
+            <h3 class="text-xl font-semibold text-neon-300 mb-4">Write Java Code</h3>
+            <div class="java-editor" contenteditable="true" id="java-editor">// Welcome to Java Live Editor!
+// Write your Java code here
+
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("Hello Java Developer!");
+        
+        // Basic variables
+        String name = "Java Learner";
+        int age = 25;
+        double salary = 50000.0;
+        
+        System.out.println("Name: " + name);
+        System.out.println("Age: " + age);
+        System.out.println("Salary: $" + salary);
+        
+        // Control flow example
+        if (age >= 18) {
+            System.out.println(name + " is an adult");
+        } else {
+            System.out.println(name + " is a minor");
+        }
+        
+        // Loop example
+        System.out.println("Counting from 1 to 5:");
+        for (int i = 1; i <= 5; i++) {
+            System.out.println(i);
+        }
+        
+        // Array example
+        int[] numbers = {1, 2, 3, 4, 5};
+        System.out.println("Array elements:");
+        for (int num : numbers) {
+            System.out.println(num);
+        }
+        
+        // Method call
+        int result = add(10, 20);
+        System.out.println("10 + 20 = " + result);
+    }
+    
+    // Method definition
+    public static int add(int a, int b) {
+        return a + b;
+    }
+}</div>
+            <button onclick="runLiveJavaCode()" class="w-full mt-4 px-4 py-3 bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-lg font-semibold hover:scale-105 transition-transform">
+              <i class="fas fa-play mr-2"></i>Run Code
+            </button>
+          </div>
+          
+          <div>
+            <h3 class="text-xl font-semibold text-neon-300 mb-4">Output</h3>
+            <div class="java-output h-64" id="live-java-output">
+              // Java output will appear here
+              <br>
+              // Try writing some Java code and click "Run Code"
+            </div>
+            <div class="mt-4 p-4 bg-purple-900/30 rounded-lg">
+              <h4 class="font-semibold text-purple-300 mb-2">💡 Java Tips:</h4>
+              <ul class="text-sm text-purple-200 space-y-1">
+                <li>• Always include a main method as entry point</li>
+                <li>• Use System.out.println() for output</li>
+                <li>• Java is case-sensitive: Main ≠ main</li>
+                <li>• End statements with semicolons</li>
+                <li>• Use proper access modifiers</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Navigation -->
+  <div class="max-w-6xl mx-auto px-6 py-8">
+    <div class="glass rounded-xl p-6 sticky bottom-6">
+      <h3 class="font-semibold text-neon-300 mb-4">Course Navigation</h3>
+      <div class="flex flex-wrap gap-3">
+        <a href="#basics" class="px-4 py-2 rounded-lg bg-slate-800/40 hover:bg-slate-700/40 transition text-sm">Basics</a>
+        <a href="#live-editor" class="px-4 py-2 rounded-lg bg-slate-800/40 hover:bg-slate-700/40 transition text-sm">Live Editor</a>
+        <button onclick="showCheatSheet()" class="px-4 py-2 rounded-lg bg-java-500 hover:bg-java-600 transition text-sm">Cheat Sheet</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="glass border-t border-slate-800 mt-20">
+    <div class="max-w-6xl mx-auto px-6 py-8 text-center">
+      <div class="flex items-center justify-center gap-6 mb-4">
+        <a href="/" class="text-slate-300 hover:text-neon-500 transition">Home</a>
+        <a href="#basics" class="text-slate-300 hover:text-neon-500 transition">Course</a>
+        <a href="https://github.com/JUSAIR-JSR" target="_blank" class="text-slate-300 hover:text-neon-500 transition">GitHub</a>
+      </div>
+      <p class="text-slate-500 text-sm">© 2023 Java Course - Complete Beginner to Advanced</p>
+    </div>
+  </footer>
+
+  <!-- Cheat Sheet Modal -->
+  <div id="cheat-sheet" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-50 p-4">
+    <div class="glass rounded-xl p-6 max-w-4xl max-h-[80vh] overflow-y-auto">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-2xl font-bold text-neon-300">Java Cheat Sheet</h3>
+        <button onclick="hideCheatSheet()" class="text-slate-400 hover:text-white">
+          <i class="fas fa-times text-2xl"></i>
+        </button>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h4 class="font-semibold text-green-400 mb-3">Basic Syntax</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">public class Main { }</code>
+            <code class="block bg-slate-800 p-2 rounded">public static void main(String[] args)</code>
+            <code class="block bg-slate-800 p-2 rounded">System.out.println("Hello");</code>
+            <code class="block bg-slate-800 p-2 rounded">int x = 10;</code>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-blue-400 mb-3">Data Types</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">int, double, boolean, char</code>
+            <code class="block bg-slate-800 p-2 rounded">String, int[], ArrayList</code>
+            <code class="block bg-slate-800 p-2 rounded">final int MAX = 100;</code>
+            <code class="block bg-slate-800 p-2 rounded">var name = "Java";</code>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-yellow-400 mb-3">Control Flow</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">if (condition) { }</code>
+            <code class="block bg-slate-800 p-2 rounded">for (int i=0; i<10; i++)</code>
+            <code class="block bg-slate-800 p-2 rounded">while (condition) { }</code>
+            <code class="block bg-slate-800 p-2 rounded">switch (value) { }</code>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-purple-400 mb-3">OOP Concepts</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">class MyClass { }</code>
+            <code class="block bg-slate-800 p-2 rounded">extends, implements</code>
+            <code class="block bg-slate-800 p-2 rounded">public, private, protected</code>
+            <code class="block bg-slate-800 p-2 rounded">@Override</code>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-red-400 mb-3">Collections</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">List<String> list = new ArrayList<>();</code>
+            <code class="block bg-slate-800 p-2 rounded">Map<String, Integer> map = new HashMap<>();</code>
+            <code class="block bg-slate-800 p-2 rounded">Set<Integer> set = new HashSet<>();</code>
+            <code class="block bg-slate-800 p-2 rounded">Collections.sort(list);</code>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-indigo-400 mb-3">Exception Handling</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">try { } catch (Exception e) { }</code>
+            <code class="block bg-slate-800 p-2 rounded">throw new Exception();</code>
+            <code class="block bg-slate-800 p-2 rounded">throws Exception</code>
+            <code class="block bg-slate-800 p-2 rounded">finally { }</code>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Initialize syntax highlighting
+    hljs.highlightAll();
+
+    // Copy button functionality
+    document.querySelectorAll('.copy-btn').forEach(button => {
+      button.addEventListener('click', function() {
+        const codeBlock = this.closest('.code-container').querySelector('code');
+        const textArea = document.createElement('textarea');
+        textArea.value = codeBlock.textContent;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        
+        // Visual feedback
+        const originalText = this.innerHTML;
+        this.innerHTML = '<i class="fas fa-check mr-1"></i>Copied!';
+        setTimeout(() => {
+          this.innerHTML = originalText;
+        }, 2000);
+      });
+    });
+
+    // Cheat sheet functions
+    function showCheatSheet() {
+      document.getElementById('cheat-sheet').classList.remove('hidden');
+      document.getElementById('cheat-sheet').classList.add('flex');
+    }
+
+    function hideCheatSheet() {
+      document.getElementById('cheat-sheet').classList.add('hidden');
+      document.getElementById('cheat-sheet').classList.remove('flex');
+    }
+
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+
+    // Live Java code execution simulation
+    function runLiveJavaCode() {
+      const editor = document.getElementById('java-editor');
+      const outputElement = document.getElementById('live-java-output');
+      
+      if (editor && outputElement) {
+        const code = editor.textContent || editor.innerText;
+        outputElement.innerHTML = '<div class="text-green-400">Running Java code...</div>';
+        
+        // Simulate Java execution (in a real environment, this would use a Java compiler)
+        setTimeout(() => {
+          // This is a simulation - in reality you'd need a Java execution environment
+          const simulatedOutput = `Hello Java Developer!
+Name: Java Learner
+Age: 25
+Salary: $50000.0
+Java Learner is an adult
+Counting from 1 to 5:
+1
+2
+3
+4
+5
+Array elements:
+1
+2
+3
+4
+5
+10 + 20 = 30`;
+          
+          outputElement.innerHTML = `<div class="text-green-400">Output:</div><div class="mt-2 whitespace-pre-wrap">${simulatedOutput}</div>`;
+        }, 1000);
+      }
+    }
+  </script>
+</body>
+</html>

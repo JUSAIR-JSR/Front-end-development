@@ -1,0 +1,901 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>JavaScript Course - Frontend Development</title>
+  <meta name="description" content="Complete JavaScript course with interactive examples and live coding" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Highlight.js for syntax highlighting -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+  
+  <!-- CodeMirror for live code editing -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js"></script>
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            neon: {
+              50: '#f3f7ff',
+              100: '#e6f0ff',
+              300: '#99ccff',
+              500: '#00d0ff',
+              600: '#00a8d9',
+              700: '#00a3cc',
+              800: '#007399'
+            },
+            dark: {
+              900: '#0a0f1c',
+              800: '#0f172a',
+              700: '#1e293b'
+            }
+          },
+          animation: {
+            'float': 'float 6s ease-in-out infinite',
+            'pulse-glow': 'pulse-glow 2s ease-in-out infinite alternate',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    .neon-text { 
+      text-shadow: 0 0 8px rgba(0,208,255,0.15), 0 0 18px rgba(0,208,255,0.06); 
+    }
+    
+    .glass {
+      background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .code-container {
+      position: relative;
+    }
+    
+    .copy-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    
+    .code-container:hover .copy-btn {
+      opacity: 1;
+    }
+    
+    .preview-frame {
+      background: white;
+      border-radius: 0.5rem;
+      border: 1px solid rgba(255,255,255,0.1);
+      min-height: 200px;
+    }
+    
+    .component-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .component-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .live-editor {
+      border: 1px solid #374151;
+      border-radius: 0.5rem;
+      overflow: hidden;
+    }
+    
+    .CodeMirror {
+      height: auto;
+      font-family: 'Fira Code', monospace;
+      font-size: 14px;
+    }
+    
+    .output-console {
+      background: #1f2937;
+      color: #10b981;
+      font-family: 'Fira Code', monospace;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      min-height: 100px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.5);
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: rgba(0, 208, 255, 0.3);
+      border-radius: 4px;
+    }
+    
+    .course-section {
+      scroll-margin-top: 100px;
+    }
+    
+    /* Animation for live examples */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .animate-fade-in {
+      animation: fadeInUp 0.6s ease-out;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    @keyframes pulse-glow {
+      0% { box-shadow: 0 0 20px rgba(0, 208, 255, 0.4); }
+      100% { box-shadow: 0 0 30px rgba(0, 208, 255, 0.8), 0 0 40px rgba(0, 208, 255, 0.4); }
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-dark-900 via-dark-800 to-dark-900 text-slate-200 min-h-screen">
+
+  <!-- Navigation -->
+  <nav class="glass border-b border-slate-800 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-[#00d0ff] to-[#7c4dff] flex items-center justify-center">
+          <i class="fab fa-js text-dark-900 text-lg"></i>
+        </div>
+        <div>
+          <h1 class="text-lg font-bold neon-text">JavaScript Course</h1>
+          <p class="text-xs text-slate-400">Beginner to Advanced</p>
+        </div>
+      </a>
+
+      <div class="flex items-center gap-4">
+        <a href="/" class="px-4 py-2 rounded-lg text-sm hover:bg-slate-800/40 transition">
+          <i class="fas fa-home mr-2"></i>Home
+        </a>
+        <a href="#basics" class="px-4 py-2 rounded-lg text-sm bg-slate-800/40 border border-neon-500/30">
+          <i class="fas fa-book mr-2"></i>Course
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="max-w-7xl mx-auto px-6 py-16 text-center">
+    <div class="max-w-3xl mx-auto">
+      <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800/40 border border-slate-700/40 text-sm mb-6">
+        <i class="fas fa-star text-neon-500"></i>
+        Complete JavaScript Course
+      </span>
+      <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight text-white neon-text mb-6">
+        Master JavaScript
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#00d0ff] to-[#7c4dff] block">From Basics to Advanced</span>
+      </h1>
+      <p class="text-slate-300 text-lg mb-8">Learn JavaScript with interactive examples, live coding editors, and real-world projects. Build dynamic web applications.</p>
+      
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href="#basics" class="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r from-[#00d0ff] to-[#6b5bff] font-medium hover:scale-105 transition-transform">
+          <i class="fas fa-play"></i>
+          Start Learning
+        </a>
+        <a href="#live-editor" class="inline-flex items-center gap-3 px-6 py-3 rounded-full border border-slate-700/40 hover:border-neon-500 transition glass">
+          <i class="fas fa-code"></i>
+          Live Editor
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Basics Section -->
+  <section id="basics" class="course-section py-5">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">JavaScript Basics</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Variables -->
+        <div class="glass rounded-xl p-6 component-card">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4 flex items-center gap-2">
+            <i class="fas fa-code"></i>
+            Variables & Data Types
+          </h3>
+          <p class="text-slate-300 mb-4">Learn how to store and work with different types of data</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4 mb-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition" onclick="runCode('variables')">
+              <i class="fas fa-play mr-1"></i>Run
+            </button>
+            <pre><code class="language-javascript" id="variables-code">// Variables
+let name = "Jusair";
+const age = 21;
+var city = "India";
+
+// Data Types
+let message = "Hello World"; // String
+let score = 100; // Number
+let isActive = true; // Boolean
+let data = null; // Null
+let notDefined; // Undefined
+
+console.log("Name:", name);
+console.log("Age:", age);
+console.log("Message:", message);
+console.log("Score:", score);
+console.log("Is Active:", isActive);</code></pre>
+          </div>
+          
+          <div class="output-console" id="variables-output"></div>
+        </div>
+
+        <!-- Functions -->
+        <div class="glass rounded-xl p-6 component-card">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4 flex items-center gap-2">
+            <i class="fas fa-cogs"></i>
+            Functions
+          </h3>
+          <p class="text-slate-300 mb-4">Create reusable blocks of code with functions</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4 mb-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition" onclick="runCode('functions')">
+              <i class="fas fa-play mr-1"></i>Run
+            </button>
+            <pre><code class="language-javascript" id="functions-code">// Regular Function
+function greet(name) {
+  return `Hello, ${name}!`;
+}
+
+// Arrow Function
+const add = (a, b) => a + b;
+
+// Function Expression
+const multiply = function(a, b) {
+  return a * b;
+};
+
+// Using functions
+console.log(greet("JavaScript"));
+console.log("Sum:", add(5, 3));
+console.log("Product:", multiply(4, 7));
+
+// Higher-order function
+function operate(a, b, operation) {
+  return operation(a, b);
+}
+
+console.log("Operation result:", operate(10, 5, add));</code></pre>
+          </div>
+          
+          <div class="output-console" id="functions-output"></div>
+        </div>
+
+        <!-- Arrays -->
+        <div class="glass rounded-xl p-6 component-card">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4 flex items-center gap-2">
+            <i class="fas fa-list"></i>
+            Arrays & Objects
+          </h3>
+          <p class="text-slate-300 mb-4">Work with collections of data using arrays and objects</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4 mb-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition" onclick="runCode('arrays')">
+              <i class="fas fa-play mr-1"></i>Run
+            </button>
+            <pre><code class="language-javascript" id="arrays-code">// Arrays
+let numbers = [10, 20, 30, 40, 50];
+let fruits = ["Apple", "Banana", "Orange"];
+
+// Array Methods
+numbers.push(60); // Add to end
+numbers.pop(); // Remove from end
+fruits.unshift("Mango"); // Add to start
+
+console.log("Numbers:", numbers);
+console.log("Fruits:", fruits);
+console.log("First fruit:", fruits[0]);
+console.log("Array length:", numbers.length);
+
+// Objects
+let user = {
+  name: "Jusair",
+  age: 21,
+  city: "India",
+  isStudent: true
+};
+
+console.log("User object:", user);
+console.log("User name:", user.name);
+console.log("User age:", user.age);
+
+// Object methods
+user.greet = function() {
+  return `Hello, I'm ${this.name}`;
+};
+
+console.log(user.greet());</code></pre>
+          </div>
+          
+          <div class="output-console" id="arrays-output"></div>
+        </div>
+
+        <!-- Control Flow -->
+        <div class="glass rounded-xl p-6 component-card">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4 flex items-center gap-2">
+            <i class="fas fa-sitemap"></i>
+            Control Flow
+          </h3>
+          <p class="text-slate-300 mb-4">Control the flow of your program with conditions and loops</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4 mb-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition" onclick="runCode('control')">
+              <i class="fas fa-play mr-1"></i>Run
+            </button>
+            <pre><code class="language-javascript" id="control-code">// If-else statements
+let age = 20;
+
+if (age >= 18) {
+  console.log("You are an adult");
+} else {
+  console.log("You are a minor");
+}
+
+// Switch statement
+let day = "Monday";
+
+switch (day) {
+  case "Monday":
+    console.log("Start of the week");
+    break;
+  case "Friday":
+    console.log("Weekend is near!");
+    break;
+  default:
+    console.log("It's a regular day");
+}
+
+// For loop
+console.log("For loop:");
+for (let i = 1; i <= 5; i++) {
+  console.log("Count:", i);
+}
+
+// While loop
+console.log("While loop:");
+let count = 1;
+while (count <= 3) {
+  console.log("While count:", count);
+  count++;
+}
+
+// Array iteration
+let numbers = [1, 2, 3, 4, 5];
+console.log("Array iteration:");
+numbers.forEach(num => console.log("Number:", num));</code></pre>
+          </div>
+          
+          <div class="output-console" id="control-output"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DOM Manipulation Section -->
+  <section class="course-section py-5 bg-dark-800">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">DOM Manipulation & Events</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- DOM Basics -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">DOM Manipulation</h3>
+          <p class="text-slate-300 mb-4">Interact with HTML elements using JavaScript</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4 mb-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition" onclick="runDOMExample()">
+              <i class="fas fa-play mr-1"></i>Run
+            </button>
+            <pre><code class="language-javascript">// Get elements
+const title = document.getElementById('dom-title');
+const content = document.querySelector('.dom-content');
+const items = document.querySelectorAll('.dom-item');
+
+// Modify elements
+title.textContent = 'DOM Updated!';
+title.style.color = '#00d0ff';
+content.innerHTML = '<strong>New content added dynamically!</strong>';
+
+// Create new elements
+const newElement = document.createElement('div');
+newElement.className = 'bg-green-500 text-white p-3 rounded mt-3';
+newElement.textContent = 'This element was created with JavaScript!';
+content.appendChild(newElement);
+
+console.log('DOM manipulation completed!');</code></pre>
+          </div>
+          
+          <div class="preview-frame p-4 rounded">
+            <div id="dom-example">
+              <h3 id="dom-title" class="text-lg font-bold mb-2">Original Title</h3>
+              <div class="dom-content p-3 bg-gray-100 rounded">
+                <p class="dom-item">Original content item 1</p>
+                <p class="dom-item">Original content item 2</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Events -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Event Handling</h3>
+          <p class="text-slate-300 mb-4">Respond to user interactions with event listeners</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4 mb-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-javascript">// Click event
+document.getElementById('click-btn').addEventListener('click', function() {
+  alert('Button clicked!');
+  this.textContent = 'Clicked!';
+  this.classList.add('bg-green-500');
+});
+
+// Input event
+document.getElementById('text-input').addEventListener('input', function(e) {
+  document.getElementById('input-value').textContent = e.target.value;
+});
+
+// Mouse events
+const hoverArea = document.getElementById('hover-area');
+hoverArea.addEventListener('mouseenter', () => {
+  hoverArea.classList.add('bg-blue-500', 'text-white');
+});
+hoverArea.addEventListener('mouseleave', () => {
+  hoverArea.classList.remove('bg-blue-500', 'text-white');
+});</code></pre>
+          </div>
+          
+          <div class="preview-frame p-4 rounded">
+            <div class="space-y-4">
+              <button id="click-btn" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition">
+                Click Me!
+              </button>
+              
+              <div class="space-y-2">
+                <label class="block text-sm font-medium">Type something:</label>
+                <input id="text-input" type="text" class="w-full p-2 border rounded" placeholder="Start typing...">
+                <p class="text-sm">You typed: <span id="input-value" class="font-semibold">-</span></p>
+              </div>
+              
+              <div id="hover-area" class="p-4 border-2 border-dashed rounded text-center cursor-pointer transition">
+                Hover over me!
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Advanced JavaScript Section -->
+  <section class="course-section py-5">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">Advanced JavaScript</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Async JavaScript -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Async JavaScript & APIs</h3>
+          <p class="text-slate-300 mb-4">Work with asynchronous operations and fetch data from APIs</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4 mb-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition" onclick="fetchUserData()">
+              <i class="fas fa-play mr-1"></i>Fetch Data
+            </button>
+            <pre><code class="language-javascript">// Fetch API with async/await
+async function fetchUserData() {
+  try {
+    const response = await fetch('https://jsonplaceholder.typicode.com/users/1');
+    const user = await response.json();
+    
+    console.log('User data:', user);
+    displayUserInfo(user);
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+}
+
+function displayUserInfo(user) {
+  const userInfo = document.getElementById('user-info');
+  userInfo.innerHTML = `
+    <div class="p-4 bg-green-100 rounded">
+      <h4 class="font-bold">${user.name}</h4>
+      <p>Email: ${user.email}</p>
+      <p>Phone: ${user.phone}</p>
+      <p>Website: ${user.website}</p>
+    </div>
+  `;
+}
+
+// Local Storage
+localStorage.setItem('username', 'JavaScriptLearner');
+const storedUser = localStorage.getItem('username');
+console.log('Stored user:', storedUser);</code></pre>
+          </div>
+          
+          <div class="preview-frame p-4 rounded">
+            <div id="user-info" class="text-center text-gray-500">
+              Click "Fetch Data" to load user information
+            </div>
+          </div>
+        </div>
+
+        <!-- ES6+ Features -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">ES6+ Modern Features</h3>
+          <p class="text-slate-300 mb-4">Explore modern JavaScript features and syntax</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4 mb-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition" onclick="runCode('es6')">
+              <i class="fas fa-play mr-1"></i>Run
+            </button>
+            <pre><code class="language-javascript" id="es6-code">// Destructuring
+const user = { name: "Jusair", age: 21, city: "India" };
+const { name, age } = user;
+console.log("Destructured:", name, age);
+
+// Spread operator
+const numbers = [1, 2, 3];
+const newNumbers = [...numbers, 4, 5];
+console.log("Spread array:", newNumbers);
+
+// Template literals
+const greeting = `Hello, my name is ${name} and I'm ${age} years old.`;
+console.log(greeting);
+
+// Arrow functions
+const square = x => x * x;
+console.log("Square of 5:", square(5));
+
+// Classes
+class Person {
+  constructor(name, age) {
+    this.name = name;
+    this.age = age;
+  }
+  
+  greet() {
+    return `Hello, I'm ${this.name}`;
+  }
+}
+
+const person1 = new Person("Alice", 25);
+console.log(person1.greet());
+
+// Modules (conceptual)
+console.log("ES6 modules allow code splitting across files");</code></pre>
+          </div>
+          
+          <div class="output-console" id="es6-output"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Live Code Editor Section -->
+  <section id="live-editor" class="course-section py-5 bg-dark-800">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">Live JavaScript Editor</h2>
+      
+      <div class="glass rounded-xl p-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div>
+            <h3 class="text-xl font-semibold text-neon-300 mb-4">Write Your Code</h3>
+            <div class="live-editor">
+              <textarea id="live-code" class="w-full h-64 bg-gray-900 text-green-400 p-4 font-mono rounded">// Write your JavaScript code here
+console.log("Hello, JavaScript!");
+
+function calculate(a, b) {
+  return a + b;
+}
+
+console.log("Sum:", calculate(10, 5));
+
+// Try modifying this code and click "Run Code"</textarea>
+            </div>
+            <button onclick="runLiveCode()" class="w-full mt-4 px-4 py-3 bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-lg font-semibold hover:scale-105 transition-transform">
+              <i class="fas fa-play mr-2"></i>Run Code
+            </button>
+          </div>
+          
+          <div>
+            <h3 class="text-xl font-semibold text-neon-300 mb-4">Output</h3>
+            <div class="output-console h-64" id="live-output">
+              // Output will appear here
+            </div>
+            <div class="mt-4 p-4 bg-yellow-900/30 rounded-lg">
+              <h4 class="font-semibold text-yellow-300 mb-2">💡 Tips:</h4>
+              <ul class="text-sm text-yellow-200 space-y-1">
+                <li>• Use console.log() to see output</li>
+                <li>• Try creating variables and functions</li>
+                <li>• Experiment with DOM manipulation</li>
+                <li>• Test different JavaScript features</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Navigation -->
+  <div class="max-w-6xl mx-auto px-6 py-8">
+    <div class="glass rounded-xl p-6 sticky bottom-6">
+      <h3 class="font-semibold text-neon-300 mb-4">Course Progress</h3>
+      <div class="flex flex-wrap gap-3">
+        <a href="#basics" class="px-4 py-2 rounded-lg bg-slate-800/40 hover:bg-slate-700/40 transition text-sm">Basics</a>
+        <a href="#live-editor" class="px-4 py-2 rounded-lg bg-slate-800/40 hover:bg-slate-700/40 transition text-sm">Live Editor</a>
+        <button onclick="showCheatSheet()" class="px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-700 transition text-sm">Cheat Sheet</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="glass border-t border-slate-800 mt-20">
+    <div class="max-w-6xl mx-auto px-6 py-8 text-center">
+      <div class="flex items-center justify-center gap-6 mb-4">
+        <a href="/" class="text-slate-300 hover:text-neon-500 transition">Home</a>
+        <a href="#basics" class="text-slate-300 hover:text-neon-500 transition">Course</a>
+        <a href="https://github.com/JUSAIR-JSR" target="_blank" class="text-slate-300 hover:text-neon-500 transition">GitHub</a>
+      </div>
+      <p class="text-slate-500 text-sm">© 2023 JavaScript Course - Frontend Development</p>
+    </div>
+  </footer>
+
+  <!-- Cheat Sheet Modal -->
+  <div id="cheat-sheet" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-50 p-4">
+    <div class="glass rounded-xl p-6 max-w-4xl max-h-[80vh] overflow-y-auto">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-2xl font-bold text-neon-300">JavaScript Cheat Sheet</h3>
+        <button onclick="hideCheatSheet()" class="text-slate-400 hover:text-white">
+          <i class="fas fa-times text-2xl"></i>
+        </button>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h4 class="font-semibold text-green-400 mb-3">Variables & Data Types</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">let x = 10;</code>
+            <code class="block bg-slate-800 p-2 rounded">const name = "John";</code>
+            <code class="block bg-slate-800 p-2 rounded">let isActive = true;</code>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-blue-400 mb-3">Functions</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">function greet() { }</code>
+            <code class="block bg-slate-800 p-2 rounded">const arrow = () => { }</code>
+            <code class="block bg-slate-800 p-2 rounded">return value;</code>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-yellow-400 mb-3">Arrays & Objects</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">let arr = [1, 2, 3];</code>
+            <code class="block bg-slate-800 p-2 rounded">let obj = { key: 'value' };</code>
+            <code class="block bg-slate-800 p-2 rounded">arr.push(4);</code>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-purple-400 mb-3">DOM Manipulation</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">document.getElementById()</code>
+            <code class="block bg-slate-800 p-2 rounded">element.addEventListener()</code>
+            <code class="block bg-slate-800 p-2 rounded">element.innerHTML</code>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Initialize syntax highlighting
+    hljs.highlightAll();
+    
+    // Initialize CodeMirror
+    const liveEditor = CodeMirror.fromTextArea(document.getElementById('live-code'), {
+      mode: 'javascript',
+      theme: 'default',
+      lineNumbers: true,
+      autoCloseBrackets: true,
+      matchBrackets: true,
+      indentUnit: 2
+    });
+
+    // Function to run code examples
+    function runCode(section) {
+      const codeElement = document.getElementById(`${section}-code`);
+      const outputElement = document.getElementById(`${section}-output`);
+      
+      if (codeElement && outputElement) {
+        const code = codeElement.textContent;
+        outputElement.innerHTML = ''; // Clear previous output
+        
+        // Override console.log to capture output
+        const originalConsoleLog = console.log;
+        console.log = function(...args) {
+          originalConsoleLog.apply(console, args);
+          args.forEach(arg => {
+            const outputLine = document.createElement('div');
+            outputLine.textContent = String(arg);
+            outputElement.appendChild(outputLine);
+          });
+        };
+        
+        try {
+          eval(code);
+        } catch (error) {
+          const errorLine = document.createElement('div');
+          errorLine.className = 'text-red-400';
+          errorLine.textContent = `Error: ${error.message}`;
+          outputElement.appendChild(errorLine);
+        }
+        
+        // Restore original console.log
+        console.log = originalConsoleLog;
+      }
+    }
+
+    // DOM Manipulation example
+    function runDOMExample() {
+      const title = document.getElementById('dom-title');
+      const content = document.querySelector('.dom-content');
+      const items = document.querySelectorAll('.dom-item');
+
+      title.textContent = 'DOM Updated!';
+      title.style.color = '#00d0ff';
+      content.innerHTML = '<strong>New content added dynamically!</strong>';
+
+      const newElement = document.createElement('div');
+      newElement.className = 'bg-green-500 text-white p-3 rounded mt-3';
+      newElement.textContent = 'This element was created with JavaScript!';
+      content.appendChild(newElement);
+    }
+
+    // Event listeners for interactive examples
+    document.addEventListener('DOMContentLoaded', function() {
+      // Click event
+      document.getElementById('click-btn').addEventListener('click', function() {
+        alert('Button clicked!');
+        this.textContent = 'Clicked!';
+        this.classList.add('bg-green-500');
+      });
+
+      // Input event
+      document.getElementById('text-input').addEventListener('input', function(e) {
+        document.getElementById('input-value').textContent = e.target.value;
+      });
+
+      // Mouse events
+      const hoverArea = document.getElementById('hover-area');
+      hoverArea.addEventListener('mouseenter', () => {
+        hoverArea.classList.add('bg-blue-500', 'text-white');
+      });
+      hoverArea.addEventListener('mouseleave', () => {
+        hoverArea.classList.remove('bg-blue-500', 'text-white');
+      });
+    });
+
+    // Fetch API example
+    async function fetchUserData() {
+      try {
+        const response = await fetch('https://jsonplaceholder.typicode.com/users/1');
+        const user = await response.json();
+        
+        console.log('User data:', user);
+        displayUserInfo(user);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
+
+    function displayUserInfo(user) {
+      const userInfo = document.getElementById('user-info');
+      userInfo.innerHTML = `
+        <div class="p-4 bg-green-100 rounded">
+          <h4 class="font-bold text-lg">${user.name}</h4>
+          <p class="mt-2"><strong>Email:</strong> ${user.email}</p>
+          <p><strong>Phone:</strong> ${user.phone}</p>
+          <p><strong>Website:</strong> ${user.website}</p>
+          <p><strong>Company:</strong> ${user.company.name}</p>
+        </div>
+      `;
+    }
+
+    // Live code execution
+    function runLiveCode() {
+      const code = liveEditor.getValue();
+      const outputElement = document.getElementById('live-output');
+      
+      outputElement.innerHTML = ''; // Clear previous output
+      
+      // Override console.log to capture output
+      const originalConsoleLog = console.log;
+      console.log = function(...args) {
+        originalConsoleLog.apply(console, args);
+        args.forEach(arg => {
+          const outputLine = document.createElement('div');
+          outputLine.textContent = String(arg);
+          outputElement.appendChild(outputLine);
+        });
+      };
+      
+      try {
+        eval(code);
+      } catch (error) {
+        const errorLine = document.createElement('div');
+        errorLine.className = 'text-red-400';
+        errorLine.textContent = `Error: ${error.message}`;
+        outputElement.appendChild(errorLine);
+      }
+      
+      // Restore original console.log
+      console.log = originalConsoleLog;
+    }
+
+    // Cheat sheet functions
+    function showCheatSheet() {
+      document.getElementById('cheat-sheet').classList.remove('hidden');
+      document.getElementById('cheat-sheet').classList.add('flex');
+    }
+
+    function hideCheatSheet() {
+      document.getElementById('cheat-sheet').classList.add('hidden');
+      document.getElementById('cheat-sheet').classList.remove('flex');
+    }
+
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,992 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Node.js & Express Course - Backend Development</title>
+  <meta name="description" content="Complete Node.js and Express course with backend examples and API development" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Highlight.js for syntax highlighting -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            neon: {
+              50: '#f3f7ff',
+              100: '#e6f0ff',
+              300: '#99ccff',
+              500: '#00d0ff',
+              600: '#00a8d9',
+              700: '#00a3cc',
+              800: '#007399'
+            },
+            dark: {
+              900: '#0a0f1c',
+              800: '#0f172a',
+              700: '#1e293b'
+            }
+          },
+          animation: {
+            'float': 'float 6s ease-in-out infinite',
+            'pulse-glow': 'pulse-glow 2s ease-in-out infinite alternate',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    .neon-text { 
+      text-shadow: 0 0 8px rgba(0,208,255,0.15), 0 0 18px rgba(0,208,255,0.06); 
+    }
+    
+    .glass {
+      background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .code-container {
+      position: relative;
+    }
+    
+    .copy-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    
+    .code-container:hover .copy-btn {
+      opacity: 1;
+    }
+    
+    .preview-frame {
+      background: white;
+      border-radius: 0.5rem;
+      border: 1px solid rgba(255,255,255,0.1);
+      min-height: 200px;
+    }
+    
+    .component-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .component-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .terminal {
+      background: #1a1b26;
+      color: #c0caf5;
+      font-family: 'Fira Code', monospace;
+      border-radius: 0.5rem;
+      padding: 1rem;
+    }
+    
+    .terminal .prompt {
+      color: #7dcfff;
+    }
+    
+    .terminal .command {
+      color: #9ece6a;
+    }
+    
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.5);
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: rgba(0, 208, 255, 0.3);
+      border-radius: 4px;
+    }
+    
+    .course-section {
+      scroll-margin-top: 100px;
+    }
+    
+    /* Animation for live examples */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .animate-fade-in {
+      animation: fadeInUp 0.6s ease-out;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    @keyframes pulse-glow {
+      0% { box-shadow: 0 0 20px rgba(0, 208, 255, 0.4); }
+      100% { box-shadow: 0 0 30px rgba(0, 208, 255, 0.8), 0 0 40px rgba(0, 208, 255, 0.4); }
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-dark-900 via-dark-800 to-dark-900 text-slate-200 min-h-screen">
+
+  <!-- Navigation -->
+  <nav class="glass border-b border-slate-800 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-[#00d0ff] to-[#7c4dff] flex items-center justify-center">
+          <i class="fab fa-node-js text-dark-900 text-lg"></i>
+        </div>
+        <div>
+          <h1 class="text-lg font-bold neon-text">Node.js & Express</h1>
+          <p class="text-xs text-slate-400">Backend Development</p>
+        </div>
+      </a>
+
+      <div class="flex items-center gap-4">
+        <a href="/" class="px-4 py-2 rounded-lg text-sm hover:bg-slate-800/40 transition">
+          <i class="fas fa-home mr-2"></i>Home
+        </a>
+        <a href="#setup" class="px-4 py-2 rounded-lg text-sm bg-slate-800/40 border border-neon-500/30">
+          <i class="fas fa-book mr-2"></i>Course
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="max-w-7xl mx-auto px-6 py-16 text-center">
+    <div class="max-w-3xl mx-auto">
+      <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800/40 border border-slate-700/40 text-sm mb-6">
+        <i class="fas fa-star text-neon-500"></i>
+        Complete Backend Development Course
+      </span>
+      <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight text-white neon-text mb-6">
+        Master Node.js & Express
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#00d0ff] to-[#7c4dff] block">Build Powerful APIs</span>
+      </h1>
+      <p class="text-slate-300 text-lg mb-8">Learn backend development with Node.js, Express, MongoDB, and modern tools. Build RESTful APIs, authentication systems, and deploy your applications.</p>
+      
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href="#setup" class="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r from-[#00d0ff] to-[#6b5bff] font-medium hover:scale-105 transition-transform">
+          <i class="fas fa-play"></i>
+          Start Learning
+        </a>
+        <a href="#project-structure" class="inline-flex items-center gap-3 px-6 py-3 rounded-full border border-slate-700/40 hover:border-neon-500 transition glass">
+          <i class="fas fa-folder"></i>
+          Project Structure
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Setup Section -->
+  <section id="setup" class="course-section py-5">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">Setup & Installation</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Node.js Installation -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4 flex items-center gap-2">
+            <i class="fab fa-node-js"></i>
+            Node.js Setup
+          </h3>
+          <p class="text-slate-300 mb-4">Install Node.js and check your setup</p>
+          
+          <div class="terminal mb-4">
+            <div class="flex items-center gap-2 mb-2">
+              <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+              <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+              <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+            </div>
+            <div class="space-y-2 text-sm">
+              <div><span class="prompt">$</span> <span class="command">node -v</span></div>
+              <div class="text-blue-300">v18.17.0</div>
+              <div><span class="prompt">$</span> <span class="command">npm -v</span></div>
+              <div class="text-blue-300">9.6.7</div>
+            </div>
+          </div>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-javascript">// Create package.json
+npm init -y
+
+// Install Express
+npm install express
+
+// Install development dependencies
+npm install --save-dev nodemon</code></pre>
+          </div>
+        </div>
+
+        <!-- First Server -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4 flex items-center gap-2">
+            <i class="fas fa-server"></i>
+            First Express Server
+          </h3>
+          <p class="text-slate-300 mb-4">Create your first Express server</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4 mb-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-javascript">// server.js
+const express = require('express');
+const app = express();
+
+// Middleware
+app.use(express.json());
+
+// Routes
+app.get('/', (req, res) => {
+  res.json({ message: 'API Running!' });
+});
+
+app.get('/api/users', (req, res) => {
+  res.json([{ id: 1, name: 'John' }, { id: 2, name: 'Jane' }]);
+});
+
+// Start server
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});</code></pre>
+          </div>
+          
+          <div class="terminal">
+            <div class="flex items-center gap-2 mb-2">
+              <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+              <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+              <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+            </div>
+            <div class="space-y-1 text-sm">
+              <div><span class="prompt">$</span> <span class="command">node server.js</span></div>
+              <div class="text-green-300">Server running on port 5000</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Express Basics Section -->
+  <section class="course-section py-5 bg-dark-800">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">Express.js Fundamentals</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Routing -->
+        <div class="glass rounded-xl p-6 component-card">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Routing & HTTP Methods</h3>
+          <p class="text-slate-300 mb-4">Handle different HTTP methods and URL parameters</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-javascript">// GET - Get all users
+app.get('/users', (req, res) => {
+  res.json({ message: 'Get all users' });
+});
+
+// GET - Get user by ID
+app.get('/users/:id', (req, res) => {
+  res.json({ user: `User ID: ${req.params.id}` });
+});
+
+// POST - Create new user
+app.post('/users', (req, res) => {
+  const { name, email } = req.body;
+  res.status(201).json({ 
+    message: 'User created', 
+    user: { name, email } 
+  });
+});
+
+// PUT - Update user
+app.put('/users/:id', (req, res) => {
+  res.json({ message: `User ${req.params.id} updated` });
+});
+
+// DELETE - Delete user
+app.delete('/users/:id', (req, res) => {
+  res.json({ message: `User ${req.params.id} deleted` });
+});</code></pre>
+          </div>
+        </div>
+
+        <!-- Middleware -->
+        <div class="glass rounded-xl p-6 component-card">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Middleware</h3>
+          <p class="text-slate-300 mb-4">Custom middleware for logging, authentication, and more</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-javascript">// Custom logger middleware
+const logger = (req, res, next) => {
+  console.log(`${req.method} ${req.url} - ${new Date().toISOString()}`);
+  next();
+};
+
+// Authentication middleware
+const auth = (req, res, next) => {
+  const token = req.headers.authorization;
+  
+  if (!token) {
+    return res.status(401).json({ error: 'No token provided' });
+  }
+  
+  // Verify token logic here
+  req.user = { id: 1, name: 'John' };
+  next();
+};
+
+// Using middleware
+app.use(express.json()); // Built-in
+app.use(logger); // Custom
+app.use('/api/protected', auth); // Route-specific
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: 'Something went wrong!' });
+});</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Database & MongoDB Section -->
+  <section class="course-section py-5">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">Database & MongoDB</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- MongoDB Connection -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">MongoDB with Mongoose</h3>
+          <p class="text-slate-300 mb-4">Connect to MongoDB and create models</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4 mb-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-javascript">// config/database.js
+const mongoose = require('mongoose');
+
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URI);
+    console.log('MongoDB Connected');
+  } catch (error) {
+    console.error('Database connection failed:', error);
+    process.exit(1);
+  }
+};
+
+module.exports = connectDB;</code></pre>
+          </div>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-javascript">// models/User.js
+const mongoose = require('mongoose');
+
+const userSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: [true, 'Name is required'],
+    trim: true
+  },
+  email: {
+    type: String,
+    required: [true, 'Email is required'],
+    unique: true,
+    lowercase: true
+  },
+  password: {
+    type: String,
+    required: [true, 'Password is required'],
+    minlength: 6
+  }
+}, {
+  timestamps: true
+});
+
+module.exports = mongoose.model('User', userSchema);</code></pre>
+          </div>
+        </div>
+
+        <!-- CRUD Operations -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">CRUD Operations</h3>
+          <p class="text-slate-300 mb-4">Complete CRUD operations with Express and MongoDB</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-javascript">// controllers/userController.js
+const User = require('../models/User');
+
+// Create user
+exports.createUser = async (req, res) => {
+  try {
+    const user = await User.create(req.body);
+    res.status(201).json(user);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+// Get all users
+exports.getUsers = async (req, res) => {
+  try {
+    const users = await User.find();
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Get user by ID
+exports.getUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Update user
+exports.updateUser = async (req, res) => {
+  try {
+    const user = await User.findByIdAndUpdate(
+      req.params.id, 
+      req.body, 
+      { new: true, runValidators: true }
+    );
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    res.json(user);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+// Delete user
+exports.deleteUser = async (req, res) => {
+  try {
+    const user = await User.findByIdAndDelete(req.params.id);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    res.json({ message: 'User deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Authentication Section -->
+  <section class="course-section py-5 bg-dark-800">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">Authentication & Security</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- JWT Authentication -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">JWT Authentication</h3>
+          <p class="text-slate-300 mb-4">Implement secure authentication with JWT tokens</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-javascript">// utils/jwt.js
+const jwt = require('jsonwebtoken');
+
+const generateToken = (userId) => {
+  return jwt.sign({ userId }, process.env.JWT_SECRET, {
+    expiresIn: '7d'
+  });
+};
+
+const verifyToken = (token) => {
+  return jwt.verify(token, process.env.JWT_SECRET);
+};
+
+module.exports = { generateToken, verifyToken };
+
+// middleware/auth.js
+const { verifyToken } = require('../utils/jwt');
+
+const auth = async (req, res, next) => {
+  try {
+    const token = req.header('Authorization')?.replace('Bearer ', '');
+    
+    if (!token) {
+      return res.status(401).json({ error: 'Access denied. No token provided.' });
+    }
+
+    const decoded = verifyToken(token);
+    req.user = decoded;
+    next();
+  } catch (error) {
+    res.status(401).json({ error: 'Invalid token' });
+  }
+};
+
+module.exports = auth;</code></pre>
+          </div>
+        </div>
+
+        <!-- Password Hashing -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Password Security</h3>
+          <p class="text-slate-300 mb-4">Secure passwords with bcrypt and validation</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-javascript">// utils/bcrypt.js
+const bcrypt = require('bcryptjs');
+
+const hashPassword = async (password) => {
+  const saltRounds = 12;
+  return await bcrypt.hash(password, saltRounds);
+};
+
+const comparePassword = async (password, hashedPassword) => {
+  return await bcrypt.compare(password, hashedPassword);
+};
+
+module.exports = { hashPassword, comparePassword };
+
+// controllers/authController.js
+const User = require('../models/User');
+const { hashPassword, comparePassword } = require('../utils/bcrypt');
+const { generateToken } = require('../utils/jwt');
+
+exports.register = async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+    
+    // Check if user exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ error: 'User already exists' });
+    }
+
+    // Hash password
+    const hashedPassword = await hashPassword(password);
+
+    // Create user
+    const user = await User.create({
+      name,
+      email,
+      password: hashedPassword
+    });
+
+    // Generate token
+    const token = generateToken(user._id);
+
+    res.status(201).json({
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email
+      },
+      token
+    });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+exports.login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // Find user
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    // Check password
+    const isMatch = await comparePassword(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    // Generate token
+    const token = generateToken(user._id);
+
+    res.json({
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email
+      },
+      token
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Project Structure Section -->
+  <section id="project-structure" class="course-section py-5">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">Project Structure</h2>
+      
+      <div class="glass rounded-xl p-6">
+        <h3 class="text-xl font-semibold text-neon-300 mb-4">Enterprise-Level Structure</h3>
+        <p class="text-slate-300 mb-6">Professional folder structure for scalable applications</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <pre><code class="language-plaintext">backend/
+├── src/
+│   ├── config/
+│   │   ├── database.js
+│   │   └── cloudinary.js
+│   ├── controllers/
+│   │   ├── authController.js
+│   │   ├── userController.js
+│   │   └── productController.js
+│   ├── middleware/
+│   │   ├── auth.js
+│   │   ├── errorHandler.js
+│   │   └── validation.js
+│   ├── models/
+│   │   ├── User.js
+│   │   └── Product.js
+│   ├── routes/
+│   │   ├── auth.js
+│   │   ├── users.js
+│   │   └── products.js
+│   ├── services/
+│   │   ├── authService.js
+│   │   └── userService.js
+│   ├── utils/
+│   │   ├── jwt.js
+│   │   ├── bcrypt.js
+│   │   └── email.js
+│   ├── app.js
+│   └── server.js
+├── uploads/
+├── .env
+├── .gitignore
+└── package.json</code></pre>
+          </div>
+          
+          <div>
+            <h4 class="font-semibold text-green-400 mb-3">📦 Required Packages</h4>
+            <div class="code-container bg-slate-900 rounded-lg p-4 mb-4">
+              <pre><code class="language-json">{
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^7.4.0",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.1",
+    "dotenv": "^16.3.1",
+    "cors": "^2.8.5",
+    "multer": "^1.4.5",
+    "joi": "^17.9.2",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}</code></pre>
+            </div>
+            
+            <div class="p-4 bg-blue-900/30 rounded-lg">
+              <h4 class="font-semibold text-blue-300 mb-2">🚀 Environment Variables</h4>
+              <div class="code-container bg-slate-800 rounded p-3">
+                <pre><code class="language-bash">PORT=5000
+MONGO_URI=mongodb://localhost:27017/yourdb
+JWT_SECRET=your-super-secret-jwt-key
+JWT_EXPIRE=7d
+NODE_ENV=development</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Deployment Section -->
+  <section class="course-section py-5 bg-dark-800">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">Deployment & Production</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Deployment Platforms -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Deployment Platforms</h3>
+          <p class="text-slate-300 mb-4">Deploy your Node.js applications to various platforms</p>
+          
+          <div class="space-y-4">
+            <div class="flex items-center gap-3 p-3 bg-slate-800/50 rounded-lg">
+              <i class="fab fa-aws text-orange-400 text-xl"></i>
+              <div>
+                <h4 class="font-semibold">AWS / EC2</h4>
+                <p class="text-sm text-slate-400">Full control, scalable</p>
+              </div>
+            </div>
+            
+            <div class="flex items-center gap-3 p-3 bg-slate-800/50 rounded-lg">
+              <i class="fas fa-cloud text-blue-400 text-xl"></i>
+              <div>
+                <h4 class="font-semibold">Render</h4>
+                <p class="text-sm text-slate-400">Easy deployment, free tier</p>
+              </div>
+            </div>
+            
+            <div class="flex items-center gap-3 p-3 bg-slate-800/50 rounded-lg">
+              <i class="fas fa-train text-purple-400 text-xl"></i>
+              <div>
+                <h4 class="font-semibold">Railway</h4>
+                <p class="text-sm text-slate-400">Git-based, simple setup</p>
+              </div>
+            </div>
+            
+            <div class="flex items-center gap-3 p-3 bg-slate-800/50 rounded-lg">
+              <i class="fas fa-hexagon text-green-400 text-xl"></i>
+              <div>
+                <h4 class="font-semibold">Heroku</h4>
+                <p class="text-sm text-slate-400">Classic platform</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Production Checklist -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Production Checklist</h3>
+          <p class="text-slate-300 mb-4">Essential steps before deploying to production</p>
+          
+          <div class="space-y-3">
+            <div class="flex items-center gap-3">
+              <i class="fas fa-check text-green-400"></i>
+              <span>Environment variables configured</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <i class="fas fa-check text-green-400"></i>
+              <span>Error handling implemented</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <i class="fas fa-check text-green-400"></i>
+              <span>Input validation added</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <i class="fas fa-check text-green-400"></i>
+              <span>Security headers configured</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <i class="fas fa-check text-green-400"></i>
+              <span>Rate limiting enabled</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <i class="fas fa-check text-green-400"></i>
+              <span>Logging setup complete</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <i class="fas fa-check text-green-400"></i>
+              <span>Database optimized</span>
+            </div>
+          </div>
+          
+          <div class="mt-6 p-4 bg-yellow-900/30 rounded-lg">
+            <h4 class="font-semibold text-yellow-300 mb-2">📝 Package.json Scripts</h4>
+            <div class="code-container bg-slate-800 rounded p-3">
+              <pre><code class="language-json">{
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "build": "npm install",
+    "test": "jest"
+  }
+}</code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Navigation -->
+  <div class="max-w-6xl mx-auto px-6 py-8">
+    <div class="glass rounded-xl p-6 sticky bottom-6">
+      <h3 class="font-semibold text-neon-300 mb-4">Course Navigation</h3>
+      <div class="flex flex-wrap gap-3">
+        <a href="#setup" class="px-4 py-2 rounded-lg bg-slate-800/40 hover:bg-slate-700/40 transition text-sm">Setup</a>
+        <a href="#project-structure" class="px-4 py-2 rounded-lg bg-slate-800/40 hover:bg-slate-700/40 transition text-sm">Structure</a>
+        <button onclick="showCommands()" class="px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-700 transition text-sm">Commands</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="glass border-t border-slate-800 mt-20">
+    <div class="max-w-6xl mx-auto px-6 py-8 text-center">
+      <div class="flex items-center justify-center gap-6 mb-4">
+        <a href="/" class="text-slate-300 hover:text-neon-500 transition">Home</a>
+        <a href="#setup" class="text-slate-300 hover:text-neon-500 transition">Course</a>
+        <a href="https://github.com/JUSAIR-JSR" target="_blank" class="text-slate-300 hover:text-neon-500 transition">GitHub</a>
+      </div>
+      <p class="text-slate-500 text-sm">© 2023 Node.js & Express Course - Backend Development</p>
+    </div>
+  </footer>
+
+  <!-- Commands Modal -->
+  <div id="commands-modal" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-50 p-4">
+    <div class="glass rounded-xl p-6 max-w-4xl max-h-[80vh] overflow-y-auto">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-2xl font-bold text-neon-300">Essential Commands</h3>
+        <button onclick="hideCommands()" class="text-slate-400 hover:text-white">
+          <i class="fas fa-times text-2xl"></i>
+        </button>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h4 class="font-semibold text-green-400 mb-3">Development</h4>
+          <div class="space-y-2 text-sm">
+            <div class="terminal p-3">
+              <div><span class="prompt">$</span> <span class="command">npm init -y</span></div>
+              <div class="text-slate-400">Initialize package.json</div>
+            </div>
+            <div class="terminal p-3">
+              <div><span class="prompt">$</span> <span class="command">npm install express</span></div>
+              <div class="text-slate-400">Install Express</div>
+            </div>
+            <div class="terminal p-3">
+              <div><span class="prompt">$</span> <span class="command">npm run dev</span></div>
+              <div class="text-slate-400">Start development server</div>
+            </div>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-blue-400 mb-3">Database & Tools</h4>
+          <div class="space-y-2 text-sm">
+            <div class="terminal p-3">
+              <div><span class="prompt">$</span> <span class="command">npm install mongoose</span></div>
+              <div class="text-slate-400">Install MongoDB driver</div>
+            </div>
+            <div class="terminal p-3">
+              <div><span class="prompt">$</span> <span class="command">npm install bcryptjs jsonwebtoken</span></div>
+              <div class="text-slate-400">Install auth packages</div>
+            </div>
+            <div class="terminal p-3">
+              <div><span class="prompt">$</span> <span class="command">npm install --save-dev nodemon</span></div>
+              <div class="text-slate-400">Install dev dependency</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Initialize syntax highlighting
+    hljs.highlightAll();
+
+    // Copy button functionality
+    document.querySelectorAll('.copy-btn').forEach(button => {
+      button.addEventListener('click', function() {
+        const codeBlock = this.closest('.code-container').querySelector('code');
+        const textArea = document.createElement('textarea');
+        textArea.value = codeBlock.textContent;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        
+        // Visual feedback
+        const originalText = this.innerHTML;
+        this.innerHTML = '<i class="fas fa-check mr-1"></i>Copied!';
+        setTimeout(() => {
+          this.innerHTML = originalText;
+        }, 2000);
+      });
+    });
+
+    // Commands modal functions
+    function showCommands() {
+      document.getElementById('commands-modal').classList.remove('hidden');
+      document.getElementById('commands-modal').classList.add('flex');
+    }
+
+    function hideCommands() {
+      document.getElementById('commands-modal').classList.add('hidden');
+      document.getElementById('commands-modal').classList.remove('flex');
+    }
+
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
