@@ -1,520 +1,533 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Frontend Development Courses — Premium Dark Neon</title>
-  <meta name="description" content="Frontend courses: HTML, CSS, Bootstrap, Tailwind — premium dark neon theme." />
-
-  <!-- Tailwind Play CDN for quick use on GitHub Pages (no build step) -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  
-  <!-- Font Awesome for premium icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
-  <!-- AOS Animation Library -->
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-  
-  <script>
-    // Tailwind custom theme extension for neon colors
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            neon: {
-              50: '#f3f7ff',
-              100: '#e6f0ff',
-              300: '#99ccff',
-              500: '#00d0ff',
-              600: '#00a8d9',
-              700: '#00a3cc',
-              800: '#007399'
-            },
-            glass: 'rgba(255,255,255,0.06)',
-            dark: {
-              900: '#0a0f1c',
-              800: '#0f172a',
-              700: '#1e293b'
-            }
-          },
-          boxShadow: {
-            'neon-sm': '0 2px 10px rgba(0, 208, 255, 0.08)',
-            'neon-md': '0 8px 30px rgba(0, 208, 255, 0.12)',
-            'neon-lg': '0 10px 40px rgba(0, 208, 255, 0.15)',
-            'neon-xl': '0 20px 50px rgba(0, 208, 255, 0.2)'
-          },
-          animation: {
-            'float': 'float 6s ease-in-out infinite',
-            'pulse-glow': 'pulse-glow 2s ease-in-out infinite alternate',
-            'slide-in': 'slide-in 0.5s ease-out forwards',
-            'fade-in': 'fade-in 0.8s ease-out forwards'
-          },
-          keyframes: {
-            float: {
-              '0%, 100%': { transform: 'translateY(0)' },
-              '50%': { transform: 'translateY(-10px)' }
-            },
-            'pulse-glow': {
-              '0%': { boxShadow: '0 0 20px rgba(0, 208, 255, 0.4)' },
-              '100%': { boxShadow: '0 0 30px rgba(0, 208, 255, 0.8), 0 0 40px rgba(0, 208, 255, 0.4)' }
-            },
-            'slide-in': {
-              '0%': { opacity: '0', transform: 'translateY(20px)' },
-              '100%': { opacity: '1', transform: 'translateY(0)' }
-            },
-            'fade-in': {
-              '0%': { opacity: '0' },
-              '100%': { opacity: '1' }
-            }
-          }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programming Courses Dashboard</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --neon-blue: #00d0ff;
+            --dark-bg: #0f172a;
+            --darker-bg: #0a0f1c;
+            --card-bg: rgba(30, 41, 59, 0.5);
         }
-      }
-    }
-  </script>
-
-  <style>
-    /* Neon glow utilities for headings & buttons */
-    .neon-text { 
-      text-shadow: 0 0 8px rgba(0,208,255,0.15), 0 0 18px rgba(0,208,255,0.06); 
-    }
-    .neon-text-strong { 
-      text-shadow: 0 0 10px rgba(0,208,255,0.3), 0 0 20px rgba(0,208,255,0.2), 0 0 30px rgba(0,208,255,0.1); 
-    }
-    .neon-glow { 
-      box-shadow: 0 6px 30px rgba(0,208,255,0.12), 0 0 40px rgba(0,208,255,0.06); 
-    }
-    .glass { 
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); 
-      backdrop-filter: blur(6px); 
-    }
-    
-    /* Custom scrollbar */
-    ::-webkit-scrollbar {
-      width: 8px;
-    }
-    ::-webkit-scrollbar-track {
-      background: rgba(15, 23, 42, 0.5);
-    }
-    ::-webkit-scrollbar-thumb {
-      background: rgba(0, 208, 255, 0.3);
-      border-radius: 4px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: rgba(0, 208, 255, 0.5);
-    }
-    
-    /* Gradient text */
-    .gradient-text {
-      background: linear-gradient(90deg, #00d0ff, #7c4dff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    
-    /* Hover effects */
-    .hover-lift {
-      transition: all 0.3s ease;
-    }
-    .hover-lift:hover {
-      transform: translateY(-5px);
-    }
-    
-    /* Course card gradient borders */
-    .course-card {
-      position: relative;
-      background: linear-gradient(145deg, rgba(15, 23, 42, 0.8), rgba(30, 41, 59, 0.5));
-      border: 1px solid rgba(255, 255, 255, 0.05);
-    }
-    .course-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      border-radius: inherit;
-      padding: 1px;
-      background: linear-gradient(145deg, rgba(0, 208, 255, 0.3), rgba(124, 77, 255, 0.3));
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      pointer-events: none;
-    }
-  </style>
+        
+        body {
+            background: linear-gradient(135deg, var(--darker-bg), var(--dark-bg));
+            color: #e2e8f0;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            min-height: 100vh;
+        }
+        
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .course-card {
+            transition: all 0.3s ease;
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 208, 255, 0.15);
+            border-color: rgba(0, 208, 255, 0.3);
+        }
+        
+        .search-input {
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .search-input:focus {
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 0 2px rgba(0, 208, 255, 0.2);
+        }
+        
+        .category-btn {
+            transition: all 0.3s ease;
+            background: rgba(30, 41, 59, 0.5);
+        }
+        
+        .category-btn.active, .category-btn:hover {
+            background: rgba(0, 208, 255, 0.2);
+            color: var(--neon-blue);
+        }
+        
+        .neon-text {
+            text-shadow: 0 0 8px rgba(0, 208, 255, 0.15), 0 0 18px rgba(0, 208, 255, 0.06);
+        }
+        
+        .course-icon {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            font-size: 24px;
+        }
+        
+        .progress-bar {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+        
+        .stats-card {
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        
+        .course-badge {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            background: rgba(0, 208, 255, 0.2);
+            color: var(--neon-blue);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+    </style>
 </head>
-<body class="bg-gradient-to-br from-dark-900 via-dark-800 to-dark-900 text-slate-200 antialiased overflow-x-hidden">
-
-  <!-- Animated background elements -->
-  <div class="fixed inset-0 overflow-hidden pointer-events-none">
-    <div class="absolute -left-20 -top-20 w-80 h-80 rounded-full bg-gradient-to-tr from-[#00d0ff]/10 to-[#7c4dff]/10 blur-3xl animate-float"></div>
-    <div class="absolute -right-20 top-1/3 w-60 h-60 rounded-full bg-gradient-to-br from-[#7c4dff]/10 to-[#00d0ff]/10 blur-3xl animate-float" style="animation-delay: 2s;"></div>
-    <div class="absolute left-1/3 -bottom-20 w-72 h-72 rounded-full bg-gradient-to-tr from-[#00d0ff]/10 to-[#7c4dff]/10 blur-3xl animate-float" style="animation-delay: 4s;"></div>
-  </div>
-
-  <!-- Top bar / Navbar -->
-  <header class="relative max-w-7xl mx-auto px-6 py-6 flex items-center justify-between z-10">
-    <a href="/" class="flex items-center gap-3 group">
-      <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-[#00d0ff] to-[#7c4dff] flex items-center justify-center neon-glow group-hover:animate-pulse-glow transition-all duration-300">
-        <i class="fas fa-code text-dark-900 text-lg"></i>
-      </div>
-      <div>
-        <h1 class="text-xl font-bold neon-text group-hover:neon-text-strong transition-all duration-300">Frontend Courses</h1>
-        <p class="text-xs text-slate-400 -mt-1">HTML • CSS • Bootstrap • Tailwind</p>
-      </div>
-    </a>
-
-    <nav class="hidden md:flex items-center gap-4">
-      <a class="px-4 py-2 rounded-lg text-sm hover:bg-slate-800/40 transition-all duration-300 hover:scale-105 flex items-center gap-2" href="https://jusair-jsr.github.io/Front-end-development/" target="_blank">
-        <i class="fas fa-external-link-alt text-xs"></i>
-        Live Site
-      </a>
-      <a class="px-4 py-2 rounded-lg text-sm hover:bg-slate-800/40 transition-all duration-300 hover:scale-105 flex items-center gap-2" href="#courses">
-        <i class="fas fa-book-open text-xs"></i>
-        Courses
-      </a>
-      <a class="px-4 py-2 rounded-lg text-sm border border-slate-700/40 hover:border-neon-500 transition-all duration-300 neon-glow hover:animate-pulse-glow flex items-center gap-2" href="https://github.com/JUSAIR-JSR/Front-end-development" target="_blank">
-        <i class="fab fa-github"></i>
-        GitHub Repo
-      </a>
-    </nav>
-
-    <div class="md:hidden">
-      <button id="menuBtn" class="p-3 rounded-lg bg-slate-800/30 hover:bg-slate-700/40 transition-all">
-        <i class="fas fa-bars"></i>
-      </button>
-    </div>
-  </header>
-
-  <!-- Hero -->
-  <section class="relative max-w-7xl mx-auto px-6 py-16 md:py-24 z-10">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-      <div class="space-y-8" data-aos="fade-right">
-        <div>
-          <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800/40 border border-slate-700/40 text-sm mb-6">
-            <i class="fas fa-star text-neon-500"></i>
-            Premium Frontend Development Courses
-          </span>
-          <h2 class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight text-white neon-text">
-            Master Frontend Development
-            <span class="gradient-text block mt-2">Fast, Practical & Modern</span>
-          </h2>
-          <p class="text-slate-300 max-w-xl text-lg mt-6">A premium collection of frontend courses with HTML, CSS, Bootstrap, and Tailwind. Beautiful patterns, real-world examples, and professional templates — all optimized for GitHub Pages.</p>
-        </div>
-
-        <div class="flex flex-wrap gap-4">
-          <a href="#courses" class="inline-flex items-center gap-3 px-6 py-4 rounded-full bg-gradient-to-r from-[#00d0ff] to-[#6b5bff] font-medium shadow-neon-lg hover:shadow-neon-xl transition-all duration-300 hover:scale-105 hover-lift">
-            <i class="fas fa-graduation-cap"></i>
-            Browse Courses
-          </a>
-
-          <a href="https://github.com/JUSAIR-JSR/Front-end-development" target="_blank" class="inline-flex items-center gap-3 px-6 py-4 rounded-full border border-slate-700/40 hover:border-neon-500 transition-all duration-300 hover:scale-105 glass">
-            <i class="fab fa-github"></i>
-            View on GitHub
-          </a>
-        </div>
-
-        <div class="flex items-center gap-6 mt-6 text-sm text-slate-400">
-          <span class="flex items-center gap-2"><span class="w-3 h-3 bg-[#00d0ff] rounded-full shadow-neon-sm animate-pulse"></span> Updated content</span>
-          <span class="flex items-center gap-2"><span class="w-3 h-3 bg-[#7c4dff] rounded-full shadow-neon-sm animate-pulse" style="animation-delay: 0.5s;"></span> Hands-on templates</span>
-          <span class="flex items-center gap-2"><span class="w-3 h-3 bg-[#00ffaa] rounded-full shadow-neon-sm animate-pulse" style="animation-delay: 1s;"></span> Premium examples</span>
-        </div>
-      </div>
-
-      <div class="relative" data-aos="fade-left" data-aos-delay="200">
-        <div class="glass rounded-2xl p-8 border border-slate-700/30 shadow-neon-lg hover-lift transition-all duration-500">
-          <div class="flex items-center gap-3 mb-6">
-            <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-[#00d0ff] to-[#7c4dff] flex items-center justify-center">
-              <i class="fas fa-book text-dark-900"></i>
+<body class="min-h-screen p-4 md:p-6">
+    <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <header class="mb-8 md:mb-12">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                <div>
+                    <h1 class="text-3xl md:text-4xl font-bold text-white neon-text">Programming Courses</h1>
+                    <p class="text-slate-400 mt-2">Master the technologies that power the modern web</p>
+                </div>
+                
+                <div class="flex items-center gap-4">
+                    <div class="relative flex-1 max-w-md">
+                        <input type="text" id="searchInput" placeholder="Search courses..." 
+                               class="w-full py-3 pl-10 pr-4 rounded-lg search-input text-white focus:outline-none">
+                        <i class="fas fa-search absolute left-3 top-3.5 text-slate-400"></i>
+                    </div>
+                    
+                    <div class="hidden md:flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-r from-cyan-500 to-blue-500 flex items-center justify-center text-white font-bold">
+                            JS
+                        </div>
+                        <span class="text-white font-medium">Jusair</span>
+                    </div>
+                </div>
             </div>
-            <h3 class="text-xl font-bold">Course Catalog</h3>
-          </div>
-          
-          <ul id="courses" class="grid grid-cols-1 gap-4">
-            <li class="course-card p-4 rounded-xl hover-lift transition-all duration-300 group">
-              <div class="flex items-center justify-between">
-                <div class="flex items-center gap-4">
-                  <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500/20 to-cyan-500/20 flex items-center justify-center">
-                    <i class="fab fa-html5 text-blue-400"></i>
-                  </div>
-                  <div>
-                    <div class="text-sm text-slate-300">HTML</div>
-                    <a href="https://github.com/JUSAIR-JSR/Front-end-development/blob/main/Html.md" target="_blank" class="text-neon-500 hover:text-neon-300 hover:underline transition-colors">Html.md</a>
-                  </div>
+            
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                <div class="stats-card">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-slate-400 text-sm">Total Courses</p>
+                            <h3 class="text-2xl font-bold text-white">19</h3>
+                        </div>
+                        <div class="w-12 h-12 rounded-lg bg-blue-500/20 flex items-center justify-center">
+                            <i class="fas fa-book text-blue-400"></i>
+                        </div>
+                    </div>
                 </div>
-                <div class="flex items-center gap-2">
-                  <span class="text-xs px-2 py-1 rounded-full bg-blue-900/30 text-blue-300 border border-blue-700/30">Beginner</span>
-                  <a href="https://github.com/JUSAIR-JSR/Front-end-development/blob/main/Html.md" target="_blank" class="px-3 py-1 rounded-full text-xs bg-[#00131a] border border-slate-700/40 group-hover:border-neon-500 transition-colors">Open</a>
+                
+                <div class="stats-card">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-slate-400 text-sm">In Progress</p>
+                            <h3 class="text-2xl font-bold text-white">3</h3>
+                        </div>
+                        <div class="w-12 h-12 rounded-lg bg-yellow-500/20 flex items-center justify-center">
+                            <i class="fas fa-spinner text-yellow-400"></i>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </li>
-
-            <li class="course-card p-4 rounded-xl hover-lift transition-all duration-300 group">
-              <div class="flex items-center justify-between">
-                <div class="flex items-center gap-4">
-                  <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center">
-                    <i class="fab fa-css3-alt text-purple-400"></i>
-                  </div>
-                  <div>
-                    <div class="text-sm text-slate-300">CSS</div>
-                    <a href="https://github.com/JUSAIR-JSR/Front-end-development/blob/main/css.md" target="_blank" class="text-neon-500 hover:text-neon-300 hover:underline transition-colors">css.md</a>
-                  </div>
+                
+                <div class="stats-card">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-slate-400 text-sm">Completed</p>
+                            <h3 class="text-2xl font-bold text-white">5</h3>
+                        </div>
+                        <div class="w-12 h-12 rounded-lg bg-green-500/20 flex items-center justify-center">
+                            <i class="fas fa-check-circle text-green-400"></i>
+                        </div>
+                    </div>
                 </div>
-                <div class="flex items-center gap-2">
-                  <span class="text-xs px-2 py-1 rounded-full bg-purple-900/30 text-purple-300 border border-purple-700/30">Intermediate</span>
-                  <a href="https://github.com/JUSAIR-JSR/Front-end-development/blob/main/css.md" target="_blank" class="px-3 py-1 rounded-full text-xs bg-[#00131a] border border-slate-700/40 group-hover:border-neon-500 transition-colors">Open</a>
+                
+                <div class="stats-card">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-slate-400 text-sm">Hours Learned</p>
+                            <h3 class="text-2xl font-bold text-white">127</h3>
+                        </div>
+                        <div class="w-12 h-12 rounded-lg bg-purple-500/20 flex items-center justify-center">
+                            <i class="fas fa-clock text-purple-400"></i>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </li>
-
-            <li class="course-card p-4 rounded-xl hover-lift transition-all duration-300 group">
-              <div class="flex items-center justify-between">
-                <div class="flex items-center gap-4">
-                  <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-indigo-500/20 to-blue-500/20 flex items-center justify-center">
-                    <i class="fab fa-bootstrap text-indigo-400"></i>
-                  </div>
-                  <div>
-                    <div class="text-sm text-slate-300">Bootstrap</div>
-                    <a href="https://github.com/JUSAIR-JSR/Front-end-development/blob/main/boostrap.md" target="_blank" class="text-neon-500 hover:text-neon-300 hover:underline transition-colors">boostrap.md</a>
-                  </div>
+            </div>
+            
+            <!-- Categories -->
+            <div class="flex flex-wrap gap-2 mb-2">
+                <button class="category-btn active px-4 py-2 rounded-lg" data-category="all">All Courses</button>
+                <button class="category-btn px-4 py-2 rounded-lg" data-category="frontend">Frontend</button>
+                <button class="category-btn px-4 py-2 rounded-lg" data-category="backend">Backend</button>
+                <button class="category-btn px-4 py-2 rounded-lg" data-category="database">Database</button>
+                <button class="category-btn px-4 py-2 rounded-lg" data-category="language">Languages</button>
+            </div>
+        </header>
+        
+        <!-- Main Content -->
+        <main>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5" id="coursesGrid">
+                <!-- Courses will be dynamically inserted here -->
+            </div>
+            
+            <!-- Recently Viewed Section -->
+            <div class="mt-12">
+                <h2 class="text-2xl font-bold text-white mb-6">Recently Viewed</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                    <div class="course-card glass p-5 rounded-xl flex items-center gap-4">
+                        <div class="course-icon bg-blue-500/20 text-blue-400">
+                            <i class="fab fa-js"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-white">JavaScript</h3>
+                            <p class="text-slate-400 text-sm">Last viewed: 2 hours ago</p>
+                        </div>
+                    </div>
+                    
+                    <div class="course-card glass p-5 rounded-xl flex items-center gap-4">
+                        <div class="course-icon bg-green-500/20 text-green-400">
+                            <i class="fab fa-node-js"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-white">Node.js</h3>
+                            <p class="text-slate-400 text-sm">Last viewed: 1 day ago</p>
+                        </div>
+                    </div>
+                    
+                    <div class="course-card glass p-5 rounded-xl flex items-center gap-4">
+                        <div class="course-icon bg-purple-500/20 text-purple-400">
+                            <i class="fab fa-react"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-white">React</h3>
+                            <p class="text-slate-400 text-sm">Last viewed: 3 days ago</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="flex items-center gap-2">
-                  <span class="text-xs px-2 py-1 rounded-full bg-indigo-900/30 text-indigo-300 border border-indigo-700/30">Components</span>
-                  <a href="https://github.com/JUSAIR-JSR/Front-end-development/blob/main/boostrap.md" target="_blank" class="px-3 py-1 rounded-full text-xs bg-[#00131a] border border-slate-700/40 group-hover:border-neon-500 transition-colors">Open</a>
-                </div>
-              </div>
-            </li>
-
-            <li class="course-card p-4 rounded-xl hover-lift transition-all duration-300 group">
-              <div class="flex items-center justify-between">
-                <div class="flex items-center gap-4">
-                  <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-cyan-500/20 to-teal-500/20 flex items-center justify-center">
-                    <i class="fas fa-wind text-cyan-400"></i>
-                  </div>
-                  <div>
-                    <div class="text-sm text-slate-300">Tailwind CSS</div>
-                    <a href="https://github.com/JUSAIR-JSR/Front-end-development/blob/main/Tailwindcss.md" target="_blank" class="text-neon-500 hover:text-neon-300 hover:underline transition-colors">Tailwindcss.md</a>
-                  </div>
-                </div>
-                <div class="flex items-center gap-2">
-                  <span class="text-xs px-2 py-1 rounded-full bg-cyan-900/30 text-cyan-300 border border-cyan-700/30">Utility-first</span>
-                  <a href="https://github.com/JUSAIR-JSR/Front-end-development/blob/main/Tailwindcss.md" target="_blank" class="px-3 py-1 rounded-full text-xs bg-[#00131a] border border-slate-700/40 group-hover:border-neon-500 transition-colors">Open</a>
-                </div>
-              </div>
-            </li>
-          </ul>
-
-          <div class="mt-6 text-xs text-slate-400 flex items-center gap-2">
-            <i class="fas fa-lightbulb text-neon-500"></i>
-            <span>Click any course to open the full content on GitHub.</span>
-          </div>
-        </div>
-
-        <div class="absolute -right-8 -top-8 w-40 h-40 rounded-full bg-gradient-to-tr from-[#00d0ff]/20 to-[#7c4dff]/12 blur-3xl z-0"></div>
-      </div>
+            </div>
+        </main>
     </div>
-  </section>
 
-  <!-- Features / Highlights -->
-  <section class="relative max-w-7xl mx-auto px-6 py-16 z-10">
-    <div class="text-center mb-16" data-aos="fade-up">
-      <h2 class="text-3xl md:text-4xl font-bold neon-text">Why Choose Our Courses?</h2>
-      <p class="text-slate-400 max-w-2xl mx-auto mt-4">Premium learning experience with modern tools and techniques</p>
-    </div>
-    
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-      <div class="course-card p-8 rounded-2xl hover-lift transition-all duration-500" data-aos="fade-up" data-aos-delay="0">
-        <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-[#00d0ff]/20 to-[#7c4dff]/20 flex items-center justify-center mb-6">
-          <i class="fas fa-palette text-neon-500 text-xl"></i>
-        </div>
-        <h4 class="font-bold text-xl mb-4 neon-text">Starter Templates</h4>
-        <p class="text-slate-300">Professional templates for portfolios, dashboards, and applications — ready to deploy on GitHub Pages.</p>
-        <div class="mt-6 flex items-center text-neon-500 text-sm font-medium">
-          <span>Explore Templates</span>
-          <i class="fas fa-arrow-right ml-2"></i>
-        </div>
-      </div>
-      
-      <div class="course-card p-8 rounded-2xl hover-lift transition-all duration-500" data-aos="fade-up" data-aos-delay="100">
-        <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-[#00d0ff]/20 to-[#7c4dff]/20 flex items-center justify-center mb-6">
-          <i class="fas fa-laptop-code text-neon-500 text-xl"></i>
-        </div>
-        <h4 class="font-bold text-xl mb-4 neon-text">Practical Examples</h4>
-        <p class="text-slate-300">Real-world projects and examples that solve common development challenges with modern approaches.</p>
-        <div class="mt-6 flex items-center text-neon-500 text-sm font-medium">
-          <span>View Examples</span>
-          <i class="fas fa-arrow-right ml-2"></i>
-        </div>
-      </div>
-      
-      <div class="course-card p-8 rounded-2xl hover-lift transition-all duration-500" data-aos="fade-up" data-aos-delay="200">
-        <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-[#00d0ff]/20 to-[#7c4dff]/20 flex items-center justify-center mb-6">
-          <i class="fab fa-github text-neon-500 text-xl"></i>
-        </div>
-        <h4 class="font-bold text-xl mb-4 neon-text">GitHub Pages Ready</h4>
-        <p class="text-slate-300">All content is optimized for GitHub Pages with no build step required — just clone and deploy.</p>
-        <div class="mt-6 flex items-center text-neon-500 text-sm font-medium">
-          <span>Deploy Guide</span>
-          <i class="fas fa-arrow-right ml-2"></i>
-        </div>
-      </div>
-    </div>
-  </section>
+    <script>
+        // Course data
+        const courses = [
+            {
+                id: 1,
+                name: "HTML",
+                filename: "./Htmlcourse.html",
+                category: "frontend",
+                icon: "fab fa-html5",
+                color: "bg-orange-500/20 text-orange-400",
+                progress: 100,
+                description: "The standard markup language for Web pages"
+            },
+            {
+                id: 2,
+                name: "CSS",
+                filename: "./Csscourse.html",
+                category: "frontend",
+                icon: "fab fa-css3-alt",
+                color: "bg-blue-500/20 text-blue-400",
+                progress: 100,
+                description: "The language for styling web pages"
+            },
+            {
+                id: 3,
+                name: "JavaScript",
+                filename: "./javascriptCourse.html",
+                category: "frontend",
+                icon: "fab fa-js",
+                color: "bg-yellow-500/20 text-yellow-400",
+                progress: 85,
+                description: "Programming language of the Web"
+            },
+            {
+                id: 4,
+                name: "React",
+                filename: "./Reactcourse.html",
+                category: "frontend",
+                icon: "fab fa-react",
+                color: "bg-cyan-500/20 text-cyan-400",
+                progress: 70,
+                description: "A JavaScript library for building user interfaces"
+            },
+            {
+                id: 5,
+                name: "Bootstrap",
+                filename: "./Boostrapcourse.html",
+                category: "frontend",
+                icon: "fab fa-bootstrap",
+                color: "bg-purple-500/20 text-purple-400",
+                progress: 100,
+                description: "The most popular CSS Framework"
+            },
+            {
+                id: 6,
+                name: "Tailwind CSS",
+                filename: "./tailwindcssCourse.html",
+                category: "frontend",
+                icon: "fas fa-wind",
+                color: "bg-teal-500/20 text-teal-400",
+                progress: 90,
+                description: "A utility-first CSS framework"
+            },
+            {
+                id: 7,
+                name: "TypeScript",
+                filename: "./TypeScriptCourse.html",
+                category: "frontend",
+                icon: "fas fa-code",
+                color: "bg-blue-600/20 text-blue-500",
+                progress: 60,
+                description: "JavaScript with syntax for types"
+            },
+            {
+                id: 8,
+                name: "Next.js",
+                filename: "./NextjsCourse.html",
+                category: "frontend",
+                icon: "fas fa-bolt",
+                color: "bg-gray-500/20 text-gray-400",
+                progress: 40,
+                description: "The React Framework for Production"
+            },
+            {
+                id: 9,
+                name: "Node.js",
+                filename: "./NodejsCourse.html",
+                category: "backend",
+                icon: "fab fa-node-js",
+                color: "bg-green-500/20 text-green-400",
+                progress: 75,
+                description: "JavaScript runtime built on Chrome's V8 engine"
+            },
+            {
+                id: 10,
+                name: "Python",
+                filename: "./PythonCourse.html",
+                category: "language",
+                icon: "fab fa-python",
+                color: "bg-yellow-500/20 text-yellow-400",
+                progress: 100,
+                description: "A programming language that lets you work quickly"
+            },
+            {
+                id: 11,
+                name: "Django",
+                filename: "./DjangoCourse.html",
+                category: "backend",
+                icon: "fas fa-leaf",
+                color: "bg-green-600/20 text-green-500",
+                progress: 65,
+                description: "A high-level Python Web framework"
+            },
+            {
+                id: 12,
+                name: "Java",
+                filename: "./JavaCourse.html",
+                category: "language",
+                icon: "fab fa-java",
+                color: "bg-red-500/20 text-red-400",
+                progress: 80,
+                description: "A popular programming language"
+            },
+            {
+                id: 13,
+                name: "C Programming",
+                filename: "./C_programming_Course.html",
+                category: "language",
+                icon: "fas fa-c",
+                color: "bg-blue-700/20 text-blue-600",
+                progress: 100,
+                description: "A general-purpose programming language"
+            },
+            {
+                id: 14,
+                name: "C++ Programming",
+                filename: "./CPP_course.html",
+                category: "language",
+                icon: "fas fa-plus",
+                color: "bg-blue-800/20 text-blue-700",
+                progress: 95,
+                description: "C++ is a powerful general-purpose programming language"
+            },
+            {
+                id: 15,
+                name: "C#",
+                filename: "./C_sharpCourse.html",
+                category: "language",
+                icon: "fas fa-hashtag",
+                color: "bg-purple-600/20 text-purple-500",
+                progress: 70,
+                description: "A modern, object-oriented programming language"
+            },
+            {
+                id: 16,
+                name: "MySQL",
+                filename: "./MySqlCourse.html",
+                category: "database",
+                icon: "fas fa-database",
+                color: "bg-blue-500/20 text-blue-400",
+                progress: 100,
+                description: "The world's most popular open source database"
+            },
+            {
+                id: 17,
+                name: "PostgreSQL",
+                filename: "./PostgreSqlCourse.html",
+                category: "database",
+                icon: "fas fa-database",
+                color: "bg-blue-600/20 text-blue-500",
+                progress: 85,
+                description: "The world's most advanced open source database"
+            },
+            {
+                id: 18,
+                name: "MongoDB",
+                filename: "./MongoDbCourse.html",
+                category: "database",
+                icon: "fas fa-leaf",
+                color: "bg-green-500/20 text-green-400",
+                progress: 60,
+                description: "The most popular database for modern apps"
+            },
+            {
+                id: 19,
+                name: "Git",
+                filename: "./GitCourse.html",
+                category: "backend",
+                icon: "fab fa-git-alt",
+                color: "bg-orange-500/20 text-orange-400",
+                progress: 100,
+                description: "A free and open source distributed version control system"
+            }
+        ];
 
-  <!-- Testimonials Section -->
-  <section class="relative max-w-7xl mx-auto px-6 py-16 z-10">
-    <div class="text-center mb-16" data-aos="fade-up">
-      <h2 class="text-3xl md:text-4xl font-bold neon-text">What Students Say</h2>
-      <p class="text-slate-400 max-w-2xl mx-auto mt-4">Hear from developers who transformed their skills with our courses</p>
-    </div>
-    
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-      <div class="course-card p-8 rounded-2xl" data-aos="fade-right">
-        <div class="flex items-center gap-4 mb-6">
-          <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-[#00d0ff] to-[#7c4dff] flex items-center justify-center">
-            <span class="text-dark-900 font-bold">AS</span>
-          </div>
-          <div>
-            <h4 class="font-bold">Alex Smith</h4>
-            <p class="text-slate-400 text-sm">Frontend Developer</p>
-          </div>
-        </div>
-        <p class="text-slate-300 italic">"The Tailwind CSS course completely changed how I approach styling. The practical examples helped me build beautiful interfaces faster than ever before."</p>
-        <div class="flex text-yellow-400 mt-4">
-          <i class="fas fa-star"></i>
-          <i class="fas fa-star"></i>
-          <i class="fas fa-star"></i>
-          <i class="fas fa-star"></i>
-          <i class="fas fa-star"></i>
-        </div>
-      </div>
-      
-      <div class="course-card p-8 rounded-2xl" data-aos="fade-left">
-        <div class="flex items-center gap-4 mb-6">
-          <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-[#00d0ff] to-[#7c4dff] flex items-center justify-center">
-            <span class="text-dark-900 font-bold">MJ</span>
-          </div>
-          <div>
-            <h4 class="font-bold">Maria Johnson</h4>
-            <p class="text-slate-400 text-sm">UI/UX Designer</p>
-          </div>
-        </div>
-        <p class="text-slate-300 italic">"As a designer learning to code, the HTML and CSS courses were exactly what I needed. The clear explanations and visual examples made complex concepts easy to understand."</p>
-        <div class="flex text-yellow-400 mt-4">
-          <i class="fas fa-star"></i>
-          <i class="fas fa-star"></i>
-          <i class="fas fa-star"></i>
-          <i class="fas fa-star"></i>
-          <i class="fas fa-star-half-alt"></i>
-        </div>
-      </div>
-    </div>
-  </section>
+        // DOM elements
+        const coursesGrid = document.getElementById('coursesGrid');
+        const searchInput = document.getElementById('searchInput');
+        const categoryButtons = document.querySelectorAll('.category-btn');
 
-  <!-- CTA Section -->
-  <section class="relative max-w-5xl mx-auto px-6 py-16 z-10" data-aos="fade-up">
-    <div class="course-card rounded-3xl p-12 text-center">
-      <h2 class="text-3xl md:text-4xl font-bold neon-text mb-6">Ready to Master Frontend Development?</h2>
-      <p class="text-slate-300 max-w-2xl mx-auto mb-8">Join thousands of developers who have transformed their skills with our premium courses. All content is free and open source.</p>
-      <div class="flex flex-wrap justify-center gap-4">
-        <a href="#courses" class="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-gradient-to-r from-[#00d0ff] to-[#6b5bff] font-medium shadow-neon-lg hover:shadow-neon-xl transition-all duration-300 hover:scale-105">
-          <i class="fas fa-rocket"></i>
-          Start Learning Now
-        </a>
-        <a href="https://github.com/JUSAIR-JSR/Front-end-development" target="_blank" class="inline-flex items-center gap-3 px-8 py-4 rounded-full border border-slate-700/40 hover:border-neon-500 transition-all duration-300 glass">
-          <i class="fab fa-github"></i>
-          Explore GitHub Repo
-        </a>
-      </div>
-    </div>
-  </section>
+        // Initialize the dashboard
+        function initDashboard() {
+            renderCourses(courses);
+            setupEventListeners();
+        }
 
-  <!-- Footer -->
-  <footer class="relative max-w-7xl mx-auto px-6 py-12 text-slate-400 z-10">
-    <div class="border-t border-slate-800/60 pt-8 flex flex-col md:flex-row items-center justify-between gap-6">
-      <div class="text-center md:text-left">
-        <div class="font-bold text-lg mb-2 gradient-text">JUSAIR-JSR</div>
-        <div class="text-sm text-slate-500">Premium Frontend Development Course Collection</div>
-      </div>
-      <div class="flex items-center gap-6">
-        <a href="https://github.com/JUSAIR-JSR" target="_blank" class="text-slate-300 hover:text-neon-500 transition-colors flex items-center gap-2">
-          <i class="fab fa-github"></i>
-          GitHub
-        </a>
-        <a href="https://jusair-jsr.github.io/Front-end-development/" target="_blank" class="text-slate-300 hover:text-neon-500 transition-colors flex items-center gap-2">
-          <i class="fas fa-external-link-alt"></i>
-          Live Site
-        </a>
-      </div>
-    </div>
-    <div class="mt-8 text-center text-sm text-slate-600">
-      <p>Made with <i class="fas fa-heart text-red-500 mx-1"></i> for the developer community</p>
-    </div>
-  </footer>
+        // Render courses to the grid
+        function renderCourses(coursesToRender) {
+            coursesGrid.innerHTML = '';
+            
+            coursesToRender.forEach((course, index) => {
+                const courseCard = document.createElement('div');
+                courseCard.className = `course-card glass p-5 rounded-xl fade-in`;
+                courseCard.style.animationDelay = `${index * 0.05}s`;
+                
+                // Progress bar color based on completion
+                let progressColor = 'bg-red-500';
+                if (course.progress >= 80) progressColor = 'bg-green-500';
+                else if (course.progress >= 50) progressColor = 'bg-yellow-500';
+                
+                courseCard.innerHTML = `
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="course-icon ${course.color}">
+                            <i class="${course.icon}"></i>
+                        </div>
+                        <span class="course-badge">${course.category}</span>
+                    </div>
+                    
+                    <h3 class="font-bold text-white text-lg mb-2">${course.name}</h3>
+                    <p class="text-slate-400 text-sm mb-4">${course.description}</p>
+                    
+                    <div class="mb-4">
+                        <div class="flex justify-between text-sm mb-1">
+                            <span class="text-slate-400">Progress</span>
+                            <span class="text-white">${course.progress}%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill ${progressColor}" style="width: ${course.progress}%"></div>
+                        </div>
+                    </div>
+                    
+                    <a href="${course.filename}" class="block w-full py-2 text-center rounded-lg bg-slate-700/50 hover:bg-slate-600/50 text-white transition-colors">
+                        ${course.progress === 100 ? 'Review Course' : 'Continue Learning'}
+                    </a>
+                `;
+                
+                coursesGrid.appendChild(courseCard);
+            });
+        }
 
-  <!-- Mobile Menu (hidden by default) -->
-  <div id="mobileMenu" class="fixed inset-0 bg-dark-900/95 backdrop-blur-lg z-50 flex flex-col items-center justify-center hidden">
-    <button id="closeMenu" class="absolute top-6 right-6 p-3 text-slate-400 hover:text-white">
-      <i class="fas fa-times text-2xl"></i>
-    </button>
-    
-    <nav class="flex flex-col items-center gap-8 text-xl">
-      <a href="https://jusair-jsr.github.io/Front-end-development/" target="_blank" class="text-slate-300 hover:text-neon-500 transition-colors flex items-center gap-3">
-        <i class="fas fa-external-link-alt"></i>
-        Live Site
-      </a>
-      <a href="#courses" class="text-slate-300 hover:text-neon-500 transition-colors flex items-center gap-3">
-        <i class="fas fa-book-open"></i>
-        Courses
-      </a>
-      <a href="https://github.com/JUSAIR-JSR/Front-end-development" target="_blank" class="text-slate-300 hover:text-neon-500 transition-colors flex items-center gap-3">
-        <i class="fab fa-github"></i>
-        GitHub Repo
-      </a>
-    </nav>
-    
-    <div class="mt-12 text-slate-500 text-sm">
-      &copy; 2023 Frontend Development Courses
-    </div>
-  </div>
+        // Filter courses based on search and category
+        function filterCourses() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const activeCategory = document.querySelector('.category-btn.active').dataset.category;
+            
+            const filteredCourses = courses.filter(course => {
+                const matchesSearch = course.name.toLowerCase().includes(searchTerm) || 
+                                     course.description.toLowerCase().includes(searchTerm);
+                const matchesCategory = activeCategory === 'all' || course.category === activeCategory;
+                
+                return matchesSearch && matchesCategory;
+            });
+            
+            renderCourses(filteredCourses);
+        }
 
-  <!-- Scripts -->
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <script>
-    // Initialize AOS (Animate On Scroll)
-    AOS.init({
-      duration: 800,
-      once: true,
-      offset: 100
-    });
+        // Set up event listeners
+        function setupEventListeners() {
+            // Search functionality
+            searchInput.addEventListener('input', filterCourses);
+            
+            // Category filtering
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    categoryButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    filterCourses();
+                });
+            });
+        }
 
-    // Mobile menu functionality
-    const menuBtn = document.getElementById('menuBtn');
-    const mobileMenu = document.getElementById('mobileMenu');
-    const closeMenu = document.getElementById('closeMenu');
-    
-    if (menuBtn) {
-      menuBtn.addEventListener('click', () => {
-        mobileMenu.classList.remove('hidden');
-        document.body.style.overflow = 'hidden';
-      });
-    }
-    
-    if (closeMenu) {
-      closeMenu.addEventListener('click', () => {
-        mobileMenu.classList.add('hidden');
-        document.body.style.overflow = 'auto';
-      });
-    }
-    
-    // Close mobile menu when clicking on a link
-    const mobileLinks = mobileMenu.querySelectorAll('a');
-    mobileLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        mobileMenu.classList.add('hidden');
-        document.body.style.overflow = 'auto';
-      });
-    });
-  </script>
+        // Initialize the dashboard when the page loads
+        document.addEventListener('DOMContentLoaded', initDashboard);
+    </script>
 </body>
 </html>

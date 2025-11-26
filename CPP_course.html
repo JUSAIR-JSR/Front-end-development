@@ -1,0 +1,3737 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>C++ Programming Course - Complete Beginner to Advanced</title>
+  <meta name="description" content="Complete C++ course with OOP, STL, file handling, DSA, and projects" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Highlight.js for syntax highlighting -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            neon: {
+              50: '#f3f7ff',
+              100: '#e6f0ff',
+              300: '#99ccff',
+              500: '#00d0ff',
+              600: '#00a8d9',
+              700: '#00a3cc',
+              800: '#007399'
+            },
+            dark: {
+              900: '#0a0f1c',
+              800: '#0f172a',
+              700: '#1e293b'
+            },
+            cpp: {
+              500: '#00599c',
+              600: '#004482',
+              700: '#003366'
+            }
+          },
+          animation: {
+            'float': 'float 6s ease-in-out infinite',
+            'pulse-glow': 'pulse-glow 2s ease-in-out infinite alternate',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    .neon-text { 
+      text-shadow: 0 0 8px rgba(0,208,255,0.15), 0 0 18px rgba(0,208,255,0.06); 
+    }
+    
+    .glass {
+      background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .code-container {
+      position: relative;
+    }
+    
+    .copy-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    
+    .code-container:hover .copy-btn {
+      opacity: 1;
+    }
+    
+    .terminal {
+      background: #1a1b26;
+      color: #c0caf5;
+      font-family: 'Fira Code', monospace;
+      border-radius: 0.5rem;
+      padding: 1rem;
+    }
+    
+    .terminal .prompt {
+      color: #7dcfff;
+    }
+    
+    .terminal .command {
+      color: #9ece6a;
+    }
+    
+    .cpp-editor {
+      background: #1e293b;
+      color: #c0caf5;
+      font-family: 'Fira Code', monospace;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      min-height: 200px;
+      border: 1px solid #374151;
+    }
+    
+    .cpp-output {
+      background: #0f172a;
+      color: #10b981;
+      font-family: 'Fira Code', monospace;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      min-height: 100px;
+      border: 1px solid #374151;
+    }
+    
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.5);
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: rgba(0, 208, 255, 0.3);
+      border-radius: 4px;
+    }
+    
+    .course-section {
+      scroll-margin-top: 100px;
+    }
+    
+    /* Animation for live examples */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .animate-fade-in {
+      animation: fadeInUp 0.6s ease-out;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    @keyframes pulse-glow {
+      0% { box-shadow: 0 0 20px rgba(0, 208, 255, 0.4); }
+      100% { box-shadow: 0 0 30px rgba(0, 208, 255, 0.8), 0 0 40px rgba(0, 208, 255, 0.4); }
+    }
+    
+    .cpp-badge {
+      background: linear-gradient(135deg, #00599c, #004482);
+      color: white;
+    }
+    
+    .syntax-keyword {
+      color: #ff79c6;
+    }
+    
+    .syntax-type {
+      color: #8be9fd;
+    }
+    
+    .syntax-string {
+      color: #f1fa8c;
+    }
+    
+    .syntax-comment {
+      color: #6272a4;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-dark-900 via-dark-800 to-dark-900 text-slate-200 min-h-screen">
+
+  <!-- Navigation -->
+  <nav class="glass border-b border-slate-800 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-cpp-500 to-cpp-600 flex items-center justify-center">
+          <i class="fas fa-code text-white text-lg"></i>
+        </div>
+        <div>
+          <h1 class="text-lg font-bold neon-text">C++ Course</h1>
+          <p class="text-xs text-slate-400">Beginner to Advanced</p>
+        </div>
+      </a>
+
+      <div class="flex items-center gap-4">
+        <a href="/" class="px-4 py-2 rounded-lg text-sm hover:bg-slate-800/40 transition">
+          <i class="fas fa-home mr-2"></i>Home
+        </a>
+        <a href="#basics" class="px-4 py-2 rounded-lg text-sm bg-slate-800/40 border border-neon-500/30">
+          <i class="fas fa-book mr-2"></i>Course
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="max-w-7xl mx-auto px-6 py-16 text-center">
+    <div class="max-w-3xl mx-auto">
+      <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800/40 border border-slate-700/40 text-sm mb-6">
+        <i class="fas fa-rocket text-cpp-500"></i>
+        Complete C++ Programming Course
+      </span>
+      <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight text-white neon-text mb-6">
+        Master C++
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-cpp-500 to-cpp-600 block">The Language of Performance</span>
+      </h1>
+      <p class="text-slate-300 text-lg mb-8">Learn C++ programming with interactive examples, OOP concepts, STL, file handling, and real-world projects. Build your skills for DSA, competitive programming, and system development.</p>
+      
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href="#basics" class="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r from-cpp-500 to-cpp-600 font-medium hover:scale-105 transition-transform">
+          <i class="fas fa-play"></i>
+          Start Learning
+        </a>
+        <a href="#live-editor" class="inline-flex items-center gap-3 px-6 py-3 rounded-full border border-slate-700/40 hover:border-neon-500 transition glass">
+          <i class="fas fa-code"></i>
+          Live Editor
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- C++ Basics Section -->
+  <section id="basics" class="course-section py-5">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">C++ Basics</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Setup & Installation -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4 flex items-center gap-2">
+            <i class="fas fa-download"></i>
+            Setup & Installation
+          </h3>
+          <p class="text-slate-300 mb-4">Get C++ compiler installed and create your first program</p>
+          
+          <div class="terminal mb-4">
+            <div class="flex items-center gap-2 mb-2">
+              <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+              <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+              <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+            </div>
+            <div class="space-y-2 text-sm">
+              <div><span class="prompt">$</span> <span class="command">g++ --version</span></div>
+              <div class="text-blue-300">g++ (MinGW.org GCC-6.3.0-1) 6.3.0</div>
+              <div><span class="prompt">$</span> <span class="command">g++ program.cpp -o program</span></div>
+              <div class="text-gray-400"># Compile C++ file</div>
+              <div><span class="prompt">$</span> <span class="command">./program</span></div>
+              <div class="text-gray-400"># Run compiled program</div>
+            </div>
+          </div>
+          
+          <div class="p-4 bg-green-900/30 rounded-lg">
+            <h4 class="font-semibold text-green-300 mb-2">🚀 First C++ Program</h4>
+            <div class="code-container bg-slate-800 rounded p-3">
+              <pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    cout << "Hello C++ World!" << endl;
+    return 0;
+}</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- Variables & Data Types -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Variables & Data Types</h3>
+          <p class="text-slate-300 mb-4">C++ static typing and fundamental data types</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+using namespace std;
+
+int main() {
+    // Fundamental data types
+    int age = 20;
+    float height = 5.9f;
+    double salary = 50000.55;
+    char grade = 'A';
+    bool isStudent = true;
+    
+    // String type
+    string name = "Jusair";
+    
+    // Constants
+    const double PI = 3.14159;
+    const int MAX_USERS = 100;
+    
+    // Output variables
+    cout << "Name: " << name << endl;
+    cout << "Age: " << age << endl;
+    cout << "Height: " << height << " feet" << endl;
+    cout << "Salary: $" << salary << endl;
+    cout << "Grade: " << grade << endl;
+    cout << "Is Student: " << boolalpha << isStudent << endl;
+    cout << "PI: " << PI << endl;
+    
+    // Type sizes
+    cout << "\n--- Data Type Sizes ---" << endl;
+    cout << "int: " << sizeof(int) << " bytes" << endl;
+    cout << "float: " << sizeof(float) << " bytes" << endl;
+    cout << "double: " << sizeof(double) << " bytes" << endl;
+    cout << "char: " << sizeof(char) << " bytes" << endl;
+    cout << "bool: " << sizeof(bool) << " bytes" << endl;
+    
+    return 0;
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- Input & Output -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Input & Output</h3>
+          <p class="text-slate-300 mb-4">Getting user input and displaying output</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+using namespace std;
+
+int main() {
+    // Basic output
+    cout << "Welcome to C++ Input/Output!" << endl;
+    
+    // Variables for input
+    string name;
+    int age;
+    double height;
+    char grade;
+    
+    // Getting input from user
+    cout << "\nEnter your name: ";
+    getline(cin, name);  // For strings with spaces
+    
+    cout << "Enter your age: ";
+    cin >> age;
+    
+    cout << "Enter your height (in feet): ";
+    cin >> height;
+    
+    cout << "Enter your grade: ";
+    cin >> grade;
+    
+    // Clear input buffer
+    cin.ignore();
+    
+    // Display collected information
+    cout << "\n--- User Information ---" << endl;
+    cout << "Name: " << name << endl;
+    cout << "Age: " << age << endl;
+    cout << "Height: " << height << " feet" << endl;
+    cout << "Grade: " << grade << endl;
+    
+    // Formatted output
+    cout << "\n--- Formatted Output ---" << endl;
+    cout << "Name: " << name << " | Age: " << age << endl;
+    cout << "Height: " << height << "ft | Grade: " << grade << endl;
+    
+    // Multiple variables in one line
+    int x, y, z;
+    cout << "\nEnter three numbers (space separated): ";
+    cin >> x >> y >> z;
+    cout << "Sum: " << (x + y + z) << endl;
+    cout << "Average: " << (x + y + z) / 3.0 << endl;
+    
+    return 0;
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- Operators -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Operators</h3>
+          <p class="text-slate-300 mb-4">Arithmetic, relational, logical, and assignment operators</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int a = 15, b = 4;
+    
+    // Arithmetic operators
+    cout << "--- Arithmetic Operators ---" << endl;
+    cout << a << " + " << b << " = " << (a + b) << endl;
+    cout << a << " - " << b << " = " << (a - b) << endl;
+    cout << a << " * " << b << " = " << (a * b) << endl;
+    cout << a << " / " << b << " = " << (a / b) << endl;
+    cout << a << " % " << b << " = " << (a % b) << endl;
+    
+    // Relational operators
+    cout << "\n--- Relational Operators ---" << endl;
+    cout << a << " == " << b << " : " << (a == b) << endl;
+    cout << a << " != " << b << " : " << (a != b) << endl;
+    cout << a << " > " << b << " : " << (a > b) << endl;
+    cout << a << " < " << b << " : " << (a < b) << endl;
+    cout << a << " >= " << b << " : " << (a >= b) << endl;
+    cout << a << " <= " << b << " : " << (a <= b) << endl;
+    
+    // Logical operators
+    bool x = true, y = false;
+    cout << "\n--- Logical Operators ---" << endl;
+    cout << "x && y: " << (x && y) << endl;
+    cout << "x || y: " << (x || y) << endl;
+    cout << "!x: " << (!x) << endl;
+    
+    // Assignment operators
+    int c = 10;
+    cout << "\n--- Assignment Operators ---" << endl;
+    cout << "Initial c: " << c << endl;
+    c += 5;  cout << "c += 5: " << c << endl;
+    c -= 3;  cout << "c -= 3: " << c << endl;
+    c *= 2;  cout << "c *= 2: " << c << endl;
+    c /= 4;  cout << "c /= 4: " << c << endl;
+    c %= 3;  cout << "c %= 3: " << c << endl;
+    
+    // Increment/Decrement operators
+    int count = 5;
+    cout << "\n--- Increment/Decrement ---" << endl;
+    cout << "count: " << count << endl;
+    cout << "count++: " << count++ << endl;  // Post-increment
+    cout << "count: " << count << endl;
+    cout << "++count: " << ++count << endl;  // Pre-increment
+    cout << "count--: " << count-- << endl;  // Post-decrement
+    cout << "--count: " << --count << endl;  // Pre-decrement
+    
+    // Bitwise operators
+    int num1 = 5, num2 = 3;  // 5 = 101, 3 = 011
+    cout << "\n--- Bitwise Operators ---" << endl;
+    cout << num1 << " & " << num2 << " = " << (num1 & num2) << endl;  // AND
+    cout << num1 << " | " << num2 << " = " << (num1 | num2) << endl;  // OR
+    cout << num1 << " ^ " << num2 << " = " << (num1 ^ num2) << endl;  // XOR
+    cout << "~" << num1 << " = " << (~num1) << endl;  // NOT
+    cout << num1 << " << 1 = " << (num1 << 1) << endl;  // Left shift
+    cout << num1 << " >> 1 = " << (num1 >> 1) << endl;  // Right shift
+    
+    return 0;
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Control Flow Section -->
+  <section class="course-section py-5 bg-dark-800">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">Control Flow</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Conditional Statements -->
+        <div class="glass rounded-xl p-6 component-card">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Conditional Statements</h3>
+          <p class="text-slate-300 mb-4">If/else statements and switch cases</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int age;
+    cout << "Enter your age: ";
+    cin >> age;
+    
+    // Basic if-else
+    cout << "\n--- If-Else Statement ---" << endl;
+    if (age >= 18) {
+        cout << "You are an adult" << endl;
+    } else {
+        cout << "You are a minor" << endl;
+    }
+    
+    // Else-if ladder
+    int score;
+    cout << "\nEnter your score (0-100): ";
+    cin >> score;
+    
+    cout << "--- Else-If Ladder ---" << endl;
+    if (score >= 90) {
+        cout << "Grade: A" << endl;
+    } else if (score >= 80) {
+        cout << "Grade: B" << endl;
+    } else if (score >= 70) {
+        cout << "Grade: C" << endl;
+    } else if (score >= 60) {
+        cout << "Grade: D" << endl;
+    } else {
+        cout << "Grade: F" << endl;
+    }
+    
+    // Nested if
+    cout << "\n--- Nested If ---" << endl;
+    bool hasID = true;
+    if (age >= 18) {
+        if (hasID) {
+            cout << "You can enter the club" << endl;
+        } else {
+            cout << "You need ID to enter" << endl;
+        }
+    } else {
+        cout << "You are too young to enter" << endl;
+    }
+    
+    // Ternary operator
+    cout << "\n--- Ternary Operator ---" << endl;
+    string status = (age >= 18) ? "adult" : "minor";
+    cout << "Status: " << status << endl;
+    
+    // Switch statement
+    int day;
+    cout << "\nEnter day number (1-7): ";
+    cin >> day;
+    
+    cout << "--- Switch Statement ---" << endl;
+    switch (day) {
+        case 1:
+            cout << "Monday" << endl;
+            break;
+        case 2:
+            cout << "Tuesday" << endl;
+            break;
+        case 3:
+            cout << "Wednesday" << endl;
+            break;
+        case 4:
+            cout << "Thursday" << endl;
+            break;
+        case 5:
+            cout << "Friday" << endl;
+            break;
+        case 6:
+            cout << "Saturday" << endl;
+            break;
+        case 7:
+            cout << "Sunday" << endl;
+            break;
+        default:
+            cout << "Invalid day number!" << endl;
+    }
+    
+    // Switch with multiple cases
+    char grade;
+    cout << "\nEnter grade (A, B, C, D, F): ";
+    cin >> grade;
+    
+    cout << "--- Switch with Multiple Cases ---" << endl;
+    switch (grade) {
+        case 'A':
+        case 'a':
+            cout << "Excellent!" << endl;
+            break;
+        case 'B':
+        case 'b':
+            cout << "Good!" << endl;
+            break;
+        case 'C':
+        case 'c':
+            cout << "Average!" << endl;
+            break;
+        case 'D':
+        case 'd':
+            cout << "Poor!" << endl;
+            break;
+        case 'F':
+        case 'f':
+            cout << "Fail!" << endl;
+            break;
+        default:
+            cout << "Invalid grade!" << endl;
+    }
+    
+    return 0;
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- Loops -->
+        <div class="glass rounded-xl p-6 component-card">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Loops</h3>
+          <p class="text-slate-300 mb-4">For loops, while loops, and loop control</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    // For loop
+    cout << "--- For Loop ---" << endl;
+    cout << "Counting from 1 to 5:" << endl;
+    for (int i = 1; i <= 5; i++) {
+        cout << i << " ";
+    }
+    cout << endl;
+    
+    // For loop with array
+    cout << "\n--- For Loop with Array ---" << endl;
+    int numbers[] = {10, 20, 30, 40, 50};
+    cout << "Array elements: ";
+    for (int i = 0; i < 5; i++) {
+        cout << numbers[i] << " ";
+    }
+    cout << endl;
+    
+    // Range-based for loop (C++11)
+    cout << "\n--- Range-based For Loop ---" << endl;
+    cout << "Array elements: ";
+    for (int num : numbers) {
+        cout << num << " ";
+    }
+    cout << endl;
+    
+    // While loop
+    cout << "\n--- While Loop ---" << endl;
+    cout << "Countdown:" << endl;
+    int count = 5;
+    while (count > 0) {
+        cout << count << " ";
+        count--;
+    }
+    cout << "Blast off!" << endl;
+    
+    // Do-while loop
+    cout << "\n--- Do-While Loop ---" << endl;
+    int input;
+    do {
+        cout << "Enter a positive number: ";
+        cin >> input;
+    } while (input <= 0);
+    cout << "You entered: " << input << endl;
+    
+    // Nested loops
+    cout << "\n--- Nested Loops ---" << endl;
+    cout << "Multiplication table (1-3):" << endl;
+    for (int i = 1; i <= 3; i++) {
+        for (int j = 1; j <= 3; j++) {
+            cout << i << " x " << j << " = " << (i * j) << "\t";
+        }
+        cout << endl;
+    }
+    
+    // Loop control: break and continue
+    cout << "\n--- Loop Control ---" << endl;
+    cout << "Numbers 1-10 (skip 5):" << endl;
+    for (int i = 1; i <= 10; i++) {
+        if (i == 5) {
+            continue;  // Skip 5
+        }
+        if (i == 8) {
+            break;     // Stop at 8
+        }
+        cout << i << " ";
+    }
+    cout << endl;
+    
+    // Infinite loop with break
+    cout << "\n--- Infinite Loop with Break ---" << endl;
+    int sum = 0, number;
+    while (true) {
+        cout << "Enter a number (0 to stop): ";
+        cin >> number;
+        if (number == 0) {
+            break;
+        }
+        sum += number;
+    }
+    cout << "Total sum: " << sum << endl;
+    
+    // Loop with multiple variables
+    cout << "\n--- Loop with Multiple Variables ---" << endl;
+    for (int i = 1, j = 10; i <= 10; i++, j--) {
+        cout << "i=" << i << ", j=" << j << endl;
+    }
+    
+    return 0;
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- Arrays -->
+        <div class="glass rounded-xl p-6 component-card">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Arrays</h3>
+          <p class="text-slate-300 mb-4">Working with single and multi-dimensional arrays</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    // Single-dimensional arrays
+    cout << "--- Single-dimensional Arrays ---" << endl;
+    
+    // Declaration and initialization
+    int numbers[5] = {10, 20, 30, 40, 50};
+    string names[] = {"Alice", "Bob", "Charlie"};  // Size inferred
+    
+    // Accessing array elements
+    cout << "First number: " << numbers[0] << endl;
+    cout << "Second name: " << names[1] << endl;
+    
+    // Array size
+    int size = sizeof(numbers) / sizeof(numbers[0]);
+    cout << "Numbers array size: " << size << endl;
+    
+    // Iterating through arrays
+    cout << "\nAll numbers: ";
+    for (int i = 0; i < size; i++) {
+        cout << numbers[i] << " ";
+    }
+    cout << endl;
+    
+    cout << "All names: ";
+    for (int i = 0; i < 3; i++) {
+        cout << names[i] << " ";
+    }
+    cout << endl;
+    
+    // Range-based for loop
+    cout << "Numbers (range-based): ";
+    for (int num : numbers) {
+        cout << num << " ";
+    }
+    cout << endl;
+    
+    // Modifying array elements
+    numbers[2] = 100;
+    cout << "After modification: ";
+    for (int num : numbers) {
+        cout << num << " ";
+    }
+    cout << endl;
+    
+    // Multi-dimensional arrays
+    cout << "\n--- Multi-dimensional Arrays ---" << endl;
+    
+    // 2D array
+    int matrix[3][3] = {
+        {1, 2, 3},
+        {4, 5, 6},
+        {7, 8, 9}
+    };
+    
+    cout << "2D Array:" << endl;
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            cout << matrix[i][j] << " ";
+        }
+        cout << endl;
+    }
+    
+    // 3D array
+    int cube[2][2][2] = {
+        {{1, 2}, {3, 4}},
+        {{5, 6}, {7, 8}}
+    };
+    
+    cout << "\n3D Array:" << endl;
+    for (int i = 0; i < 2; i++) {
+        for (int j = 0; j < 2; j++) {
+            for (int k = 0; k < 2; k++) {
+                cout << cube[i][j][k] << " ";
+            }
+            cout << " | ";
+        }
+        cout << endl;
+    }
+    
+    // Array of strings
+    cout << "\n--- Array of Strings ---" << endl;
+    string fruits[4] = {"Apple", "Banana", "Orange", "Mango"};
+    
+    cout << "Fruits: ";
+    for (string fruit : fruits) {
+        cout << fruit << " ";
+    }
+    cout << endl;
+    
+    // Character arrays (C-style strings)
+    cout << "\n--- Character Arrays ---" << endl;
+    char greeting[] = "Hello";
+    char name[20];
+    
+    cout << "Greeting: " << greeting << endl;
+    
+    cout << "Enter your name: ";
+    cin.getline(name, 20);
+    cout << "Hello, " << name << "!" << endl;
+    
+    // Array operations
+    cout << "\n--- Array Operations ---" << endl;
+    int arr[] = {5, 2, 8, 1, 9, 3};
+    int arrSize = sizeof(arr) / sizeof(arr[0]);
+    
+    // Find maximum
+    int max = arr[0];
+    for (int i = 1; i < arrSize; i++) {
+        if (arr[i] > max) {
+            max = arr[i];
+        }
+    }
+    cout << "Maximum: " << max << endl;
+    
+    // Find minimum
+    int min = arr[0];
+    for (int i = 1; i < arrSize; i++) {
+        if (arr[i] < min) {
+            min = arr[i];
+        }
+    }
+    cout << "Minimum: " << min << endl;
+    
+    // Calculate sum
+    int sum = 0;
+    for (int num : arr) {
+        sum += num;
+    }
+    cout << "Sum: " << sum << endl;
+    cout << "Average: " << (double)sum / arrSize << endl;
+    
+    return 0;
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- Functions -->
+        <div class="glass rounded-xl p-6 component-card">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Functions</h3>
+          <p class="text-slate-300 mb-4">Defining and using functions in C++</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+using namespace std;
+
+// Function declarations (prototypes)
+void greet();
+int add(int a, int b);
+double calculateArea(double radius);
+void printArray(int arr[], int size);
+int factorial(int n);
+int sum(int a, int b = 0, int c = 0);  // Default parameters
+
+// Basic function
+void greet() {
+    cout << "Hello, World!" << endl;
+}
+
+// Function with parameters and return value
+int add(int a, int b) {
+    return a + b;
+}
+
+// Function with different return type
+double calculateArea(double radius) {
+    const double PI = 3.14159;
+    return PI * radius * radius;
+}
+
+// Function with array parameter
+void printArray(int arr[], int size) {
+    cout << "Array elements: ";
+    for (int i = 0; i < size; i++) {
+        cout << arr[i] << " ";
+    }
+    cout << endl;
+}
+
+// Recursive function
+int factorial(int n) {
+    if (n == 0 || n == 1) {
+        return 1;
+    }
+    return n * factorial(n - 1);
+}
+
+// Function overloading
+int multiply(int a, int b) {
+    return a * b;
+}
+
+double multiply(double a, double b) {
+    return a * b;
+}
+
+int multiply(int a, int b, int c) {
+    return a * b * c;
+}
+
+// Function with default parameters
+int sum(int a, int b, int c) {
+    return a + b + c;
+}
+
+// Pass by value
+void incrementByValue(int x) {
+    x++;
+    cout << "Inside function (by value): " << x << endl;
+}
+
+// Pass by reference
+void incrementByReference(int &x) {
+    x++;
+    cout << "Inside function (by reference): " << x << endl;
+}
+
+// Pass by pointer
+void incrementByPointer(int *x) {
+    (*x)++;
+    cout << "Inside function (by pointer): " << *x << endl;
+}
+
+// Inline function
+inline int square(int x) {
+    return x * x;
+}
+
+int main() {
+    // Calling basic functions
+    cout << "--- Basic Functions ---" << endl;
+    greet();
+    
+    int result = add(5, 3);
+    cout << "5 + 3 = " << result << endl;
+    
+    double area = calculateArea(5.0);
+    cout << "Area of circle with radius 5: " << area << endl;
+    
+    // Function with array
+    cout << "\n--- Function with Array ---" << endl;
+    int numbers[] = {1, 2, 3, 4, 5};
+    printArray(numbers, 5);
+    
+    // Recursive function
+    cout << "\n--- Recursive Function ---" << endl;
+    int fact = factorial(5);
+    cout << "Factorial of 5: " << fact << endl;
+    
+    // Function overloading
+    cout << "\n--- Function Overloading ---" << endl;
+    cout << "Multiply int: " << multiply(4, 5) << endl;
+    cout << "Multiply double: " << multiply(4.5, 2.5) << endl;
+    cout << "Multiply three: " << multiply(2, 3, 4) << endl;
+    
+    // Default parameters
+    cout << "\n--- Default Parameters ---" << endl;
+    cout << "Sum(5): " << sum(5) << endl;
+    cout << "Sum(5, 10): " << sum(5, 10) << endl;
+    cout << "Sum(5, 10, 15): " << sum(5, 10, 15) << endl;
+    
+    // Parameter passing methods
+    cout << "\n--- Parameter Passing ---" << endl;
+    int num = 10;
+    
+    cout << "Original value: " << num << endl;
+    
+    incrementByValue(num);
+    cout << "After pass by value: " << num << endl;
+    
+    incrementByReference(num);
+    cout << "After pass by reference: " << num << endl;
+    
+    incrementByPointer(&num);
+    cout << "After pass by pointer: " << num << endl;
+    
+    // Inline function
+    cout << "\n--- Inline Function ---" << endl;
+    cout << "Square of 7: " << square(7) << endl;
+    
+    // Function pointers
+    cout << "\n--- Function Pointers ---" << endl;
+    int (*funcPtr)(int, int) = add;
+    cout << "Using function pointer: " << funcPtr(8, 2) << endl;
+    
+    // Lambda functions (C++11)
+    cout << "\n--- Lambda Functions ---" << endl;
+    auto lambda = [](int x, int y) -> int {
+        return x * y;
+    };
+    
+    cout << "Lambda result: " << lambda(6, 7) << endl;
+    
+    // Immediately invoked lambda
+    cout << "Immediate lambda: " << [](int x) { return x * x; }(9) << endl;
+    
+    return 0;
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OOP Section -->
+  <section class="course-section py-5">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">Object-Oriented Programming</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Classes & Objects -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Classes & Objects</h3>
+          <p class="text-slate-300 mb-4">Creating classes, objects, and constructors</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+using namespace std;
+
+// Basic class
+class Person {
+public:
+    // Data members (attributes)
+    string name;
+    int age;
+    string occupation;
+    
+    // Member functions (methods)
+    void introduce() {
+        cout << "Hello, I'm " << name << ", " << age << " years old. I work as a " << occupation << "." << endl;
+    }
+    
+    void haveBirthday() {
+        age++;
+        cout << "Happy birthday! Now I'm " << age << " years old." << endl;
+    }
+};
+
+// Class with constructor
+class Car {
+public:
+    string brand;
+    string model;
+    int year;
+    double price;
+    
+    // Default constructor
+    Car() {
+        brand = "Unknown";
+        model = "Unknown";
+        year = 0;
+        price = 0.0;
+        cout << "Default constructor called!" << endl;
+    }
+    
+    // Parameterized constructor
+    Car(string b, string m, int y, double p) {
+        brand = b;
+        model = m;
+        year = y;
+        price = p;
+        cout << "Parameterized constructor called!" << endl;
+    }
+    
+    // Copy constructor
+    Car(const Car &other) {
+        brand = other.brand;
+        model = other.model;
+        year = other.year;
+        price = other.price;
+        cout << "Copy constructor called!" << endl;
+    }
+    
+    // Destructor
+    ~Car() {
+        cout << "Destructor called for " << brand << " " << model << endl;
+    }
+    
+    // Member function
+    void displayInfo() {
+        cout << year << " " << brand << " " << model << " - $" << price << endl;
+    }
+    
+    // Setter method
+    void setPrice(double p) {
+        if (p >= 0) {
+            price = p;
+        } else {
+            cout << "Invalid price!" << endl;
+        }
+    }
+    
+    // Getter method
+    double getPrice() {
+        return price;
+    }
+};
+
+// Class with static members
+class MathUtils {
+public:
+    // Static variable (class variable)
+    static int operationCount;
+    
+    // Static method
+    static double calculateCircleArea(double radius) {
+        operationCount++;
+        const double PI = 3.14159;
+        return PI * radius * radius;
+    }
+    
+    // Static method to get operation count
+    static int getOperationCount() {
+        return operationCount;
+    }
+    
+    // Static block (C++ doesn't have static blocks like Java, we use initialization)
+    static void initialize() {
+        operationCount = 0;
+        cout << "MathUtils initialized!" << endl;
+    }
+};
+
+// Initialize static variable
+int MathUtils::operationCount = 0;
+
+int main() {
+    // Creating objects
+    cout << "=== Basic Class Example ===" << endl;
+    Person person1;
+    person1.name = "Alice";
+    person1.age = 25;
+    person1.occupation = "Software Engineer";
+    person1.introduce();
+    person1.haveBirthday();
+    
+    Person person2;
+    person2.name = "Bob";
+    person2.age = 30;
+    person2.occupation = "Data Scientist";
+    person2.introduce();
+    
+    // Using constructors
+    cout << "\n=== Constructor Examples ===" << endl;
+    Car car1;  // Default constructor
+    car1.displayInfo();
+    
+    Car car2("Toyota", "Camry", 2022, 25000.0);  // Parameterized constructor
+    car2.displayInfo();
+    
+    Car car3 = car2;  // Copy constructor
+    car3.displayInfo();
+    
+    // Object pointers
+    cout << "\n=== Object Pointers ===" << endl;
+    Car *carPtr = &car2;
+    carPtr->displayInfo();
+    carPtr->setPrice(27000.0);
+    cout << "New price: $" << carPtr->getPrice() << endl;
+    
+    // Dynamic object allocation
+    cout << "\n=== Dynamic Allocation ===" << endl;
+    Car *dynamicCar = new Car("Honda", "Civic", 2023, 22000.0);
+    dynamicCar->displayInfo();
+    delete dynamicCar;  // Don't forget to delete!
+    
+    // Static members
+    cout << "\n=== Static Members ===" << endl;
+    MathUtils::initialize();
+    
+    double area1 = MathUtils::calculateCircleArea(5.0);
+    cout << "Circle area 1: " << area1 << endl;
+    
+    double area2 = MathUtils::calculateCircleArea(3.0);
+    cout << "Circle area 2: " << area2 << endl;
+    
+    cout << "Total operations: " << MathUtils::getOperationCount() << endl;
+    
+    // Array of objects
+    cout << "\n=== Array of Objects ===" << endl;
+    Person people[3];
+    
+    people[0].name = "Charlie";
+    people[0].age = 28;
+    people[0].occupation = "Teacher";
+    
+    people[1].name = "Diana";
+    people[1].age = 32;
+    people[1].occupation = "Doctor";
+    
+    people[2].name = "Eve";
+    people[2].age = 24;
+    people[2].occupation = "Artist";
+    
+    for (int i = 0; i < 3; i++) {
+        people[i].introduce();
+    }
+    
+    // Object with const methods
+    cout << "\n=== Const Objects ===" << endl;
+    const Car constCar("Ford", "Mustang", 2020, 35000.0);
+    // constCar.setPrice(40000.0);  // Error: const object can't call non-const methods
+    // constCar.displayInfo();      // Error: displayInfo() is not const
+    
+    return 0;
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- Inheritance & Polymorphism -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Inheritance & Polymorphism</h3>
+          <p class="text-slate-300 mb-4">Extending classes and method overriding</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+using namespace std;
+
+// Base class
+class Animal {
+protected:
+    string name;
+    int age;
+    
+public:
+    Animal(string n, int a) : name(n), age(a) {}
+    
+    // Virtual function for polymorphism
+    virtual void makeSound() {
+        cout << name << " makes a generic animal sound" << endl;
+    }
+    
+    void eat() {
+        cout << name << " is eating" << endl;
+    }
+    
+    void sleep() {
+        cout << name << " is sleeping" << endl;
+    }
+    
+    // Virtual destructor for proper cleanup
+    virtual ~Animal() {
+        cout << "Animal destructor: " << name << endl;
+    }
+};
+
+// Derived class - Single inheritance
+class Dog : public Animal {
+private:
+    string breed;
+    
+public:
+    Dog(string n, int a, string b) : Animal(n, a), breed(b) {}
+    
+    // Method overriding
+    void makeSound() override {
+        cout << name << " barks: Woof! Woof!" << endl;
+    }
+    
+    // Additional method
+    void fetch() {
+        cout << name << " is fetching the ball" << endl;
+    }
+    
+    void displayInfo() {
+        cout << name << " is a " << age << " year old " << breed << endl;
+    }
+};
+
+// Derived class - Single inheritance
+class Cat : public Animal {
+public:
+    Cat(string n, int a) : Animal(n, a) {}
+    
+    // Method overriding
+    void makeSound() override {
+        cout << name << " meows: Meow! Meow!" << endl;
+    }
+    
+    // Additional method
+    void climb() {
+        cout << name << " is climbing a tree" << endl;
+    }
+};
+
+// Multi-level inheritance
+class Puppy : public Dog {
+public:
+    Puppy(string n, string b) : Dog(n, 0, b) {}
+    
+    void makeSound() override {
+        cout << name << " yips: Yip! Yip!" << endl;
+    }
+    
+    void play() {
+        cout << name << " is playing happily" << endl;
+    }
+};
+
+// Abstract base class
+class Shape {
+public:
+    // Pure virtual function - makes class abstract
+    virtual double calculateArea() = 0;
+    virtual double calculatePerimeter() = 0;
+    
+    // Virtual destructor
+    virtual ~Shape() = default;
+    
+    // Concrete method
+    void displayInfo() {
+        cout << "Area: " << calculateArea() << ", Perimeter: " << calculatePerimeter() << endl;
+    }
+};
+
+// Concrete derived class
+class Circle : public Shape {
+private:
+    double radius;
+    
+public:
+    Circle(double r) : radius(r) {}
+    
+    double calculateArea() override {
+        return 3.14159 * radius * radius;
+    }
+    
+    double calculatePerimeter() override {
+        return 2 * 3.14159 * radius;
+    }
+};
+
+// Concrete derived class
+class Rectangle : public Shape {
+private:
+    double length, width;
+    
+public:
+    Rectangle(double l, double w) : length(l), width(w) {}
+    
+    double calculateArea() override {
+        return length * width;
+    }
+    
+    double calculatePerimeter() override {
+        return 2 * (length + width);
+    }
+};
+
+// Multiple inheritance example
+class Engine {
+public:
+    void start() {
+        cout << "Engine started" << endl;
+    }
+    
+    void stop() {
+        cout << "Engine stopped" << endl;
+    }
+};
+
+class MusicSystem {
+public:
+    void playMusic() {
+        cout << "Playing music" << endl;
+    }
+    
+    void stopMusic() {
+        cout << "Music stopped" << endl;
+    }
+};
+
+class Car : public Engine, public MusicSystem {
+public:
+    void drive() {
+        cout << "Car is driving" << endl;
+    }
+};
+
+int main() {
+    // Single inheritance examples
+    cout << "=== Single Inheritance ===" << endl;
+    Dog dog("Buddy", 3, "Golden Retriever");
+    Cat cat("Whiskers", 2);
+    
+    dog.makeSound();
+    dog.eat();
+    dog.fetch();
+    dog.displayInfo();
+    
+    cat.makeSound();
+    cat.sleep();
+    cat.climb();
+    
+    // Multi-level inheritance
+    cout << "\n=== Multi-level Inheritance ===" << endl;
+    Puppy puppy("Max", "Labrador");
+    puppy.makeSound();
+    puppy.eat();
+    puppy.play();
+    puppy.displayInfo();
+    
+    // Polymorphism with pointers
+    cout << "\n=== Polymorphism ===" << endl;
+    Animal* animals[3];
+    animals[0] = new Dog("Rex", 4, "German Shepherd");
+    animals[1] = new Cat("Mittens", 1);
+    animals[2] = new Puppy("Tiny", "Poodle");
+    
+    for (int i = 0; i < 3; i++) {
+        animals[i]->makeSound();  // Dynamic binding
+        animals[i]->eat();
+        cout << "---" << endl;
+    }
+    
+    // Clean up
+    for (int i = 0; i < 3; i++) {
+        delete animals[i];
+    }
+    
+    // Abstract classes and interfaces
+    cout << "\n=== Abstract Classes ===" << endl;
+    Shape* shapes[2];
+    shapes[0] = new Circle(5.0);
+    shapes[1] = new Rectangle(4.0, 6.0);
+    
+    for (int i = 0; i < 2; i++) {
+        shapes[i]->displayInfo();
+        delete shapes[i];
+    }
+    
+    // Multiple inheritance
+    cout << "\n=== Multiple Inheritance ===" << endl;
+    Car myCar;
+    myCar.start();
+    myCar.playMusic();
+    myCar.drive();
+    myCar.stopMusic();
+    myCar.stop();
+    
+    // Type casting in inheritance
+    cout << "\n=== Type Casting ===" << endl;
+    Animal* animalPtr = new Dog("Spike", 2, "Bulldog");
+    
+    // Dynamic cast (safe downcasting)
+    Dog* dogPtr = dynamic_cast<Dog*>(animalPtr);
+    if (dogPtr) {
+        dogPtr->fetch();
+    }
+    
+    delete animalPtr;
+    
+    return 0;
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- Encapsulation & Abstraction -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Encapsulation & Abstraction</h3>
+          <p class="text-slate-300 mb-4">Data hiding and access control</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+using namespace std;
+
+// Bank Account class with encapsulation
+class BankAccount {
+private:
+    // Private data members (encapsulation)
+    string accountNumber;
+    string accountHolder;
+    double balance;
+    string password;
+    
+    // Private helper method
+    bool authenticate(string inputPassword) {
+        return this->password == inputPassword;
+    }
+    
+public:
+    // Constructor
+    BankAccount(string accNum, string holder, double initialBalance, string pwd) {
+        accountNumber = accNum;
+        accountHolder = holder;
+        balance = initialBalance;
+        password = pwd;
+    }
+    
+    // Public getters (accessor methods)
+    string getAccountNumber() const {
+        return accountNumber;
+    }
+    
+    string getAccountHolder() const {
+        return accountHolder;
+    }
+    
+    double getBalance() const {
+        return balance;
+    }
+    
+    // No setter for account number (immutable)
+    
+    // Public methods for operations
+    void deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+            cout << "Deposited: $" << amount << endl;
+            cout << "New balance: $" << balance << endl;
+        } else {
+            cout << "Invalid deposit amount!" << endl;
+        }
+    }
+    
+    void withdraw(double amount, string inputPassword) {
+        if (!authenticate(inputPassword)) {
+            cout << "Invalid password! Withdrawal failed." << endl;
+            return;
+        }
+        
+        if (amount > 0 && amount <= balance) {
+            balance -= amount;
+            cout << "Withdrawn: $" << amount << endl;
+            cout << "New balance: $" << balance << endl;
+        } else {
+            cout << "Invalid withdrawal amount or insufficient funds!" << endl;
+        }
+    }
+    
+    void transfer(BankAccount &recipient, double amount, string inputPassword) {
+        if (!authenticate(inputPassword)) {
+            cout << "Invalid password! Transfer failed." << endl;
+            return;
+        }
+        
+        if (amount > 0 && amount <= balance) {
+            balance -= amount;
+            recipient.balance += amount;  // Direct access to private member (same class)
+            cout << "Transferred: $" << amount << " to " << recipient.accountHolder << endl;
+        } else {
+            cout << "Invalid transfer amount or insufficient funds!" << endl;
+        }
+    }
+    
+    // Public method to change password
+    void changePassword(string oldPassword, string newPassword) {
+        if (authenticate(oldPassword)) {
+            password = newPassword;
+            cout << "Password changed successfully!" << endl;
+        } else {
+            cout << "Invalid old password!" << endl;
+        }
+    }
+    
+    // Display account info (without password)
+    void displayAccountInfo() const {
+        cout << "Account Number: " << accountNumber << endl;
+        cout << "Account Holder: " << accountHolder << endl;
+        cout << "Balance: $" << balance << endl;
+    }
+};
+
+// Student class with validation
+class Student {
+private:
+    string name;
+    int age;
+    double gpa;
+    
+public:
+    // Constructor with validation
+    Student(string n, int a, double g) {
+        setName(n);
+        setAge(a);
+        setGpa(g);
+    }
+    
+    // Getters
+    string getName() const {
+        return name;
+    }
+    
+    int getAge() const {
+        return age;
+    }
+    
+    double getGpa() const {
+        return gpa;
+    }
+    
+    // Setters with validation
+    void setName(string n) {
+        if (!n.empty()) {
+            name = n;
+        } else {
+            throw invalid_argument("Name cannot be empty");
+        }
+    }
+    
+    void setAge(int a) {
+        if (a >= 0 && a <= 120) {
+            age = a;
+        } else {
+            throw invalid_argument("Age must be between 0 and 120");
+        }
+    }
+    
+    void setGpa(double g) {
+        if (g >= 0.0 && g <= 4.0) {
+            gpa = g;
+        } else {
+            throw invalid_argument("GPA must be between 0.0 and 4.0");
+        }
+    }
+    
+    // Method to display student info
+    void displayInfo() const {
+        cout << "Student: " << name << ", Age: " << age << ", GPA: " << gpa << endl;
+    }
+    
+    // Method to check if student is on honor roll
+    bool isHonorStudent() const {
+        return gpa >= 3.5;
+    }
+};
+
+// Abstract class for vehicles
+class Vehicle {
+protected:
+    string brand;
+    string model;
+    int year;
+    
+public:
+    Vehicle(string b, string m, int y) : brand(b), model(m), year(y) {}
+    
+    // Pure virtual functions (abstract methods)
+    virtual void start() = 0;
+    virtual void stop() = 0;
+    virtual void displayInfo() = 0;
+    
+    // Virtual destructor
+    virtual ~Vehicle() = default;
+    
+    // Concrete method
+    void honk() {
+        cout << "Beep beep!" << endl;
+    }
+};
+
+// Concrete implementation
+class Car : public Vehicle {
+private:
+    int doors;
+    
+public:
+    Car(string b, string m, int y, int d) : Vehicle(b, m, y), doors(d) {}
+    
+    void start() override {
+        cout << brand << " " << model << " engine started" << endl;
+    }
+    
+    void stop() override {
+        cout << brand << " " << model << " engine stopped" << endl;
+    }
+    
+    void displayInfo() override {
+        cout << year << " " << brand << " " << model << " with " << doors << " doors" << endl;
+    }
+    
+    // Additional method
+    void openTrunk() {
+        cout << "Trunk opened" << endl;
+    }
+};
+
+// Another concrete implementation
+class Motorcycle : public Vehicle {
+private:
+    string type;
+    
+public:
+    Motorcycle(string b, string m, int y, string t) : Vehicle(b, m, y), type(t) {}
+    
+    void start() override {
+        cout << brand << " " << model << " motorcycle started" << endl;
+    }
+    
+    void stop() override {
+        cout << brand << " " << model << " motorcycle stopped" << endl;
+    }
+    
+    void displayInfo() override {
+        cout << year << " " << brand << " " << model << " (" << type << " type)" << endl;
+    }
+    
+    // Additional method
+    void wheelie() {
+        cout << "Doing a wheelie!" << endl;
+    }
+};
+
+int main() {
+    // Encapsulation example
+    cout << "=== Encapsulation Example ===" << endl;
+    BankAccount account1("123456", "Alice Johnson", 1000.0, "pass123");
+    BankAccount account2("789012", "Bob Smith", 500.0, "secret");
+    
+    account1.displayAccountInfo();
+    account2.displayAccountInfo();
+    
+    cout << "\n--- Performing Operations ---" << endl;
+    account1.deposit(200.0);
+    account1.withdraw(150.0, "pass123");  // Correct password
+    account1.withdraw(100.0, "wrongpass"); // Wrong password
+    
+    account1.transfer(account2, 100.0, "pass123");
+    
+    cout << "\n--- Final Account Info ---" << endl;
+    account1.displayAccountInfo();
+    account2.displayAccountInfo();
+    
+    // Change password
+    account1.changePassword("pass123", "newpass456");
+    account1.withdraw(50.0, "newpass456");  // Now works with new password
+    
+    // Student class with validation
+    cout << "\n=== Student Class with Validation ===" << endl;
+    try {
+        Student student1("John Doe", 20, 3.8);
+        Student student2("Jane Smith", 22, 3.2);
+        
+        student1.displayInfo();
+        student2.displayInfo();
+        
+        cout << student1.getName() << " is " << (student1.isHonorStudent() ? "on honor roll" : "not on honor roll") << endl;
+        cout << student2.getName() << " is " << (student2.isHonorStudent() ? "on honor roll" : "not on honor roll") << endl;
+        
+        // This would throw an exception:
+        // Student invalidStudent("", 25, 3.5);  // Invalid name
+        
+    } catch (const invalid_argument& e) {
+        cout << "Error: " << e.what() << endl;
+    }
+    
+    // Abstraction example
+    cout << "\n=== Abstraction Example ===" << endl;
+    Vehicle* vehicles[2];
+    vehicles[0] = new Car("Toyota", "Camry", 2022, 4);
+    vehicles[1] = new Motorcycle("Harley", "Davidson", 2021, "Cruiser");
+    
+    for (int i = 0; i < 2; i++) {
+        vehicles[i]->displayInfo();
+        vehicles[i]->start();
+        vehicles[i]->honk();
+        vehicles[i]->stop();
+        cout << "---" << endl;
+    }
+    
+    // Clean up
+    for (int i = 0; i < 2; i++) {
+        delete vehicles[i];
+    }
+    
+    return 0;
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- Pointers & Memory Management -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Pointers & Memory Management</h3>
+          <p class="text-slate-300 mb-4">Working with pointers and dynamic memory</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    // Basic pointers
+    cout << "=== Basic Pointers ===" << endl;
+    int x = 10;
+    int *ptr = &x;
+    
+    cout << "Value of x: " << x << endl;
+    cout << "Address of x: " << &x << endl;
+    cout << "Value of ptr: " << ptr << endl;
+    cout << "Value at ptr: " << *ptr << endl;
+    
+    // Modifying through pointer
+    *ptr = 20;
+    cout << "New value of x: " << x << endl;
+    
+    // Pointer arithmetic
+    cout << "\n=== Pointer Arithmetic ===" << endl;
+    int arr[] = {10, 20, 30, 40, 50};
+    int *arrPtr = arr;
+    
+    cout << "Array elements using pointer:" << endl;
+    for (int i = 0; i < 5; i++) {
+        cout << "*(arrPtr + " << i << ") = " << *(arrPtr + i) << endl;
+    }
+    
+    cout << "Array elements using array syntax:" << endl;
+    for (int i = 0; i < 5; i++) {
+        cout << "arrPtr[" << i << "] = " << arrPtr[i] << endl;
+    }
+    
+    // Dynamic memory allocation
+    cout << "\n=== Dynamic Memory Allocation ===" << endl;
+    
+    // Single variable
+    int *dynamicInt = new int;
+    *dynamicInt = 100;
+    cout << "Dynamic integer: " << *dynamicInt << endl;
+    delete dynamicInt;
+    
+    // Dynamic array
+    int size = 5;
+    int *dynamicArray = new int[size];
+    
+    for (int i = 0; i < size; i++) {
+        dynamicArray[i] = (i + 1) * 10;
+    }
+    
+    cout << "Dynamic array: ";
+    for (int i = 0; i < size; i++) {
+        cout << dynamicArray[i] << " ";
+    }
+    cout << endl;
+    
+    delete[] dynamicArray;
+    
+    // Pointers to pointers
+    cout << "\n=== Pointers to Pointers ===" << endl;
+    int value = 42;
+    int *ptr1 = &value;
+    int **ptr2 = &ptr1;
+    int ***ptr3 = &ptr2;
+    
+    cout << "value: " << value << endl;
+    cout << "*ptr1: " << *ptr1 << endl;
+    cout << "**ptr2: " << **ptr2 << endl;
+    cout << "***ptr3: " << ***ptr3 << endl;
+    
+    // Pointers and functions
+    cout << "\n=== Pointers and Functions ===" << endl;
+    
+    // Function that modifies variable through pointer
+    auto modifyValue = [](int *ptr, int newValue) {
+        *ptr = newValue;
+    };
+    
+    int num = 5;
+    cout << "Before modification: " << num << endl;
+    modifyValue(&num, 15);
+    cout << "After modification: " << num << endl;
+    
+    // Function that returns pointer
+    auto findMax = [](int *arr, int size) -> int* {
+        int *maxPtr = arr;
+        for (int i = 1; i < size; i++) {
+            if (arr[i] > *maxPtr) {
+                maxPtr = &arr[i];
+            }
+        }
+        return maxPtr;
+    };
+    
+    int numbers[] = {3, 7, 2, 9, 1};
+    int *maxElement = findMax(numbers, 5);
+    cout << "Maximum element: " << *maxElement << " at address: " << maxElement << endl;
+    
+    // Smart pointers (C++11)
+    cout << "\n=== Smart Pointers ===" << endl;
+    
+    // Unique pointer
+    #include &lt;memory&gt;
+    unique_ptr<int> uniquePtr = make_unique<int>(50);
+    cout << "Unique pointer value: " << *uniquePtr << endl;
+    
+    // Shared pointer
+    shared_ptr<int> sharedPtr1 = make_shared<int>(100);
+    shared_ptr<int> sharedPtr2 = sharedPtr1;
+    
+    cout << "Shared pointer 1 value: " << *sharedPtr1 << endl;
+    cout << "Shared pointer 2 value: " << *sharedPtr2 << endl;
+    cout << "Reference count: " << sharedPtr1.use_count() << endl;
+    
+    // Weak pointer
+    weak_ptr<int> weakPtr = sharedPtr1;
+    cout << "Weak pointer expired: " << weakPtr.expired() << endl;
+    
+    // Pointers and classes
+    cout << "\n=== Pointers and Classes ===" << endl;
+    class SimpleClass {
+    public:
+        int data;
+        SimpleClass(int d) : data(d) {
+            cout << "Constructor called with data: " << data << endl;
+        }
+        ~SimpleClass() {
+            cout << "Destructor called for data: " << data << endl;
+        }
+        void display() {
+            cout << "Data: " << data << endl;
+        }
+    };
+    
+    // Object pointer
+    SimpleClass obj(99);
+    SimpleClass *objPtr = &obj;
+    objPtr->display();
+    
+    // Dynamic object
+    SimpleClass *dynamicObj = new SimpleClass(888);
+    dynamicObj->display();
+    delete dynamicObj;
+    
+    // Array of object pointers
+    SimpleClass *objArray[3];
+    for (int i = 0; i < 3; i++) {
+        objArray[i] = new SimpleClass(i * 100);
+    }
+    
+    for (int i = 0; i < 3; i++) {
+        objArray[i]->display();
+    }
+    
+    // Clean up
+    for (int i = 0; i < 3; i++) {
+        delete objArray[i];
+    }
+    
+    // Void pointers
+    cout << "\n=== Void Pointers ===" << endl;
+    int intValue = 42;
+    double doubleValue = 3.14;
+    char charValue = 'A';
+    
+    void *voidPtr;
+    
+    voidPtr = &intValue;
+    cout << "Integer value: " << *(static_cast<int*>(voidPtr)) << endl;
+    
+    voidPtr = &doubleValue;
+    cout << "Double value: " << *(static_cast<double*>(voidPtr)) << endl;
+    
+    voidPtr = &charValue;
+    cout << "Char value: " << *(static_cast<char*>(voidPtr)) << endl;
+    
+    // Constant pointers
+    cout << "\n=== Constant Pointers ===" << endl;
+    int a = 10, b = 20;
+    
+    // Pointer to constant
+    const int *ptrToConst = &a;
+    // *ptrToConst = 30;  // Error: cannot modify through pointer to const
+    ptrToConst = &b;      // OK: can point to different address
+    
+    // Constant pointer
+    int *const constPtr = &a;
+    *constPtr = 30;       // OK: can modify value
+    // constPtr = &b;     // Error: cannot point to different address
+    
+    // Constant pointer to constant
+    const int *const constPtrToConst = &a;
+    // *constPtrToConst = 40;  // Error: cannot modify value
+    // constPtrToConst = &b;   // Error: cannot point to different address
+    
+    cout << "Final value of a: " << a << endl;
+    
+    return 0;
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Advanced C++ Section -->
+  <section class="course-section py-5 bg-dark-800">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">Advanced C++</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- STL (Standard Template Library) -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">STL - Standard Template Library</h3>
+          <p class="text-slate-300 mb-4">Containers, algorithms, and iterators</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;list&gt;
+#include &lt;deque&gt;
+#include &lt;array&gt;
+#include &lt;set&gt;
+#include &lt;map&gt;
+#include &lt;unordered_set&gt;
+#include &lt;unordered_map&gt;
+#include &lt;stack&gt;
+#include &lt;queue&gt;
+#include &lt;algorithm&gt;
+#include &lt;string&gt;
+using namespace std;
+
+void vectorExamples() {
+    cout << "=== VECTOR EXAMPLES ===" << endl;
+    
+    // Creating vectors
+    vector<int> v1 = {1, 2, 3, 4, 5};
+    vector<string> v2 = {"apple", "banana", "cherry"};
+    vector<double> v3(5, 10.5);  // 5 elements, all 10.5
+    
+    // Accessing elements
+    cout << "v1[0]: " << v1[0] << endl;
+    cout << "v1.at(1): " << v1.at(1) << endl;
+    cout << "v1.front(): " << v1.front() << endl;
+    cout << "v1.back(): " << v1.back() << endl;
+    
+    // Modifying vectors
+    v1.push_back(6);
+    v1.pop_back();
+    v1.insert(v1.begin() + 2, 99);
+    v1.erase(v1.begin() + 1);
+    
+    cout << "After modifications: ";
+    for (int num : v1) {
+        cout << num << " ";
+    }
+    cout << endl;
+    
+    // Vector capacity
+    cout << "Size: " << v1.size() << endl;
+    cout << "Capacity: " << v1.capacity() << endl;
+    cout << "Empty: " << v1.empty() << endl;
+    
+    // Iterators
+    cout << "Using iterators: ";
+    for (auto it = v1.begin(); it != v1.end(); ++it) {
+        cout << *it << " ";
+    }
+    cout << endl;
+}
+
+void listExamples() {
+    cout << "\n=== LIST EXAMPLES ===" << endl;
+    
+    list<int> myList = {1, 2, 3, 4, 5};
+    
+    // List operations
+    myList.push_front(0);
+    myList.push_back(6);
+    myList.pop_front();
+    myList.pop_back();
+    
+    // Insert and erase
+    auto it = myList.begin();
+    advance(it, 2);
+    myList.insert(it, 99);
+    
+    it = myList.begin();
+    advance(it, 3);
+    myList.erase(it);
+    
+    cout << "List elements: ";
+    for (int num : myList) {
+        cout << num << " ";
+    }
+    cout << endl;
+}
+
+void setExamples() {
+    cout << "\n=== SET EXAMPLES ===" << endl;
+    
+    set<int> mySet = {5, 2, 8, 1, 9};
+    set<int> mySet2 = {3, 7, 2, 5};
+    
+    // Set automatically sorts and removes duplicates
+    mySet.insert(3);
+    mySet.insert(5);  // Duplicate, won't be added
+    
+    cout << "Set elements: ";
+    for (int num : mySet) {
+        cout << num << " ";
+    }
+    cout << endl;
+    
+    // Set operations
+    cout << "Count of 5: " << mySet.count(5) << endl;
+    cout << "Find 8: " << (mySet.find(8) != mySet.end() ? "Found" : "Not found") << endl;
+    
+    // Set algorithms
+    set<int> unionSet, intersectionSet, differenceSet;
+    
+    // Union
+    set_union(mySet.begin(), mySet.end(),
+              mySet2.begin(), mySet2.end(),
+              inserter(unionSet, unionSet.begin()));
+    
+    cout << "Union: ";
+    for (int num : unionSet) {
+        cout << num << " ";
+    }
+    cout << endl;
+}
+
+void mapExamples() {
+    cout << "\n=== MAP EXAMPLES ===" << endl;
+    
+    map<string, int> population;
+    
+    // Inserting elements
+    population["USA"] = 331000000;
+    population["India"] = 1380000000;
+    population["China"] = 1400000000;
+    population.insert({"Brazil", 213000000});
+    
+    // Accessing elements
+    cout << "Population of USA: " << population["USA"] << endl;
+    cout << "Population of India: " << population.at("India") << endl;
+    
+    // Checking existence
+    if (population.find("Japan") == population.end()) {
+        cout << "Japan not found in map" << endl;
+    }
+    
+    // Iterating through map
+    cout << "All countries and populations:" << endl;
+    for (const auto &pair : population) {
+        cout << pair.first << ": " << pair.second << endl;
+    }
+    
+    // Multimap example
+    multimap<string, string> cities;
+    cities.insert({"USA", "New York"});
+    cities.insert({"USA", "Los Angeles"});
+    cities.insert({"India", "Mumbai"});
+    cities.insert({"India", "Delhi"});
+    
+    cout << "\nCities in USA: ";
+    auto range = cities.equal_range("USA");
+    for (auto it = range.first; it != range.second; ++it) {
+        cout << it->second << " ";
+    }
+    cout << endl;
+}
+
+void queueStackExamples() {
+    cout << "\n=== QUEUE & STACK EXAMPLES ===" << endl;
+    
+    // Queue (FIFO)
+    queue<int> q;
+    q.push(10);
+    q.push(20);
+    q.push(30);
+    
+    cout << "Queue: ";
+    while (!q.empty()) {
+        cout << q.front() << " ";
+        q.pop();
+    }
+    cout << endl;
+    
+    // Stack (LIFO)
+    stack<int> s;
+    s.push(10);
+    s.push(20);
+    s.push(30);
+    
+    cout << "Stack: ";
+    while (!s.empty()) {
+        cout << s.top() << " ";
+        s.pop();
+    }
+    cout << endl;
+    
+    // Priority queue
+    priority_queue<int> pq;
+    pq.push(30);
+    pq.push(10);
+    pq.push(20);
+    
+    cout << "Priority queue: ";
+    while (!pq.empty()) {
+        cout << pq.top() << " ";
+        pq.pop();
+    }
+    cout << endl;
+}
+
+void algorithmExamples() {
+    cout << "\n=== ALGORITHM EXAMPLES ===" << endl;
+    
+    vector<int> numbers = {5, 2, 8, 1, 9, 3, 7, 4, 6};
+    
+    // Sorting
+    sort(numbers.begin(), numbers.end());
+    cout << "Sorted: ";
+    for (int num : numbers) {
+        cout << num << " ";
+    }
+    cout << endl;
+    
+    // Reverse
+    reverse(numbers.begin(), numbers.end());
+    cout << "Reversed: ";
+    for (int num : numbers) {
+        cout << num << " ";
+    }
+    cout << endl;
+    
+    // Finding
+    auto it = find(numbers.begin(), numbers.end(), 7);
+    if (it != numbers.end()) {
+        cout << "Found 7 at position: " << distance(numbers.begin(), it) << endl;
+    }
+    
+    // Counting
+    int countFives = count(numbers.begin(), numbers.end(), 5);
+    cout << "Number of 5s: " << countFives << endl;
+    
+    // Min/Max
+    auto minMax = minmax_element(numbers.begin(), numbers.end());
+    cout << "Min: " << *minMax.first << ", Max: " << *minMax.second << endl;
+    
+    // Binary search (requires sorted array)
+    sort(numbers.begin(), numbers.end());
+    bool found = binary_search(numbers.begin(), numbers.end(), 3);
+    cout << "3 found using binary search: " << found << endl;
+    
+    // Transform
+    vector<int> squared(numbers.size());
+    transform(numbers.begin(), numbers.end(), squared.begin(),
+              [](int x) { return x * x; });
+    
+    cout << "Squared: ";
+    for (int num : squared) {
+        cout << num << " ";
+    }
+    cout << endl;
+    
+    // Remove duplicates
+    vector<int> withDuplicates = {1, 2, 2, 3, 3, 3, 4, 5, 5};
+    auto last = unique(withDuplicates.begin(), withDuplicates.end());
+    withDuplicates.erase(last, withDuplicates.end());
+    
+    cout << "Without duplicates: ";
+    for (int num : withDuplicates) {
+        cout << num << " ";
+    }
+    cout << endl;
+}
+
+int main() {
+    vectorExamples();
+    listExamples();
+    setExamples();
+    mapExamples();
+    queueStackExamples();
+    algorithmExamples();
+    
+    return 0;
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- File Handling -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">File Handling</h3>
+          <p class="text-slate-300 mb-4">Reading and writing files in C++</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;sstream&gt;
+using namespace std;
+
+void writeToFile() {
+    cout << "=== WRITING TO FILE ===" << endl;
+    
+    // Create and write to file
+    ofstream outFile("example.txt");
+    
+    if (outFile.is_open()) {
+        outFile << "Hello C++ File Handling!" << endl;
+        outFile << "This is a sample file." << endl;
+        outFile << "We can write numbers too: " << 42 << endl;
+        outFile << "And floating point: " << 3.14159 << endl;
+        
+        outFile.close();
+        cout << "File written successfully!" << endl;
+    } else {
+        cout << "Error opening file for writing!" << endl;
+    }
+}
+
+void readFromFile() {
+    cout << "\n=== READING FROM FILE ===" << endl;
+    
+    ifstream inFile("example.txt");
+    
+    if (inFile.is_open()) {
+        string line;
+        
+        cout << "Reading entire file:" << endl;
+        while (getline(inFile, line)) {
+            cout << line << endl;
+        }
+        
+        inFile.close();
+    } else {
+        cout << "Error opening file for reading!" << endl;
+    }
+}
+
+void readWordByWord() {
+    cout << "\n=== READING WORD BY WORD ===" << endl;
+    
+    ifstream inFile("example.txt");
+    
+    if (inFile.is_open()) {
+        string word;
+        
+        cout << "Words in file:" << endl;
+        while (inFile >> word) {
+            cout << word << " ";
+        }
+        cout << endl;
+        
+        inFile.close();
+    }
+}
+
+void appendToFile() {
+    cout << "\n=== APPENDING TO FILE ===" << endl;
+    
+    ofstream outFile("example.txt", ios::app);  // Append mode
+    
+    if (outFile.is_open()) {
+        outFile << "This line was appended!" << endl;
+        outFile << "File handling is powerful!" << endl;
+        
+        outFile.close();
+        cout << "Text appended to file!" << endl;
+    }
+}
+
+void filePositioning() {
+    cout << "\n=== FILE POSITIONING ===" << endl;
+    
+    fstream file("example.txt");
+    
+    if (file.is_open()) {
+        // Get current position
+        streampos begin = file.tellg();
+        
+        // Move to end
+        file.seekg(0, ios::end);
+        streampos end = file.tellg();
+        
+        cout << "File size: " << (end - begin) << " bytes" << endl;
+        
+        // Move back to beginning
+        file.seekg(0, ios::beg);
+        
+        // Read first line
+        string firstLine;
+        getline(file, firstLine);
+        cout << "First line: " << firstLine << endl;
+        
+        file.close();
+    }
+}
+
+void binaryFileOperations() {
+    cout << "\n=== BINARY FILE OPERATIONS ===" << endl;
+    
+    // Write binary data
+    ofstream binOut("data.bin", ios::binary);
+    
+    if (binOut.is_open()) {
+        int numbers[] = {10, 20, 30, 40, 50};
+        binOut.write(reinterpret_cast<char*>(numbers), sizeof(numbers));
+        binOut.close();
+        cout << "Binary data written!" << endl;
+    }
+    
+    // Read binary data
+    ifstream binIn("data.bin", ios::binary);
+    
+    if (binIn.is_open()) {
+        int numbers[5];
+        binIn.read(reinterpret_cast<char*>(numbers), sizeof(numbers));
+        
+        cout << "Binary data read: ";
+        for (int i = 0; i < 5; i++) {
+            cout << numbers[i] << " ";
+        }
+        cout << endl;
+        
+        binIn.close();
+    }
+}
+
+void csvFileExample() {
+    cout << "\n=== CSV FILE EXAMPLE ===" << endl;
+    
+    // Write CSV data
+    ofstream csvOut("students.csv");
+    
+    if (csvOut.is_open()) {
+        csvOut << "Name,Age,Grade,GPA" << endl;
+        csvOut << "John,20,A,3.8" << endl;
+        csvOut << "Alice,22,B,3.2" << endl;
+        csvOut << "Bob,21,A,3.9" << endl;
+        csvOut << "Carol,19,C,2.8" << endl;
+        
+        csvOut.close();
+        cout << "CSV file created!" << endl;
+    }
+    
+    // Read and parse CSV
+    ifstream csvIn("students.csv");
+    
+    if (csvIn.is_open()) {
+        string line;
+        bool isHeader = true;
+        
+        cout << "Student Data:" << endl;
+        while (getline(csvIn, line)) {
+            if (isHeader) {
+                isHeader = false;
+                continue;  // Skip header
+            }
+            
+            stringstream ss(line);
+            string name, ageStr, grade, gpaStr;
+            
+            getline(ss, name, ',');
+            getline(ss, ageStr, ',');
+            getline(ss, grade, ',');
+            getline(ss, gpaStr, ',');
+            
+            cout << "Name: " << name << ", Age: " << ageStr 
+                 << ", Grade: " << grade << ", GPA: " << gpaStr << endl;
+        }
+        
+        csvIn.close();
+    }
+}
+
+void errorHandling() {
+    cout << "\n=== ERROR HANDLING ===" << endl;
+    
+    ifstream file("nonexistent.txt");
+    
+    if (!file.is_open()) {
+        cout << "Error: Could not open file!" << endl;
+        perror("Error details");  // Print system error message
+    }
+    
+    // Check file state
+    file.clear();  // Clear error flags
+    
+    if (file.fail()) {
+        cout << "File operation failed!" << endl;
+    }
+    
+    if (file.eof()) {
+        cout << "Reached end of file!" << endl;
+    }
+}
+
+void fileManagement() {
+    cout << "\n=== FILE MANAGEMENT ===" << endl;
+    
+    // Check if file exists
+    ifstream testFile("example.txt");
+    if (testFile.good()) {
+        cout << "File exists!" << endl;
+        testFile.close();
+    } else {
+        cout << "File does not exist!" << endl;
+    }
+    
+    // Rename file (C++17)
+    // filesystem::rename("oldname.txt", "newname.txt");
+    
+    // Remove file
+    if (remove("data.bin") == 0) {
+        cout << "File deleted successfully!" << endl;
+    } else {
+        cout << "Error deleting file!" << endl;
+    }
+}
+
+class Student {
+public:
+    string name;
+    int age;
+    double gpa;
+    
+    Student(string n = "", int a = 0, double g = 0.0) 
+        : name(n), age(a), gpa(g) {}
+    
+    friend ostream& operator<<(ostream& os, const Student& s) {
+        os << s.name << " " << s.age << " " << s.gpa;
+        return os;
+    }
+    
+    friend istream& operator>>(istream& is, Student& s) {
+        is >> s.name >> s.age >> s.gpa;
+        return is;
+    }
+};
+
+void objectSerialization() {
+    cout << "\n=== OBJECT SERIALIZATION ===" << endl;
+    
+    // Write objects to file
+    ofstream objOut("students.dat");
+    
+    if (objOut.is_open()) {
+        Student students[] = {
+            Student("John", 20, 3.8),
+            Student("Alice", 22, 3.2),
+            Student("Bob", 21, 3.9)
+        };
+        
+        for (const auto& student : students) {
+            objOut << student << endl;
+        }
+        
+        objOut.close();
+        cout << "Objects written to file!" << endl;
+    }
+    
+    // Read objects from file
+    ifstream objIn("students.dat");
+    
+    if (objIn.is_open()) {
+        Student student;
+        cout << "Students from file:" << endl;
+        
+        while (objIn >> student) {
+            cout << "Name: " << student.name << ", Age: " << student.age 
+                 << ", GPA: " << student.gpa << endl;
+        }
+        
+        objIn.close();
+    }
+}
+
+int main() {
+    writeToFile();
+    readFromFile();
+    readWordByWord();
+    appendToFile();
+    readFromFile();  // Read again to see appended content
+    filePositioning();
+    binaryFileOperations();
+    csvFileExample();
+    errorHandling();
+    fileManagement();
+    objectSerialization();
+    
+    // Clean up created files
+    remove("example.txt");
+    remove("students.csv");
+    remove("students.dat");
+    
+    return 0;
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- Exception Handling -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Exception Handling</h3>
+          <p class="text-slate-300 mb-4">Handling errors and exceptions in C++</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;stdexcept&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+using namespace std;
+
+// Custom exception class
+class MyException : public exception {
+private:
+    string message;
+    
+public:
+    MyException(const string& msg) : message(msg) {}
+    
+    const char* what() const noexcept override {
+        return message.c_str();
+    }
+};
+
+// Function that throws different types of exceptions
+void riskyFunction(int value) {
+    if (value < 0) {
+        throw invalid_argument("Value cannot be negative");
+    }
+    if (value == 0) {
+        throw runtime_error("Value cannot be zero");
+    }
+    if (value > 100) {
+        throw out_of_range("Value too large");
+    }
+    if (value == 42) {
+        throw MyException("Special value 42 is not allowed");
+    }
+    
+    cout << "Processing value: " << value << endl;
+}
+
+void basicExceptionHandling() {
+    cout << "=== BASIC EXCEPTION HANDLING ===" << endl;
+    
+    try {
+        riskyFunction(-5);
+    } catch (const exception& e) {
+        cout << "Caught exception: " << e.what() << endl;
+    }
+    
+    try {
+        riskyFunction(0);
+    } catch (const invalid_argument& e) {
+        cout << "Invalid argument: " << e.what() << endl;
+    } catch (const runtime_error& e) {
+        cout << "Runtime error: " << e.what() << endl;
+    }
+}
+
+void multipleCatchBlocks() {
+    cout << "\n=== MULTIPLE CATCH BLOCKS ===" << endl;
+    
+    vector<int> testValues = {-1, 0, 50, 150, 42};
+    
+    for (int value : testValues) {
+        try {
+            cout << "Testing value " << value << ": ";
+            riskyFunction(value);
+        } catch (const invalid_argument& e) {
+            cout << "Invalid argument - " << e.what() << endl;
+        } catch (const runtime_error& e) {
+            cout << "Runtime error - " << e.what() << endl;
+        } catch (const out_of_range& e) {
+            cout << "Out of range - " << e.what() << endl;
+        } catch (const MyException& e) {
+            cout << "Custom exception - " << e.what() << endl;
+        } catch (const exception& e) {
+            cout << "Generic exception - " << e.what() << endl;
+        } catch (...) {
+            cout << "Unknown exception occurred!" << endl;
+        }
+    }
+}
+
+void nestedTryCatch() {
+    cout << "\n=== NESTED TRY-CATCH ===" << endl;
+    
+    try {
+        try {
+            throw runtime_error("Inner exception");
+        } catch (const runtime_error& e) {
+            cout << "Caught inner exception: " << e.what() << endl;
+            throw;  // Re-throw the exception
+        }
+    } catch (const runtime_error& e) {
+        cout << "Caught outer exception: " << e.what() << endl;
+    }
+}
+
+void exceptionSpecification() {
+    cout << "\n=== EXCEPTION SPECIFICATION ===" << endl;
+    
+    // noexcept specification
+    auto safeFunction = [](int x) noexcept -> int {
+        return x * 2;
+    };
+    
+    auto potentiallyUnsafe = [](int x) -> int {
+        if (x < 0) {
+            throw invalid_argument("Negative value");
+        }
+        return x * 2;
+    };
+    
+    cout << "Safe function result: " << safeFunction(5) << endl;
+    
+    try {
+        cout << "Unsafe function result: " << potentiallyUnsafe(-5) << endl;
+    } catch (const exception& e) {
+        cout << "Caught: " << e.what() << endl;
+    }
+}
+
+class Resource {
+private:
+    string name;
+    
+public:
+    Resource(const string& n) : name(n) {
+        cout << "Resource " << name << " acquired" << endl;
+    }
+    
+    ~Resource() {
+        cout << "Resource " << name << " released" << endl;
+    }
+    
+    void use() {
+        if (name == "bad") {
+            throw runtime_error("Cannot use bad resource");
+        }
+        cout << "Using resource " << name << endl;
+    }
+};
+
+void raiiExample() {
+    cout << "\n=== RAII (Resource Acquisition Is Initialization) ===" << endl;
+    
+    // RAII ensures resources are properly released
+    try {
+        Resource res1("good");
+        res1.use();
+        
+        Resource res2("bad");
+        res2.use();  // This will throw
+        
+        // This line won't be reached
+        Resource res3("another");
+        res3.use();
+        
+    } catch (const exception& e) {
+        cout << "Exception caught: " << e.what() << endl;
+    }
+    // Resources are automatically destroyed when going out of scope
+}
+
+void stackUnwinding() {
+    cout << "\n=== STACK UNWINDING ===" << endl;
+    
+    auto functionC = []() {
+        Resource res("C");
+        throw runtime_error("Error in function C");
+        cout << "This won't be printed" << endl;
+    };
+    
+    auto functionB = [&]() {
+        Resource res("B");
+        functionC();
+        cout << "This won't be printed" << endl;
+    };
+    
+    auto functionA = [&]() {
+        Resource res("A");
+        functionB();
+        cout << "This won't be printed" << endl;
+    };
+    
+    try {
+        functionA();
+    } catch (const exception& e) {
+        cout << "Caught exception: " << e.what() << endl;
+        cout << "Stack was unwound and all resources were properly released" << endl;
+    }
+}
+
+void standardExceptions() {
+    cout << "\n=== STANDARD EXCEPTIONS ===" << endl;
+    
+    // Various standard exceptions
+    try {
+        vector<int> v(5);
+        cout << "Vector size: " << v.size() << endl;
+        
+        // This would throw out_of_range
+        // cout << v.at(10) << endl;
+        
+        string str = "hello";
+        // This would throw out_of_range
+        // cout << str.at(10) << endl;
+        
+        // Dynamic cast exception
+        class Base { public: virtual ~Base() {} };
+        class Derived : public Base {};
+        
+        Base* basePtr = new Base();
+        Derived* derivedPtr = dynamic_cast<Derived*>(basePtr);
+        if (!derivedPtr) {
+            cout << "Dynamic cast failed (but no exception for pointers)" << endl;
+        }
+        
+        delete basePtr;
+        
+    } catch (const out_of_range& e) {
+        cout << "Out of range: " << e.what() << endl;
+    } catch (const bad_cast& e) {
+        cout << "Bad cast: " << e.what() << endl;
+    } catch (const exception& e) {
+        cout << "Standard exception: " << e.what() << endl;
+    }
+}
+
+void customExceptionHierarchy() {
+    cout << "\n=== CUSTOM EXCEPTION HIERARCHY ===" << endl;
+    
+    // Base custom exception
+    class MathException : public exception {
+    protected:
+        string operation;
+        double value1, value2;
+        
+    public:
+        MathException(const string& op, double v1, double v2, const string& msg)
+            : operation(op), value1(v1), value2(v2), 
+              exception((op + " with " + to_string(v1) + " and " + 
+                        to_string(v2) + ": " + msg).c_str()) {}
+    };
+    
+    class DivisionByZeroException : public MathException {
+    public:
+        DivisionByZeroException(const string& op, double v1, double v2)
+            : MathException(op, v1, v2, "Division by zero") {}
+    };
+    
+    class NegativeNumberException : public MathException {
+    public:
+        NegativeNumberException(const string& op, double v1, double v2)
+            : MathException(op, v1, v2, "Negative numbers not allowed") {}
+    };
+    
+    auto safeDivide = [](double a, double b) -> double {
+        if (b == 0) {
+            throw DivisionByZeroException("division", a, b);
+        }
+        if (a < 0 || b < 0) {
+            throw NegativeNumberException("division", a, b);
+        }
+        return a / b;
+    };
+    
+    try {
+        cout << "10 / 2 = " << safeDivide(10, 2) << endl;
+        cout << "10 / 0 = " << safeDivide(10, 0) << endl;
+    } catch (const DivisionByZeroException& e) {
+        cout << "Division error: " << e.what() << endl;
+    } catch (const NegativeNumberException& e) {
+        cout << "Negative number error: " << e.what() << endl;
+    } catch (const MathException& e) {
+        cout << "Math error: " << e.what() << endl;
+    }
+}
+
+void exceptionSafety() {
+    cout << "\n=== EXCEPTION SAFETY ===" << endl;
+    
+    class Database {
+    private:
+        vector<string> data;
+        
+    public:
+        // Basic guarantee - state remains valid
+        void addDataBasic(const string& item) {
+            data.push_back(item);
+            if (item == "throw") {
+                throw runtime_error("Simulated error");
+            }
+        }
+        
+        // Strong guarantee - commit or rollback
+        void addDataStrong(const string& item) {
+            vector<string> oldData = data;  // Save state
+            data.push_back(item);
+            
+            if (item == "throw") {
+                data = oldData;  // Rollback
+                throw runtime_error("Simulated error - rolled back");
+            }
+        }
+        
+        // Noexcept guarantee - never throws
+        size_t size() const noexcept {
+            return data.size();
+        }
+        
+        void print() const {
+            cout << "Database contents: ";
+            for (const auto& item : data) {
+                cout << item << " ";
+            }
+            cout << endl;
+        }
+    };
+    
+    Database db;
+    
+    // Test basic guarantee
+    try {
+        db.addDataBasic("item1");
+        db.addDataBasic("throw");
+    } catch (const exception& e) {
+        cout << "Basic guarantee - caught: " << e.what() << endl;
+        db.print();  // State might be modified
+    }
+    
+    // Test strong guarantee
+    try {
+        db.addDataStrong("item2");
+        db.addDataStrong("throw");
+    } catch (const exception& e) {
+        cout << "Strong guarantee - caught: " << e.what() << endl;
+        db.print();  // State should be unchanged
+    }
+}
+
+int main() {
+    basicExceptionHandling();
+    multipleCatchBlocks();
+    nestedTryCatch();
+    exceptionSpecification();
+    raiiExample();
+    stackUnwinding();
+    standardExceptions();
+    customExceptionHierarchy();
+    exceptionSafety();
+    
+    return 0;
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- C++ Projects -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">C++ Mini Projects</h3>
+          <p class="text-slate-300 mb-4">Practical applications of C++ concepts</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+#include &lt;algorithm&gt;
+#include &lt;limits&gt;
+using namespace std;
+
+// Project 1: BMI Calculator
+void bmiCalculator() {
+    cout << "=== BMI CALCULATOR ===" << endl;
+    
+    double weight, height;
+    
+    cout << "Enter your weight (kg): ";
+    cin >> weight;
+    
+    cout << "Enter your height (m): ";
+    cin >> height;
+    
+    if (weight <= 0 || height <= 0) {
+        cout << "Invalid input! Weight and height must be positive." << endl;
+        return;
+    }
+    
+    double bmi = weight / (height * height);
+    
+    cout << "Your BMI: " << bmi << endl;
+    
+    string category;
+    if (bmi < 18.5) {
+        category = "Underweight";
+    } else if (bmi < 25) {
+        category = "Normal weight";
+    } else if (bmi < 30) {
+        category = "Overweight";
+    } else {
+        category = "Obese";
+    }
+    
+    cout << "Category: " << category << endl;
+}
+
+// Project 2: To-Do List Application
+class TodoList {
+private:
+    vector<string> tasks;
+    
+public:
+    void addTask(const string& task) {
+        tasks.push_back(task);
+        cout << "Task added: " << task << endl;
+    }
+    
+    void viewTasks() const {
+        if (tasks.empty()) {
+            cout << "No tasks in the list." << endl;
+            return;
+        }
+        
+        cout << "=== TO-DO LIST ===" << endl;
+        for (size_t i = 0; i < tasks.size(); i++) {
+            cout << i + 1 << ". " << tasks[i] << endl;
+        }
+    }
+    
+    void removeTask(int index) {
+        if (index < 1 || index > static_cast<int>(tasks.size())) {
+            cout << "Invalid task number!" << endl;
+            return;
+        }
+        
+        string removedTask = tasks[index - 1];
+        tasks.erase(tasks.begin() + index - 1);
+        cout << "Task removed: " << removedTask << endl;
+    }
+    
+    void clearTasks() {
+        tasks.clear();
+        cout << "All tasks cleared!" << endl;
+    }
+};
+
+void todoApp() {
+    cout << "\n=== TO-DO LIST APPLICATION ===" << endl;
+    
+    TodoList todo;
+    int choice;
+    
+    do {
+        cout << "\n--- To-Do Menu ---" << endl;
+        cout << "1. Add Task" << endl;
+        cout << "2. View Tasks" << endl;
+        cout << "3. Remove Task" << endl;
+        cout << "4. Clear All Tasks" << endl;
+        cout << "5. Exit" << endl;
+        cout << "Enter your choice: ";
+        cin >> choice;
+        
+        cin.ignore();  // Clear input buffer
+        
+        switch (choice) {
+            case 1: {
+                string task;
+                cout << "Enter task: ";
+                getline(cin, task);
+                todo.addTask(task);
+                break;
+            }
+            case 2:
+                todo.viewTasks();
+                break;
+            case 3: {
+                int taskNum;
+                cout << "Enter task number to remove: ";
+                cin >> taskNum;
+                todo.removeTask(taskNum);
+                break;
+            }
+            case 4:
+                todo.clearTasks();
+                break;
+            case 5:
+                cout << "Goodbye!" << endl;
+                break;
+            default:
+                cout << "Invalid choice! Please try again." << endl;
+        }
+    } while (choice != 5);
+}
+
+// Project 3: Student Management System
+class Student {
+private:
+    string name;
+    int rollNumber;
+    double marks;
+    
+public:
+    Student(string n = "", int r = 0, double m = 0.0) 
+        : name(n), rollNumber(r), marks(m) {}
+    
+    string getName() const { return name; }
+    int getRollNumber() const { return rollNumber; }
+    double getMarks() const { return marks; }
+    
+    void display() const {
+        cout << "Roll: " << rollNumber << " | Name: " << name 
+             << " | Marks: " << marks << endl;
+    }
+    
+    void updateMarks(double newMarks) {
+        marks = newMarks;
+    }
+};
+
+class StudentManager {
+private:
+    vector<Student> students;
+    
+public:
+    void addStudent(const Student& student) {
+        // Check if roll number already exists
+        for (const auto& s : students) {
+            if (s.getRollNumber() == student.getRollNumber()) {
+                cout << "Error: Roll number already exists!" << endl;
+                return;
+            }
+        }
+        students.push_back(student);
+        cout << "Student added successfully!" << endl;
+    }
+    
+    void displayAllStudents() const {
+        if (students.empty()) {
+            cout << "No students in the system." << endl;
+            return;
+        }
+        
+        cout << "\n=== ALL STUDENTS ===" << endl;
+        for (const auto& student : students) {
+            student.display();
+        }
+    }
+    
+    Student* findStudent(int rollNumber) {
+        for (auto& student : students) {
+            if (student.getRollNumber() == rollNumber) {
+                return &student;
+            }
+        }
+        return nullptr;
+    }
+    
+    void updateStudentMarks(int rollNumber, double newMarks) {
+        Student* student = findStudent(rollNumber);
+        if (student) {
+            student->updateMarks(newMarks);
+            cout << "Marks updated successfully!" << endl;
+        } else {
+            cout << "Student not found!" << endl;
+        }
+    }
+    
+    void deleteStudent(int rollNumber) {
+        auto it = remove_if(students.begin(), students.end(),
+            [rollNumber](const Student& s) {
+                return s.getRollNumber() == rollNumber;
+            });
+        
+        if (it != students.end()) {
+            students.erase(it, students.end());
+            cout << "Student deleted successfully!" << endl;
+        } else {
+            cout << "Student not found!" << endl;
+        }
+    }
+    
+    void displayTopStudents(int count = 3) const {
+        if (students.empty()) {
+            cout << "No students in the system." << endl;
+            return;
+        }
+        
+        vector<Student> sortedStudents = students;
+        sort(sortedStudents.begin(), sortedStudents.end(),
+            [](const Student& a, const Student& b) {
+                return a.getMarks() > b.getMarks();
+            });
+        
+        cout << "\n=== TOP " << count << " STUDENTS ===" << endl;
+        for (int i = 0; i < min(count, static_cast<int>(sortedStudents.size())); i++) {
+            sortedStudents[i].display();
+        }
+    }
+};
+
+void studentManagementSystem() {
+    cout << "\n=== STUDENT MANAGEMENT SYSTEM ===" << endl;
+    
+    StudentManager manager;
+    int choice;
+    
+    do {
+        cout << "\n--- Student Management Menu ---" << endl;
+        cout << "1. Add Student" << endl;
+        cout << "2. Display All Students" << endl;
+        cout << "3. Find Student" << endl;
+        cout << "4. Update Student Marks" << endl;
+        cout << "5. Delete Student" << endl;
+        cout << "6. Display Top Students" << endl;
+        cout << "7. Exit" << endl;
+        cout << "Enter your choice: ";
+        cin >> choice;
+        
+        switch (choice) {
+            case 1: {
+                string name;
+                int roll;
+                double marks;
+                
+                cout << "Enter student name: ";
+                cin.ignore();
+                getline(cin, name);
+                cout << "Enter roll number: ";
+                cin >> roll;
+                cout << "Enter marks: ";
+                cin >> marks;
+                
+                manager.addStudent(Student(name, roll, marks));
+                break;
+            }
+            case 2:
+                manager.displayAllStudents();
+                break;
+            case 3: {
+                int roll;
+                cout << "Enter roll number to search: ";
+                cin >> roll;
+                
+                Student* student = manager.findStudent(roll);
+                if (student) {
+                    cout << "Student found: ";
+                    student->display();
+                } else {
+                    cout << "Student not found!" << endl;
+                }
+                break;
+            }
+            case 4: {
+                int roll;
+                double newMarks;
+                cout << "Enter roll number: ";
+                cin >> roll;
+                cout << "Enter new marks: ";
+                cin >> newMarks;
+                
+                manager.updateStudentMarks(roll, newMarks);
+                break;
+            }
+            case 5: {
+                int roll;
+                cout << "Enter roll number to delete: ";
+                cin >> roll;
+                manager.deleteStudent(roll);
+                break;
+            }
+            case 6:
+                manager.displayTopStudents();
+                break;
+            case 7:
+                cout << "Exiting Student Management System. Goodbye!" << endl;
+                break;
+            default:
+                cout << "Invalid choice! Please try again." << endl;
+        }
+    } while (choice != 7);
+}
+
+// Project 4: Simple Calculator with History
+class Calculator {
+private:
+    vector<string> history;
+    
+public:
+    double add(double a, double b) {
+        double result = a + b;
+        history.push_back(to_string(a) + " + " + to_string(b) + " = " + to_string(result));
+        return result;
+    }
+    
+    double subtract(double a, double b) {
+        double result = a - b;
+        history.push_back(to_string(a) + " - " + to_string(b) + " = " + to_string(result));
+        return result;
+    }
+    
+    double multiply(double a, double b) {
+        double result = a * b;
+        history.push_back(to_string(a) + " * " + to_string(b) + " = " + to_string(result));
+        return result;
+    }
+    
+    double divide(double a, double b) {
+        if (b == 0) {
+            throw runtime_error("Division by zero!");
+        }
+        double result = a / b;
+        history.push_back(to_string(a) + " / " + to_string(b) + " = " + to_string(result));
+        return result;
+    }
+    
+    void showHistory() const {
+        if (history.empty()) {
+            cout << "No calculation history." << endl;
+            return;
+        }
+        
+        cout << "\n=== CALCULATION HISTORY ===" << endl;
+        for (size_t i = 0; i < history.size(); i++) {
+            cout << i + 1 << ". " << history[i] << endl;
+        }
+    }
+    
+    void clearHistory() {
+        history.clear();
+        cout << "History cleared!" << endl;
+    }
+};
+
+void calculatorApp() {
+    cout << "\n=== ADVANCED CALCULATOR ===" << endl;
+    
+    Calculator calc;
+    int choice;
+    
+    do {
+        cout << "\n--- Calculator Menu ---" << endl;
+        cout << "1. Addition" << endl;
+        cout << "2. Subtraction" << endl;
+        cout << "3. Multiplication" << endl;
+        cout << "4. Division" << endl;
+        cout << "5. Show History" << endl;
+        cout << "6. Clear History" << endl;
+        cout << "7. Exit" << endl;
+        cout << "Enter your choice: ";
+        cin >> choice;
+        
+        if (choice >= 1 && choice <= 4) {
+            double a, b;
+            cout << "Enter first number: ";
+            cin >> a;
+            cout << "Enter second number: ";
+            cin >> b;
+            
+            try {
+                double result;
+                switch (choice) {
+                    case 1:
+                        result = calc.add(a, b);
+                        cout << "Result: " << result << endl;
+                        break;
+                    case 2:
+                        result = calc.subtract(a, b);
+                        cout << "Result: " << result << endl;
+                        break;
+                    case 3:
+                        result = calc.multiply(a, b);
+                        cout << "Result: " << result << endl;
+                        break;
+                    case 4:
+                        result = calc.divide(a, b);
+                        cout << "Result: " << result << endl;
+                        break;
+                }
+            } catch (const exception& e) {
+                cout << "Error: " << e.what() << endl;
+            }
+        } else if (choice == 5) {
+            calc.showHistory();
+        } else if (choice == 6) {
+            calc.clearHistory();
+        } else if (choice == 7) {
+            cout << "Goodbye!" << endl;
+        } else {
+            cout << "Invalid choice! Please try again." << endl;
+        }
+    } while (choice != 7);
+}
+
+int main() {
+    // Run all projects
+    bmiCalculator();
+    todoApp();
+    studentManagementSystem();
+    calculatorApp();
+    
+    return 0;
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Live C++ Editor -->
+  <section id="live-editor" class="course-section py-5">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">Live C++ Editor</h2>
+      
+      <div class="glass rounded-xl p-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div>
+            <h3 class="text-xl font-semibold text-neon-300 mb-4">Write C++ Code</h3>
+            <div class="cpp-editor" contenteditable="true" id="cpp-editor">// Welcome to C++ Live Editor!
+// Write your C++ code here
+
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+using namespace std;
+
+class Student {
+public:
+    string name;
+    int age;
+    double gpa;
+    
+    Student(string n, int a, double g) : name(n), age(a), gpa(g) {}
+    
+    void display() {
+        cout << "Name: " << name << endl;
+        cout << "Age: " << age << endl;
+        cout << "GPA: " << gpa << endl;
+    }
+    
+    bool isHonorStudent() {
+        return gpa >= 3.5;
+    }
+};
+
+int main() {
+    cout << "Hello C++ Developer!" << endl;
+    
+    // Basic variables
+    string name = "C++ Learner";
+    int age = 20;
+    double salary = 60000.0;
+    
+    cout << "Name: " << name << endl;
+    cout << "Age: " << age << endl;
+    cout << "Salary: $" << salary << endl;
+    
+    // Control flow example
+    if (age >= 18) {
+        cout << name << " is an adult" << endl;
+    } else {
+        cout << name << " is a minor" << endl;
+    }
+    
+    // Loop example
+    cout << "Counting from 1 to 5:" << endl;
+    for (int i = 1; i <= 5; i++) {
+        cout << i << " ";
+    }
+    cout << endl;
+    
+    // Array example
+    int numbers[] = {1, 2, 3, 4, 5};
+    cout << "Array elements:" << endl;
+    for (int num : numbers) {
+        cout << num << " ";
+    }
+    cout << endl;
+    
+    // Class example
+    Student student("Alice", 22, 3.8);
+    cout << "\nStudent Information:" << endl;
+    student.display();
+    cout << "Honor student: " << (student.isHonorStudent() ? "Yes" : "No") << endl;
+    
+    // Function call
+    auto add = [](int a, int b) -> int {
+        return a + b;
+    };
+    
+    int result = add(15, 25);
+    cout << "15 + 25 = " << result << endl;
+    
+    return 0;
+}</div>
+            <button onclick="runLiveCppCode()" class="w-full mt-4 px-4 py-3 bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-lg font-semibold hover:scale-105 transition-transform">
+              <i class="fas fa-play mr-2"></i>Run Code
+            </button>
+          </div>
+          
+          <div>
+            <h3 class="text-xl font-semibold text-neon-300 mb-4">Output</h3>
+            <div class="cpp-output h-64" id="live-cpp-output">
+              // C++ output will appear here
+              <br>
+              // Try writing some C++ code and click "Run Code"
+            </div>
+            <div class="mt-4 p-4 bg-purple-900/30 rounded-lg">
+              <h4 class="font-semibold text-purple-300 mb-2">💡 C++ Tips:</h4>
+              <ul class="text-sm text-purple-200 space-y-1">
+                <li>• Always include necessary headers</li>
+                <li>• Use using namespace std; for convenience</li>
+                <li>• End statements with semicolons</li>
+                <li>• Use cout for output, cin for input</li>
+                <li>• Remember to return 0 from main()</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Navigation -->
+  <div class="max-w-6xl mx-auto px-6 py-8">
+    <div class="glass rounded-xl p-6 sticky bottom-6">
+      <h3 class="font-semibold text-neon-300 mb-4">Course Navigation</h3>
+      <div class="flex flex-wrap gap-3">
+        <a href="#basics" class="px-4 py-2 rounded-lg bg-slate-800/40 hover:bg-slate-700/40 transition text-sm">Basics</a>
+        <a href="#live-editor" class="px-4 py-2 rounded-lg bg-slate-800/40 hover:bg-slate-700/40 transition text-sm">Live Editor</a>
+        <button onclick="showCheatSheet()" class="px-4 py-2 rounded-lg bg-cpp-500 hover:bg-cpp-600 transition text-sm">Cheat Sheet</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="glass border-t border-slate-800 mt-20">
+    <div class="max-w-6xl mx-auto px-6 py-8 text-center">
+      <div class="flex items-center justify-center gap-6 mb-4">
+        <a href="/" class="text-slate-300 hover:text-neon-500 transition">Home</a>
+        <a href="#basics" class="text-slate-300 hover:text-neon-500 transition">Course</a>
+        <a href="https://github.com/JUSAIR-JSR" target="_blank" class="text-slate-300 hover:text-neon-500 transition">GitHub</a>
+      </div>
+      <p class="text-slate-500 text-sm">© 2023 C++ Programming Course - Complete Beginner to Advanced</p>
+    </div>
+  </footer>
+
+  <!-- Cheat Sheet Modal -->
+  <div id="cheat-sheet" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-50 p-4">
+    <div class="glass rounded-xl p-6 max-w-4xl max-h-[80vh] overflow-y-auto">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-2xl font-bold text-neon-300">C++ Cheat Sheet</h3>
+        <button onclick="hideCheatSheet()" class="text-slate-400 hover:text-white">
+          <i class="fas fa-times text-2xl"></i>
+        </button>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h4 class="font-semibold text-green-400 mb-3">Basic Syntax</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">#include &lt;iostream&gt;</code>
+            <code class="block bg-slate-800 p-2 rounded">using namespace std;</code>
+            <code class="block bg-slate-800 p-2 rounded">int main() { }</code>
+            <code class="block bg-slate-800 p-2 rounded">cout << "Hello";</code>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-blue-400 mb-3">Data Types</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">int, float, double, char, bool</code>
+            <code class="block bg-slate-800 p-2 rounded">string, auto</code>
+            <code class="block bg-slate-800 p-2 rounded">const int MAX = 100;</code>
+            <code class="block bg-slate-800 p-2 rounded">vector&lt;int&gt; v;</code>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-yellow-400 mb-3">Control Flow</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">if (condition) { }</code>
+            <code class="block bg-slate-800 p-2 rounded">for (int i=0; i<10; i++)</code>
+            <code class="block bg-slate-800 p-2 rounded">while (condition) { }</code>
+            <code class="block bg-slate-800 p-2 rounded">switch (value) { }</code>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-purple-400 mb-3">OOP Concepts</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">class MyClass { };</code>
+            <code class="block bg-slate-800 p-2 rounded">public, private, protected</code>
+            <code class="block bg-slate-800 p-2 rounded">virtual, override</code>
+            <code class="block bg-slate-800 p-2 rounded">MyClass obj;</code>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-red-400 mb-3">STL Containers</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">vector&lt;int&gt; v;</code>
+            <code class="block bg-slate-800 p-2 rounded">map&lt;string, int&gt; m;</code>
+            <code class="block bg-slate-800 p-2 rounded">set&lt;int&gt; s;</code>
+            <code class="block bg-slate-800 p-2 rounded">queue&lt;int&gt; q;</code>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-indigo-400 mb-3">Memory Management</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">int *ptr = &var;</code>
+            <code class="block bg-slate-800 p-2 rounded">new, delete</code>
+            <code class="block bg-slate-800 p-2 rounded">unique_ptr, shared_ptr</code>
+            <code class="block bg-slate-800 p-2 rounded">delete[] array;</code>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Initialize syntax highlighting
+    hljs.highlightAll();
+
+    // Copy button functionality
+    document.querySelectorAll('.copy-btn').forEach(button => {
+      button.addEventListener('click', function() {
+        const codeBlock = this.closest('.code-container').querySelector('code');
+        const textArea = document.createElement('textarea');
+        textArea.value = codeBlock.textContent;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        
+        // Visual feedback
+        const originalText = this.innerHTML;
+        this.innerHTML = '<i class="fas fa-check mr-1"></i>Copied!';
+        setTimeout(() => {
+          this.innerHTML = originalText;
+        }, 2000);
+      });
+    });
+
+    // Cheat sheet functions
+    function showCheatSheet() {
+      document.getElementById('cheat-sheet').classList.remove('hidden');
+      document.getElementById('cheat-sheet').classList.add('flex');
+    }
+
+    function hideCheatSheet() {
+      document.getElementById('cheat-sheet').classList.add('hidden');
+      document.getElementById('cheat-sheet').classList.remove('flex');
+    }
+
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+
+    // Live C++ code execution simulation
+    function runLiveCppCode() {
+      const editor = document.getElementById('cpp-editor');
+      const outputElement = document.getElementById('live-cpp-output');
+      
+      if (editor && outputElement) {
+        const code = editor.textContent || editor.innerText;
+        outputElement.innerHTML = '<div class="text-green-400">Running C++ code...</div>';
+        
+        // Simulate C++ execution (in a real environment, this would use a C++ compiler)
+        setTimeout(() => {
+          // This is a simulation - in reality you'd need a C++ execution environment
+          const simulatedOutput = `Hello C++ Developer!
+Name: C++ Learner
+Age: 20
+Salary: $60000
+C++ Learner is an adult
+Counting from 1 to 5:
+1 2 3 4 5 
+Array elements:
+1 2 3 4 5 
+
+Student Information:
+Name: Alice
+Age: 22
+GPA: 3.8
+Honor student: Yes
+15 + 25 = 40`;
+          
+          outputElement.innerHTML = `<div class="text-green-400">Output:</div><div class="mt-2 whitespace-pre-wrap">${simulatedOutput}</div>`;
+        }, 1000);
+      }
+    }
+  </script>
+</body>
+</html>

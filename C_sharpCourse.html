@@ -1,0 +1,2691 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>C# Complete Course - Beginner to Advanced</title>
+  <meta name="description" content="Complete C# course with .NET, OOP, Unity GameDev, APIs, and real-world projects" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Highlight.js for syntax highlighting -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            neon: {
+              50: '#f3f7ff',
+              100: '#e6f0ff',
+              300: '#99ccff',
+              500: '#00d0ff',
+              600: '#00a8d9',
+              700: '#00a3cc',
+              800: '#007399'
+            },
+            dark: {
+              900: '#0a0f1c',
+              800: '#0f172a',
+              700: '#1e293b'
+            },
+            csharp: {
+              500: '#239b56',
+              600: '#1e8449',
+              700: '#186a3b'
+            },
+            dotnet: {
+              500: '#512bd4',
+              600: '#461db6',
+              700: '#3a168f'
+            }
+          },
+          animation: {
+            'float': 'float 6s ease-in-out infinite',
+            'pulse-glow': 'pulse-glow 2s ease-in-out infinite alternate',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    .neon-text { 
+      text-shadow: 0 0 8px rgba(0,208,255,0.15), 0 0 18px rgba(0,208,255,0.06); 
+    }
+    
+    .glass {
+      background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .code-container {
+      position: relative;
+    }
+    
+    .copy-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    
+    .code-container:hover .copy-btn {
+      opacity: 1;
+    }
+    
+    .terminal {
+      background: #1a1b26;
+      color: #c0caf5;
+      font-family: 'Fira Code', monospace;
+      border-radius: 0.5rem;
+      padding: 1rem;
+    }
+    
+    .terminal .prompt {
+      color: #7dcfff;
+    }
+    
+    .terminal .command {
+      color: #9ece6a;
+    }
+    
+    .terminal .comment {
+      color: #565f89;
+    }
+    
+    .csharp-editor {
+      background: #1e293b;
+      color: #c0caf5;
+      font-family: 'Fira Code', monospace;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      min-height: 200px;
+      border: 1px solid #374151;
+    }
+    
+    .csharp-output {
+      background: #0f172a;
+      color: #10b981;
+      font-family: 'Fira Code', monospace;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      min-height: 100px;
+      border: 1px solid #374151;
+    }
+    
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.5);
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: rgba(0, 208, 255, 0.3);
+      border-radius: 4px;
+    }
+    
+    .course-section {
+      scroll-margin-top: 100px;
+    }
+    
+    /* Animation for live examples */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .animate-fade-in {
+      animation: fadeInUp 0.6s ease-out;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    @keyframes pulse-glow {
+      0% { box-shadow: 0 0 20px rgba(0, 208, 255, 0.4); }
+      100% { box-shadow: 0 0 30px rgba(0, 208, 255, 0.8), 0 0 40px rgba(0, 208, 255, 0.4); }
+    }
+    
+    .csharp-badge {
+      background: linear-gradient(135deg, #239b56, #1e8449);
+      color: white;
+    }
+    
+    .dotnet-badge {
+      background: linear-gradient(135deg, #512bd4, #461db6);
+      color: white;
+    }
+    
+    .type-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    .type-table th, .type-table td {
+      padding: 8px 12px;
+      text-align: left;
+      border-bottom: 1px solid #374151;
+    }
+    
+    .type-table th {
+      background: rgba(30, 41, 59, 0.5);
+      color: #7dcfff;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-dark-900 via-dark-800 to-dark-900 text-slate-200 min-h-screen">
+
+  <!-- Navigation -->
+  <nav class="glass border-b border-slate-800 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-csharp-500 to-csharp-600 flex items-center justify-center">
+          <i class="fas fa-code text-white text-lg"></i>
+        </div>
+        <div>
+          <h1 class="text-lg font-bold neon-text">C# Course</h1>
+          <p class="text-xs text-slate-400">Beginner to Advanced</p>
+        </div>
+      </a>
+
+      <div class="flex items-center gap-4">
+        <a href="/" class="px-4 py-2 rounded-lg text-sm hover:bg-slate-800/40 transition">
+          <i class="fas fa-home mr-2"></i>Home
+        </a>
+        <a href="#basics" class="px-4 py-2 rounded-lg text-sm bg-slate-800/40 border border-neon-500/30">
+          <i class="fas fa-book mr-2"></i>Course
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="max-w-7xl mx-auto px-6 py-16 text-center">
+    <div class="max-w-3xl mx-auto">
+      <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800/40 border border-slate-700/40 text-sm mb-6">
+        <i class="fab fa-microsoft text-blue-400"></i>
+        Complete C# Programming Course
+      </span>
+      <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight text-white neon-text mb-6">
+        Master C#
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-csharp-500 to-csharp-600 block">The .NET Language</span>
+      </h1>
+      <p class="text-slate-300 text-lg mb-8">Learn C# programming with interactive examples, .NET development, Unity game development, web APIs, and real-world projects. Build your skills step by step.</p>
+      
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href="#basics" class="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r from-csharp-500 to-csharp-600 font-medium hover:scale-105 transition-transform">
+          <i class="fas fa-play"></i>
+          Start Learning
+        </a>
+        <a href="#live-editor" class="inline-flex items-center gap-3 px-6 py-3 rounded-full border border-slate-700/40 hover:border-neon-500 transition glass">
+          <i class="fas fa-code"></i>
+          Live Editor
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- C# Basics Section -->
+  <section id="basics" class="course-section py-5">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">C# Basics</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Setup & Installation -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4 flex items-center gap-2">
+            <i class="fas fa-download"></i>
+            Setup & Installation
+          </h3>
+          <p class="text-slate-300 mb-4">Get .NET SDK installed and create your first C# project</p>
+          
+          <div class="terminal mb-4">
+            <div class="flex items-center gap-2 mb-2">
+              <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+              <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+              <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+            </div>
+            <div class="space-y-2 text-sm">
+              <div><span class="prompt">></span> <span class="command">dotnet --version</span></div>
+              <div class="text-blue-300">7.0.100</div>
+              <div><span class="prompt">></span> <span class="command">dotnet new console -o MyApp</span></div>
+              <div class="text-green-300">The template "Console App" was created successfully.</div>
+              <div><span class="prompt">></span> <span class="command">cd MyApp</span></div>
+              <div><span class="prompt">></span> <span class="command">dotnet run</span></div>
+              <div class="text-green-300">Hello, World!</div>
+            </div>
+          </div>
+          
+          <div class="p-4 bg-green-900/30 rounded-lg">
+            <h4 class="font-semibold text-green-300 mb-2">🚀 First C# Program</h4>
+            <div class="code-container bg-slate-800 rounded p-3">
+              <pre><code class="language-csharp">// Program.cs
+using System;
+
+class Program {
+    static void Main() {
+        Console.WriteLine("Hello C#!");
+    }
+}</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- Variables & Data Types -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Variables & Data Types</h3>
+          <p class="text-slate-300 mb-4">C# static typing and basic data types</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-csharp">using System;
+
+class DataTypes {
+    static void Main() {
+        // Basic data types
+        string name = "Jusair";
+        int age = 20;
+        double height = 5.8;
+        bool isStudent = true;
+        char grade = 'A';
+        float weight = 70.5f;
+        decimal price = 99.99m;
+        
+        // Output variables
+        Console.WriteLine($"Name: {name}");
+        Console.WriteLine($"Age: {age}");
+        Console.WriteLine($"Height: {height}");
+        Console.WriteLine($"Is Student: {isStudent}");
+        Console.WriteLine($"Grade: {grade}");
+        Console.WriteLine($"Weight: {weight} kg");
+        Console.WriteLine($"Price: ${price}");
+        
+        // Constants
+        const double PI = 3.14159;
+        const int MAX_USERS = 100;
+        
+        Console.WriteLine($"PI: {PI}");
+        Console.WriteLine($"Max Users: {MAX_USERS}");
+        
+        // Type conversion
+        string numberText = "123";
+        int number = int.Parse(numberText);
+        string backToString = number.ToString();
+        
+        Console.WriteLine($"Parsed number: {number}");
+        Console.WriteLine($"Back to string: {backToString}");
+    }
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- Data Types Table -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">C# Data Types</h3>
+          <p class="text-slate-300 mb-4">Commonly used data types in C#</p>
+          
+          <div class="overflow-x-auto">
+            <table class="type-table">
+              <thead>
+                <tr>
+                  <th>Type</th>
+                  <th>Size</th>
+                  <th>Description</th>
+                  <th>Example</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>int</code></td>
+                  <td>4 bytes</td>
+                  <td>Integer numbers</td>
+                  <td><code>10</code></td>
+                </tr>
+                <tr>
+                  <td><code>double</code></td>
+                  <td>8 bytes</td>
+                  <td>Floating-point numbers</td>
+                  <td><code>3.14</code></td>
+                </tr>
+                <tr>
+                  <td><code>float</code></td>
+                  <td>4 bytes</td>
+                  <td>Single-precision floating-point</td>
+                  <td><code>2.5f</code></td>
+                </tr>
+                <tr>
+                  <td><code>decimal</code></td>
+                  <td>16 bytes</td>
+                  <td>Financial calculations</td>
+                  <td><code>99.99m</code></td>
+                </tr>
+                <tr>
+                  <td><code>bool</code></td>
+                  <td>1 bit</td>
+                  <td>Boolean values</td>
+                  <td><code>true</code></td>
+                </tr>
+                <tr>
+                  <td><code>char</code></td>
+                  <td>2 bytes</td>
+                  <td>Single character</td>
+                  <td><code>'A'</code></td>
+                </tr>
+                <tr>
+                  <td><code>string</code></td>
+                  <td>variable</td>
+                  <td>Text</td>
+                  <td><code>"Hello"</code></td>
+                </tr>
+                <tr>
+                  <td><code>object</code></td>
+                  <td>variable</td>
+                  <td>Base type for all types</td>
+                  <td><code>new object()</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <div class="mt-4 p-4 bg-blue-900/30 rounded-lg">
+            <h4 class="font-semibold text-blue-300 mb-2">📝 Type Inference with <code>var</code></h4>
+            <div class="code-container bg-slate-800 rounded p-3">
+              <pre><code class="language-csharp">// var keyword (type inference)
+var name = "Alice";        // string
+var age = 25;              // int
+var price = 19.99;         // double
+var isActive = true;       // bool
+
+Console.WriteLine(name.GetType());  // System.String
+Console.WriteLine(age.GetType());   // System.Int32</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- Input & Output -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Input & Output</h3>
+          <p class="text-slate-300 mb-4">Getting user input and displaying output</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-csharp">using System;
+
+class UserInput {
+    static void Main() {
+        // Basic output
+        Console.WriteLine("Welcome to C# Input/Output!");
+        Console.Write("Enter your name: ");
+        
+        // Reading input
+        string name = Console.ReadLine();
+        
+        Console.Write("Enter your age: ");
+        int age = int.Parse(Console.ReadLine());
+        
+        Console.Write("Enter your height (in meters): ");
+        double height = double.Parse(Console.ReadLine());
+        
+        Console.Write("Are you a student? (true/false): ");
+        bool isStudent = bool.Parse(Console.ReadLine());
+        
+        // Display collected information
+        Console.WriteLine("\n--- User Information ---");
+        Console.WriteLine($"Name: {name}");
+        Console.WriteLine($"Age: {age}");
+        Console.WriteLine($"Height: {height}m");
+        Console.WriteLine($"Student: {isStudent}");
+        
+        // String formatting
+        string message = string.Format("Hello {0}, you are {1} years old", name, age);
+        Console.WriteLine(message);
+        
+        // String interpolation (C# 6.0+)
+        Console.WriteLine($"Next year you will be {age + 1} years old");
+        
+        // Reading key input
+        Console.Write("\nPress any key to continue...");
+        Console.ReadKey();
+        Console.WriteLine("\nProgram completed!");
+    }
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- Operators -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Operators</h3>
+          <p class="text-slate-300 mb-4">Arithmetic, comparison, and logical operators</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-csharp">using System;
+
+class Operators {
+    static void Main() {
+        int a = 10, b = 3;
+        
+        // Arithmetic operators
+        Console.WriteLine("=== ARITHMETIC OPERATORS ===");
+        Console.WriteLine($"{a} + {b} = {a + b}");    // 13
+        Console.WriteLine($"{a} - {b} = {a - b}");    // 7
+        Console.WriteLine($"{a} * {b} = {a * b}");    // 30
+        Console.WriteLine($"{a} / {b} = {a / b}");    // 3
+        Console.WriteLine($"{a} % {b} = {a % b}");    // 1
+        
+        // Comparison operators
+        Console.WriteLine("\n=== COMPARISON OPERATORS ===");
+        Console.WriteLine($"{a} == {b}: {a == b}");   // False
+        Console.WriteLine($"{a} != {b}: {a != b}");   // True
+        Console.WriteLine($"{a} > {b}: {a > b}");     // True
+        Console.WriteLine($"{a} < {b}: {a < b}");     // False
+        Console.WriteLine($"{a} >= {b}: {a >= b}");   // True
+        Console.WriteLine($"{a} <= {b}: {a <= b}");   // False
+        
+        // Logical operators
+        bool x = true, y = false;
+        Console.WriteLine("\n=== LOGICAL OPERATORS ===");
+        Console.WriteLine($"{x} && {y}: {x && y}");   // False
+        Console.WriteLine($"{x} || {y}: {x || y}");   // True
+        Console.WriteLine($"!{x}: {!x}");             // False
+        
+        // Assignment operators
+        int c = 5;
+        Console.WriteLine("\n=== ASSIGNMENT OPERATORS ===");
+        c += 3;  // c = c + 3 → 8
+        Console.WriteLine($"c += 3: {c}");
+        c -= 2;  // c = c - 2 → 6
+        Console.WriteLine($"c -= 2: {c}");
+        c *= 2;  // c = c * 2 → 12
+        Console.WriteLine($"c *= 2: {c}");
+        c /= 3;  // c = c / 3 → 4
+        Console.WriteLine($"c /= 3: {c}");
+        
+        // Increment/Decrement
+        int count = 5;
+        Console.WriteLine("\n=== INCREMENT/DECREMENT ===");
+        Console.WriteLine($"count++: {count++}");     // 5 (post-increment)
+        Console.WriteLine($"++count: {++count}");     // 7 (pre-increment)
+        Console.WriteLine($"count--: {count--}");     // 7 (post-decrement)
+        Console.WriteLine($"--count: {--count}");     // 5 (pre-decrement)
+        
+        // Ternary operator
+        int score = 85;
+        string result = score >= 60 ? "Pass" : "Fail";
+        Console.WriteLine($"\nScore: {score}, Result: {result}");
+    }
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- Conditional Statements -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Conditional Statements</h3>
+          <p class="text-slate-300 mb-4">If/else statements and switch cases</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-csharp">using System;
+
+class Conditionals {
+    static void Main() {
+        // If-else statements
+        int age = 18;
+        if (age >= 18) {
+            Console.WriteLine("You are an adult");
+        } else {
+            Console.WriteLine("You are a minor");
+        }
+        
+        // Else-if ladder
+        int score = 85;
+        string grade;
+        if (score >= 90) {
+            grade = "A";
+        } else if (score >= 80) {
+            grade = "B";
+        } else if (score >= 70) {
+            grade = "C";
+        } else if (score >= 60) {
+            grade = "D";
+        } else {
+            grade = "F";
+        }
+        Console.WriteLine($"Score: {score}, Grade: {grade}");
+        
+        // Ternary operator
+        string status = (age >= 18) ? "adult" : "minor";
+        Console.WriteLine($"Status: {status}");
+        
+        // Switch statement
+        int day = 3;
+        string dayName;
+        switch (day) {
+            case 1:
+                dayName = "Monday";
+                break;
+            case 2:
+                dayName = "Tuesday";
+                break;
+            case 3:
+                dayName = "Wednesday";
+                break;
+            case 4:
+                dayName = "Thursday";
+                break;
+            case 5:
+                dayName = "Friday";
+                break;
+            case 6:
+            case 7:
+                dayName = "Weekend";
+                break;
+            default:
+                dayName = "Invalid day";
+                break;
+        }
+        Console.WriteLine($"Day {day}: {dayName}");
+        
+        // Switch expression (C# 8.0+)
+        string season = "Summer";
+        string message = season switch {
+            "Winter" => "It's cold!",
+            "Summer" => "It's hot!",
+            "Spring" or "Autumn" => "Moderate weather",
+            _ => "Unknown season"
+        };
+        Console.WriteLine(message);
+        
+        // Pattern matching with switch
+        object obj = 42;
+        string typeInfo = obj switch {
+            int i when i > 0 => $"Positive integer: {i}",
+            int i when i < 0 => $"Negative integer: {i}",
+            string s => $"String with length: {s.Length}",
+            null => "Null object",
+            _ => "Unknown type"
+        };
+        Console.WriteLine(typeInfo);
+    }
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Control Flow Section -->
+  <section class="course-section py-5 bg-dark-800">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">Control Flow</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Loops -->
+        <div class="glass rounded-xl p-6 component-card">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Loops</h3>
+          <p class="text-slate-300 mb-4">For loops, while loops, and loop control</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-csharp">using System;
+
+class Loops {
+    static void Main() {
+        // For loop
+        Console.WriteLine("Counting from 1 to 5:");
+        for (int i = 1; i <= 5; i++) {
+            Console.WriteLine(i);
+        }
+        
+        // While loop
+        Console.WriteLine("\nCountdown:");
+        int count = 5;
+        while (count > 0) {
+            Console.WriteLine(count);
+            count--;
+        }
+        Console.WriteLine("Blast off!");
+        
+        // Do-while loop
+        Console.WriteLine("\nDo-while example:");
+        int x = 1;
+        do {
+            Console.WriteLine(x);
+            x++;
+        } while (x <= 3);
+        
+        // Foreach loop with arrays
+        string[] fruits = { "Apple", "Banana", "Cherry", "Date" };
+        Console.WriteLine("\nFruits:");
+        foreach (string fruit in fruits) {
+            Console.WriteLine($"- {fruit}");
+        }
+        
+        // Loop control: break and continue
+        Console.WriteLine("\nNumbers 1-10 (skip 5):");
+        for (int i = 1; i <= 10; i++) {
+            if (i == 5) {
+                continue;  // Skip 5
+            }
+            if (i == 8) {
+                break;     // Stop at 8
+            }
+            Console.WriteLine(i);
+        }
+        
+        // Nested loops
+        Console.WriteLine("\nMultiplication table (1-3):");
+        for (int i = 1; i <= 3; i++) {
+            for (int j = 1; j <= 3; j++) {
+                Console.WriteLine($"{i} x {j} = {i * j}");
+            }
+        }
+        
+        // Infinite loop with break
+        Console.WriteLine("\nCounting until 5 (infinite loop demo):");
+        int num = 1;
+        while (true) {
+            Console.WriteLine(num);
+            if (num >= 5) {
+                break;
+            }
+            num++;
+        }
+        
+        // Using goto (generally avoided, but available)
+        Console.WriteLine("\nGoto example:");
+        for (int i = 0; i < 10; i++) {
+            if (i == 5) {
+                goto finish;
+            }
+            Console.WriteLine(i);
+        }
+        
+        finish:
+        Console.WriteLine("Loop exited with goto");
+    }
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- Arrays & Collections -->
+        <div class="glass rounded-xl p-6 component-card">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Arrays & Collections</h3>
+          <p class="text-slate-300 mb-4">Working with arrays and basic collections</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-csharp">using System;
+using System.Collections.Generic;
+
+class ArraysCollections {
+    static void Main() {
+        // Single-dimensional arrays
+        int[] numbers = { 10, 20, 30, 40, 50 };
+        string[] names = { "Alice", "Bob", "Charlie" };
+        
+        // Array declaration and initialization
+        int[] scores = new int[5];  // Array of 5 integers
+        scores[0] = 95;
+        scores[1] = 87;
+        scores[2] = 92;
+        
+        // Accessing array elements
+        Console.WriteLine("First number: " + numbers[0]);
+        Console.WriteLine("Second name: " + names[1]);
+        
+        // Array length
+        Console.WriteLine("Numbers array length: " + numbers.Length);
+        
+        // Iterating through arrays
+        Console.WriteLine("\nAll numbers:");
+        for (int i = 0; i < numbers.Length; i++) {
+            Console.WriteLine($"Index {i}: {numbers[i]}");
+        }
+        
+        Console.WriteLine("\nAll names (foreach):");
+        foreach (string name in names) {
+            Console.WriteLine(name);
+        }
+        
+        // Multi-dimensional arrays
+        int[,] matrix = {
+            { 1, 2, 3 },
+            { 4, 5, 6 },
+            { 7, 8, 9 }
+        };
+        
+        Console.WriteLine("\n2D Array:");
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                Console.Write(matrix[i, j] + " ");
+            }
+            Console.WriteLine();
+        }
+        
+        // Jagged arrays (array of arrays)
+        int[][] jagged = new int[3][];
+        jagged[0] = new int[] { 1, 2, 3 };
+        jagged[1] = new int[] { 4, 5 };
+        jagged[2] = new int[] { 6, 7, 8, 9 };
+        
+        Console.WriteLine("\nJagged Array:");
+        for (int i = 0; i < jagged.Length; i++) {
+            for (int j = 0; j < jagged[i].Length; j++) {
+                Console.Write(jagged[i][j] + " ");
+            }
+            Console.WriteLine();
+        }
+        
+        // List<T> (dynamic array)
+        List<string> fruits = new List<string>();
+        fruits.Add("Apple");
+        fruits.Add("Banana");
+        fruits.Add("Cherry");
+        fruits.Insert(1, "Mango");  // Insert at specific position
+        
+        Console.WriteLine("\nFruits List:");
+        foreach (string fruit in fruits) {
+            Console.WriteLine(fruit);
+        }
+        
+        // List methods
+        Console.WriteLine($"Contains 'Apple': {fruits.Contains("Apple")}");
+        Console.WriteLine($"Index of 'Banana': {fruits.IndexOf("Banana")}");
+        fruits.Remove("Mango");
+        Console.WriteLine("After removing 'Mango': " + string.Join(", ", fruits));
+        
+        // Dictionary<TKey, TValue>
+        Dictionary<string, int> ages = new Dictionary<string, int>();
+        ages["Alice"] = 25;
+        ages["Bob"] = 30;
+        ages["Charlie"] = 35;
+        
+        Console.WriteLine("\nAges Dictionary:");
+        foreach (var kvp in ages) {
+            Console.WriteLine($"{kvp.Key}: {kvp.Value} years old");
+        }
+        
+        // Array methods
+        int[] arr = { 5, 2, 8, 1, 9 };
+        Array.Sort(arr);  // Sort the array
+        Console.WriteLine("\nSorted array: " + string.Join(", ", arr));
+        
+        Array.Reverse(arr);
+        Console.WriteLine("Reversed array: " + string.Join(", ", arr));
+        
+        int index = Array.IndexOf(arr, 8);
+        Console.WriteLine("Index of 8: " + index);
+    }
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- Methods -->
+        <div class="glass rounded-xl p-6 component-card">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Methods</h3>
+          <p class="text-slate-300 mb-4">Defining and using methods in C#</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-csharp">using System;
+
+class MethodExamples {
+    
+    // Basic method
+    static void Greet() {
+        Console.WriteLine("Hello, World!");
+    }
+    
+    // Method with parameters and return value
+    static int Add(int a, int b) {
+        return a + b;
+    }
+    
+    // Method with multiple parameters
+    static string CreateMessage(string name, int age) {
+        return $"Hello {name}, you are {age} years old";
+    }
+    
+    // Method overloading
+    static int Multiply(int a, int b) {
+        return a * b;
+    }
+    
+    static double Multiply(double a, double b) {
+        return a * b;
+    }
+    
+    static int Multiply(int a, int b, int c) {
+        return a * b * c;
+    }
+    
+    // Method with optional parameters
+    static void DisplayInfo(string name, int age = 0, string city = "Unknown") {
+        Console.WriteLine($"Name: {name}, Age: {age}, City: {city}");
+    }
+    
+    // Method with params keyword (variable arguments)
+    static int Sum(params int[] numbers) {
+        int total = 0;
+        foreach (int num in numbers) {
+            total += num;
+        }
+        return total;
+    }
+    
+    // Method with ref parameters
+    static void Swap(ref int a, ref int b) {
+        int temp = a;
+        a = b;
+        b = temp;
+    }
+    
+    // Method with out parameters
+    static bool TryDivide(int a, int b, out double result) {
+        if (b == 0) {
+            result = 0;
+            return false;
+        }
+        result = (double)a / b;
+        return true;
+    }
+    
+    // Recursive method
+    static int Factorial(int n) {
+        if (n == 0) {
+            return 1;
+        }
+        return n * Factorial(n - 1);
+    }
+    
+    // Expression-bodied method (C# 6.0+)
+    static double CalculateCircleArea(double radius) => Math.PI * radius * radius;
+    
+    // Local function (C# 7.0+)
+    static void ProcessNumbers(int[] numbers) {
+        int localSum = 0;
+        
+        // Local function
+        void AddToSum(int number) {
+            localSum += number;
+        }
+        
+        foreach (int num in numbers) {
+            AddToSum(num);
+        }
+        
+        Console.WriteLine($"Local sum: {localSum}");
+    }
+    
+    static void Main() {
+        // Calling methods
+        Greet();
+        
+        int result = Add(5, 3);
+        Console.WriteLine("5 + 3 = " + result);
+        
+        string message = CreateMessage("Alice", 25);
+        Console.WriteLine(message);
+        
+        // Method overloading examples
+        Console.WriteLine("Multiply int: " + Multiply(4, 5));
+        Console.WriteLine("Multiply double: " + Multiply(4.5, 2.5));
+        Console.WriteLine("Multiply three: " + Multiply(2, 3, 4));
+        
+        // Optional parameters
+        DisplayInfo("John");
+        DisplayInfo("Jane", 30);
+        DisplayInfo("Bob", 25, "New York");
+        
+        // Params method
+        Console.WriteLine("Sum: " + Sum(1, 2, 3, 4, 5));
+        Console.WriteLine("Sum: " + Sum(10, 20));
+        
+        // Ref parameters
+        int x = 5, y = 10;
+        Console.WriteLine($"Before swap: x={x}, y={y}");
+        Swap(ref x, ref y);
+        Console.WriteLine($"After swap: x={x}, y={y}");
+        
+        // Out parameters
+        if (TryDivide(10, 3, out double divisionResult)) {
+            Console.WriteLine($"Division result: {divisionResult}");
+        } else {
+            Console.WriteLine("Division failed!");
+        }
+        
+        // Recursive method
+        Console.WriteLine("Factorial of 5: " + Factorial(5));
+        
+        // Expression-bodied method
+        Console.WriteLine("Circle area: " + CalculateCircleArea(5.0));
+        
+        // Local function example
+        int[] nums = { 1, 2, 3, 4, 5 };
+        ProcessNumbers(nums);
+        
+        // Method group conversion (delegates)
+        Action greetAction = Greet;
+        greetAction();
+        
+        Func<int, int, int> addFunc = Add;
+        Console.WriteLine("Using delegate: " + addFunc(7, 3));
+    }
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- Exception Handling -->
+        <div class="glass rounded-xl p-6 component-card">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Exception Handling</h3>
+          <p class="text-slate-300 mb-4">Handling errors and exceptions in C#</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-csharp">using System;
+using System.IO;
+
+class ExceptionHandling {
+    
+    // Basic try-catch
+    static void DivideNumbers(int a, int b) {
+        try {
+            int result = a / b;
+            Console.WriteLine($"{a} / {b} = {result}");
+        } catch (DivideByZeroException) {
+            Console.WriteLine("Error: Cannot divide by zero!");
+        }
+    }
+    
+    // Multiple catch blocks
+    static void ProcessUserInput() {
+        try {
+            Console.Write("Enter a number: ");
+            string input = Console.ReadLine();
+            int number = int.Parse(input);
+            
+            Console.Write("Enter another number: ");
+            int divisor = int.Parse(Console.ReadLine());
+            
+            int result = number / divisor;
+            Console.WriteLine($"Division result: {result}");
+            
+        } catch (FormatException) {
+            Console.WriteLine("Error: Please enter a valid integer!");
+        } catch (DivideByZeroException) {
+            Console.WriteLine("Error: Cannot divide by zero!");
+        } catch (Exception ex) {
+            Console.WriteLine($"Unexpected error: {ex.Message}");
+        } finally {
+            Console.WriteLine("This block always executes");
+        }
+    }
+    
+    // Custom exception
+    class InsufficientFundsException : Exception {
+        public InsufficientFundsException(string message) : base(message) { }
+    }
+    
+    static void WithdrawMoney(double balance, double amount) {
+        if (amount > balance) {
+            throw new InsufficientFundsException(
+                $"Insufficient funds! Balance: ${balance}, Requested: ${amount}"
+            );
+        }
+        Console.WriteLine($"Withdrawal successful. New balance: ${balance - amount}");
+    }
+    
+    // Using statement for resource management
+    static void ReadFile() {
+        string filePath = "data.txt";
+        
+        // Create sample file
+        File.WriteAllText(filePath, "Hello C#!\nThis is a sample file.");
+        
+        // Using statement automatically disposes the resource
+        using (StreamReader reader = new StreamReader(filePath)) {
+            string line;
+            while ((line = reader.ReadLine()) != null) {
+                Console.WriteLine("Line: " + line);
+            }
+        } // reader.Dispose() is automatically called
+        
+        // File.ReadAllText example (simpler approach)
+        try {
+            string content = File.ReadAllText(filePath);
+            Console.WriteLine("\nFile content:\n" + content);
+        } catch (FileNotFoundException) {
+            Console.WriteLine("File not found!");
+        } catch (IOException ex) {
+            Console.WriteLine($"IO Error: {ex.Message}");
+        }
+    }
+    
+    // Exception filters (C# 6.0+)
+    static void ProcessWithFilter(int value) {
+        try {
+            if (value < 0) {
+                throw new ArgumentException("Value cannot be negative");
+            }
+            Console.WriteLine($"Processing value: {value}");
+        } catch (ArgumentException ex) when (value == -1) {
+            Console.WriteLine("Special case: Value is exactly -1");
+        } catch (ArgumentException ex) {
+            Console.WriteLine($"Argument error: {ex.Message}");
+        }
+    }
+    
+    static void Main() {
+        // Test basic exception handling
+        Console.WriteLine("=== Basic Exception Handling ===");
+        DivideNumbers(10, 2);
+        DivideNumbers(10, 0);
+        
+        // Test multiple exceptions
+        Console.WriteLine("\n=== Multiple Exceptions ===");
+        ProcessUserInput();
+        
+        // Test custom exception
+        Console.WriteLine("\n=== Custom Exception ===");
+        try {
+            WithdrawMoney(1000.0, 500.0);
+            WithdrawMoney(1000.0, 1500.0);  // This will throw custom exception
+        } catch (InsufficientFundsException ex) {
+            Console.WriteLine("Bank error: " + ex.Message);
+        }
+        
+        // Test file operations
+        Console.WriteLine("\n=== File Operations ===");
+        ReadFile();
+        
+        // Test exception filters
+        Console.WriteLine("\n=== Exception Filters ===");
+        ProcessWithFilter(5);
+        ProcessWithFilter(-1);
+        ProcessWithFilter(-5);
+        
+        // Exception propagation
+        Console.WriteLine("\n=== Exception Propagation ===");
+        try {
+            MethodA();
+        } catch (Exception ex) {
+            Console.WriteLine($"Caught in Main: {ex.Message}");
+            Console.WriteLine($"Stack trace: {ex.StackTrace}");
+        }
+        
+        // Rethrowing exceptions
+        Console.WriteLine("\n=== Rethrowing Exceptions ===");
+        try {
+            RethrowExample();
+        } catch (Exception ex) {
+            Console.WriteLine($"Rethrown exception: {ex.Message}");
+        }
+    }
+    
+    static void MethodA() {
+        MethodB();
+    }
+    
+    static void MethodB() {
+        MethodC();
+    }
+    
+    static void MethodC() {
+        throw new InvalidOperationException("Exception from MethodC");
+    }
+    
+    static void RethrowExample() {
+        try {
+            int[] numbers = { 1, 2, 3 };
+            Console.WriteLine(numbers[5]);  // Index out of range
+        } catch (IndexOutOfRangeException ex) {
+            Console.WriteLine("Caught index error, rethrowing...");
+            throw;  // Rethrow the same exception
+        }
+    }
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OOP Section -->
+  <section class="course-section py-5">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">Object-Oriented Programming</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Classes & Objects -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Classes & Objects</h3>
+          <p class="text-slate-300 mb-4">Creating classes, objects, and constructors</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-csharp">using System;
+
+namespace OOPExamples {
+    
+    // Basic class
+    class Student {
+        // Fields (instance variables)
+        public string Name;
+        public int Age;
+        public double GPA;
+        
+        // Constructor
+        public Student(string name, int age, double gpa) {
+            Name = name;
+            Age = age;
+            GPA = gpa;
+        }
+        
+        // Default constructor
+        public Student() {
+            Name = "Unknown";
+            Age = 0;
+            GPA = 0.0;
+        }
+        
+        // Method
+        public void DisplayInfo() {
+            Console.WriteLine($"Name: {Name}");
+            Console.WriteLine($"Age: {Age}");
+            Console.WriteLine($"GPA: {GPA}");
+        }
+        
+        // Method with return value
+        public bool IsHonorStudent() {
+            return GPA >= 3.5;
+        }
+        
+        // Property with validation
+        private string _email;
+        public string Email {
+            get { return _email; }
+            set {
+                if (value.Contains("@")) {
+                    _email = value;
+                } else {
+                    throw new ArgumentException("Invalid email format");
+                }
+            }
+        }
+        
+        // Auto-implemented property
+        public string Major { get; set; }
+    }
+    
+    // Static class
+    static class MathUtils {
+        // Static field (class variable)
+        public static int OperationCount = 0;
+        
+        // Static method
+        public static double CalculateCircleArea(double radius) {
+            OperationCount++;
+            return Math.PI * radius * radius;
+        }
+        
+        // Static constructor
+        static MathUtils() {
+            Console.WriteLine("MathUtils class initialized");
+        }
+        
+        public static void ShowOperationCount() {
+            Console.WriteLine($"Total operations: {OperationCount}");
+        }
+    }
+    
+    // Record type (C# 9.0+) - immutable data
+    record PersonRecord(string FirstName, string LastName, int Age);
+    
+    class Program {
+        static void Main() {
+            // Creating objects
+            Student student1 = new Student("Alice", 20, 3.8);
+            Student student2 = new Student("Bob", 22, 3.2);
+            Student student3 = new Student();  // Using default constructor
+            
+            // Using objects
+            student1.DisplayInfo();
+            Console.WriteLine("Is honor student: " + student1.IsHonorStudent());
+            
+            student2.DisplayInfo();
+            Console.WriteLine("Is honor student: " + student2.IsHonorStudent());
+            
+            student3.DisplayInfo();
+            
+            // Modifying object properties
+            student3.Name = "Charlie";
+            student3.Age = 21;
+            student3.GPA = 3.9;
+            student3.Email = "charlie@university.edu";
+            student3.Major = "Computer Science";
+            student3.DisplayInfo();
+            
+            // Using static methods without creating objects
+            double area = MathUtils.CalculateCircleArea(5.0);
+            Console.WriteLine("Circle area: " + area);
+            
+            MathUtils.CalculateCircleArea(3.0);
+            MathUtils.ShowOperationCount();
+            
+            // Using records
+            var person1 = new PersonRecord("John", "Doe", 30);
+            var person2 = new PersonRecord("John", "Doe", 30);
+            
+            Console.WriteLine($"Person1: {person1}");
+            Console.WriteLine($"Persons are equal: {person1 == person2}");  // True
+            
+            // Record with expression
+            var person3 = person1 with { Age = 31 };
+            Console.WriteLine($"Person3: {person3}");
+            
+            // Deconstruction
+            var (firstName, lastName, age) = person1;
+            Console.WriteLine($"Deconstructed: {firstName} {lastName}, {age} years old");
+        }
+    }
+    
+    // Partial classes
+    partial class Employee {
+        public string Name { get; set; }
+        public decimal Salary { get; set; }
+    }
+    
+    partial class Employee {
+        public void Work() {
+            Console.WriteLine($"{Name} is working...");
+        }
+        
+        public void TakeBreak() {
+            Console.WriteLine($"{Name} is taking a break");
+        }
+    }
+    
+    // Sealed class (cannot be inherited)
+    sealed class Configuration {
+        public string AppName { get; set; } = "MyApp";
+        public string Version { get; set; } = "1.0";
+    }
+    
+    // This would cause compilation error:
+    // class ExtendedConfig : Configuration { }
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- Inheritance & Polymorphism -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Inheritance & Polymorphism</h3>
+          <p class="text-slate-300 mb-4">Extending classes and method overriding</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-csharp">using System;
+
+namespace InheritanceExamples {
+    
+    // Base class
+    class Animal {
+        public string Name { get; set; }
+        
+        public Animal(string name) {
+            Name = name;
+        }
+        
+        public void Eat() {
+            Console.WriteLine($"{Name} is eating");
+        }
+        
+        public void Sleep() {
+            Console.WriteLine($"{Name} is sleeping");
+        }
+        
+        // Virtual method (can be overridden)
+        public virtual void MakeSound() {
+            Console.WriteLine($"{Name} makes a sound");
+        }
+    }
+    
+    // Derived class
+    class Dog : Animal {
+        public string Breed { get; set; }
+        
+        public Dog(string name, string breed) : base(name) {
+            Breed = breed;
+        }
+        
+        // Method overriding
+        public override void MakeSound() {
+            Console.WriteLine($"{Name} barks");
+        }
+        
+        // Additional method
+        public void Fetch() {
+            Console.WriteLine($"{Name} is fetching");
+        }
+    }
+    
+    class Cat : Animal {
+        public Cat(string name) : base(name) { }
+        
+        public override void MakeSound() {
+            Console.WriteLine($"{Name} meows");
+        }
+        
+        public void Climb() {
+            Console.WriteLine($"{Name} is climbing");
+        }
+    }
+    
+    // Abstract class
+    abstract class Shape {
+        public string Color { get; set; }
+        
+        public Shape(string color) {
+            Color = color;
+        }
+        
+        // Abstract method (must be implemented by derived classes)
+        public abstract double CalculateArea();
+        
+        // Concrete method
+        public void DisplayColor() {
+            Console.WriteLine($"Color: {Color}");
+        }
+        
+        // Virtual method
+        public virtual void DisplayInfo() {
+            Console.WriteLine($"Shape color: {Color}");
+        }
+    }
+    
+    class Circle : Shape {
+        public double Radius { get; set; }
+        
+        public Circle(string color, double radius) : base(color) {
+            Radius = radius;
+        }
+        
+        public override double CalculateArea() {
+            return Math.PI * Radius * Radius;
+        }
+        
+        public override void DisplayInfo() {
+            base.DisplayInfo();
+            Console.WriteLine($"Type: Circle, Radius: {Radius}, Area: {CalculateArea():F2}");
+        }
+    }
+    
+    class Rectangle : Shape {
+        public double Length { get; set; }
+        public double Width { get; set; }
+        
+        public Rectangle(string color, double length, double width) : base(color) {
+            Length = length;
+            Width = width;
+        }
+        
+        public override double CalculateArea() {
+            return Length * Width;
+        }
+        
+        public override void DisplayInfo() {
+            base.DisplayInfo();
+            Console.WriteLine($"Type: Rectangle, Length: {Length}, Width: {Width}, Area: {CalculateArea():F2}");
+        }
+    }
+    
+    // Sealed method in derived class
+    class Square : Rectangle {
+        public Square(string color, double side) : base(color, side, side) { }
+        
+        public sealed override void DisplayInfo() {
+            Console.WriteLine($"Square - Color: {Color}, Side: {Length}, Area: {CalculateArea():F2}");
+        }
+    }
+    
+    class Program {
+        static void Main() {
+            // Inheritance examples
+            Dog dog = new Dog("Buddy", "Golden Retriever");
+            Cat cat = new Cat("Whiskers");
+            
+            dog.Eat();
+            dog.MakeSound();
+            dog.Fetch();
+            
+            cat.Eat();
+            cat.MakeSound();
+            cat.Climb();
+            
+            // Polymorphism
+            Console.WriteLine("\n=== Polymorphism Example ===");
+            Animal myAnimal = new Dog("Max", "Labrador");
+            myAnimal.MakeSound();  // Calls Dog's MakeSound()
+            
+            myAnimal = new Cat("Mittens");
+            myAnimal.MakeSound();  // Calls Cat's MakeSound()
+            
+            // Array of base type holding different derived types
+            Animal[] animals = {
+                new Dog("Rex", "German Shepherd"),
+                new Cat("Fluffy"),
+                new Dog("Luna", "Husky")
+            };
+            
+            Console.WriteLine("\n=== Animal Sounds ===");
+            foreach (Animal animal in animals) {
+                animal.MakeSound();
+            }
+            
+            // Type checking and casting
+            Console.WriteLine("\n=== Type Checking ===");
+            foreach (Animal animal in animals) {
+                if (animal is Dog dogAnimal) {
+                    Console.WriteLine($"{dogAnimal.Name} is a dog of breed {dogAnimal.Breed}");
+                } else if (animal is Cat) {
+                    Console.WriteLine($"{animal.Name} is a cat");
+                }
+            }
+            
+            // Abstract class examples
+            Console.WriteLine("\n=== Abstract Classes ===");
+            Shape circle = new Circle("Red", 5.0);
+            Shape rectangle = new Rectangle("Blue", 4.0, 6.0);
+            Shape square = new Square("Green", 3.0);
+            
+            circle.DisplayInfo();
+            rectangle.DisplayInfo();
+            square.DisplayInfo();
+            
+            // Using as and is operators
+            Console.WriteLine("\n=== Type Casting ===");
+            object obj = new Dog("Spike", "Pitbull");
+            
+            if (obj is Animal animalObj) {
+                animalObj.MakeSound();
+            }
+            
+            Dog specificDog = obj as Dog;
+            if (specificDog != null) {
+                specificDog.Fetch();
+            }
+            
+            // Pattern matching (C# 7.0+)
+            Console.WriteLine("\n=== Pattern Matching ===");
+            foreach (Animal animal in animals) {
+                switch (animal) {
+                    case Dog d when d.Breed == "Husky":
+                        Console.WriteLine($"{d.Name} is a Husky - very energetic!");
+                        break;
+                    case Dog d:
+                        Console.WriteLine($"{d.Name} is a dog");
+                        break;
+                    case Cat c:
+                        Console.WriteLine($"{c.Name} is a cat");
+                        break;
+                    default:
+                        Console.WriteLine("Unknown animal type");
+                        break;
+                }
+            }
+        }
+    }
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- Interfaces -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Interfaces</h3>
+          <p class="text-slate-300 mb-4">Defining and implementing interfaces</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-csharp">using System;
+using System.Collections.Generic;
+
+namespace InterfaceExamples {
+    
+    // Basic interface
+    interface IVehicle {
+        // Properties
+        string Model { get; set; }
+        int CurrentSpeed { get; }
+        
+        // Methods
+        void Start();
+        void Stop();
+        void Accelerate(int speed);
+        
+        // Default interface method (C# 8.0+)
+        void Honk() {
+            Console.WriteLine("Beep beep!");
+        }
+        
+        // Static method (C# 8.0+)
+        static void DisplayMaxSpeed() {
+            Console.WriteLine("Maximum speed: 200 km/h");
+        }
+    }
+    
+    interface IElectric {
+        void Charge();
+        int BatteryLevel { get; }
+    }
+    
+    interface IAutonomous {
+        void EnableAutopilot();
+        void DisableAutopilot();
+    }
+    
+    // Class implementing multiple interfaces
+    class Car : IVehicle, IElectric {
+        public string Model { get; set; }
+        public int CurrentSpeed { get; private set; }
+        public int BatteryLevel { get; private set; }
+        
+        public Car(string model) {
+            Model = model;
+            BatteryLevel = 100;
+        }
+        
+        public void Start() {
+            Console.WriteLine($"{Model} is starting");
+            CurrentSpeed = 0;
+        }
+        
+        public void Stop() {
+            Console.WriteLine($"{Model} is stopping");
+            CurrentSpeed = 0;
+        }
+        
+        public void Accelerate(int speed) {
+            if (speed > 200) {
+                Console.WriteLine("Cannot exceed max speed!");
+                return;
+            }
+            CurrentSpeed = speed;
+            Console.WriteLine($"{Model} accelerating to {speed} km/h");
+        }
+        
+        public void Charge() {
+            BatteryLevel = 100;
+            Console.WriteLine($"{Model} is fully charged");
+        }
+        
+        // Additional method
+        public void DisplayInfo() {
+            Console.WriteLine($"Model: {Model}");
+            Console.WriteLine($"Current Speed: {CurrentSpeed} km/h");
+            Console.WriteLine($"Battery Level: {BatteryLevel}%");
+        }
+        
+        // Explicit interface implementation
+        void IVehicle.Honk() {
+            Console.WriteLine($"{Model} honks: BEEP BEEP!");
+        }
+    }
+    
+    // Advanced car with multiple interfaces
+    class AdvancedCar : IVehicle, IElectric, IAutonomous {
+        public string Model { get; set; }
+        public int CurrentSpeed { get; private set; }
+        public int BatteryLevel { get; private set; }
+        public bool IsAutopilotEnabled { get; private set; }
+        
+        public AdvancedCar(string model) {
+            Model = model;
+            BatteryLevel = 100;
+        }
+        
+        public void Start() {
+            Console.WriteLine($"{Model} is starting with voice recognition");
+            CurrentSpeed = 0;
+        }
+        
+        public void Stop() {
+            Console.WriteLine($"{Model} is stopping automatically");
+            CurrentSpeed = 0;
+        }
+        
+        public void Accelerate(int speed) {
+            CurrentSpeed = Math.Min(speed, 250);
+            Console.WriteLine($"{Model} accelerating to {CurrentSpeed} km/h");
+        }
+        
+        public void Charge() {
+            BatteryLevel = 100;
+            Console.WriteLine($"{Model} is charging wirelessly");
+        }
+        
+        public void EnableAutopilot() {
+            IsAutopilotEnabled = true;
+            Console.WriteLine("Autopilot enabled");
+        }
+        
+        public void DisableAutopilot() {
+            IsAutopilotEnabled = false;
+            Console.WriteLine("Autopilot disabled");
+        }
+    }
+    
+    // Generic interface
+    interface IRepository<T> {
+        void Add(T item);
+        void Remove(T item);
+        T GetById(int id);
+        IEnumerable<T> GetAll();
+    }
+    
+    class UserRepository : IRepository<User> {
+        private List<User> _users = new List<User>();
+        
+        public void Add(User user) {
+            _users.Add(user);
+            Console.WriteLine($"User {user.Name} added");
+        }
+        
+        public void Remove(User user) {
+            _users.Remove(user);
+            Console.WriteLine($"User {user.Name} removed");
+        }
+        
+        public User GetById(int id) {
+            return _users.Find(u => u.Id == id);
+        }
+        
+        public IEnumerable<User> GetAll() {
+            return _users;
+        }
+    }
+    
+    class User {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Email { get; set; }
+    }
+    
+    // Interface with covariance (C# 4.0+)
+    interface IReadOnlyRepository<out T> {
+        T GetById(int id);
+        IEnumerable<T> GetAll();
+    }
+    
+    // Interface with contravariance (C# 4.0+)
+    interface IWriteOnlyRepository<in T> {
+        void Add(T item);
+        void Update(T item);
+    }
+    
+    class Program {
+        static void Main() {
+            // Basic interface usage
+            Console.WriteLine("=== Basic Interface Usage ===");
+            Car tesla = new Car("Tesla Model S");
+            
+            // Using interface methods
+            tesla.Start();
+            tesla.Accelerate(80);
+            tesla.Honk();  // Default method
+            tesla.DisplayInfo();
+            
+            // Using static method from interface
+            IVehicle.DisplayMaxSpeed();
+            
+            // Check battery
+            Console.WriteLine($"Battery: {tesla.BatteryLevel}%");
+            tesla.Charge();
+            tesla.Stop();
+            
+            // Polymorphism with interfaces
+            Console.WriteLine("\n=== Interface Polymorphism ===");
+            IVehicle myVehicle = new Car("BMW i8");
+            myVehicle.Start();
+            myVehicle.Accelerate(100);
+            
+            // Multiple interfaces
+            Console.WriteLine("\n=== Multiple Interfaces ===");
+            AdvancedCar advancedCar = new AdvancedCar("Audi e-tron");
+            advancedCar.Start();
+            advancedCar.EnableAutopilot();
+            advancedCar.Accelerate(120);
+            advancedCar.DisableAutopilot();
+            advancedCar.Stop();
+            
+            // Generic interface usage
+            Console.WriteLine("\n=== Generic Interfaces ===");
+            UserRepository userRepo = new UserRepository();
+            userRepo.Add(new User { Id = 1, Name = "Alice", Email = "alice@email.com" });
+            userRepo.Add(new User { Id = 2, Name = "Bob", Email = "bob@email.com" });
+            
+            var user = userRepo.GetById(1);
+            if (user != null) {
+                Console.WriteLine($"Found user: {user.Name}");
+            }
+            
+            // Interface constraints in generics
+            Console.WriteLine("\n=== Interface Constraints ===");
+            var processor = new DataProcessor<User>();
+            processor.Process(new User { Id = 3, Name = "Charlie", Email = "charlie@email.com" });
+            
+            // Using is and as with interfaces
+            Console.WriteLine("\n=== Interface Checking ===");
+            object[] objects = { tesla, advancedCar, "hello", 42 };
+            
+            foreach (object obj in objects) {
+                if (obj is IVehicle vehicle) {
+                    Console.WriteLine($"{vehicle.Model} is a vehicle");
+                } else {
+                    Console.WriteLine($"{obj} is not a vehicle");
+                }
+            }
+        }
+    }
+    
+    // Generic class with interface constraint
+    class DataProcessor<T> where T : class {
+        public void Process(T item) {
+            Console.WriteLine($"Processing {item.GetType().Name}");
+            
+            if (item is IVehicle vehicle) {
+                vehicle.Start();
+                vehicle.Accelerate(50);
+                vehicle.Stop();
+            }
+        }
+    }
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- Advanced C# Features -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Advanced C# Features</h3>
+          <p class="text-slate-300 mb-4">Delegates, events, LINQ, and async/await</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-csharp">using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace AdvancedFeatures {
+    
+    // Delegates
+    public delegate void MessageHandler(string message);
+    public delegate int Calculator(int a, int b);
+    
+    // Events
+    class Button {
+        public event EventHandler<string> Clicked;
+        
+        public void Click() {
+            Clicked?.Invoke(this, "Button was clicked!");
+        }
+    }
+    
+    class Program {
+        static void Main() {
+            // Delegates
+            Console.WriteLine("=== DELEGATES ===");
+            MessageHandler handler = DisplayMessage;
+            handler("Hello from delegate!");
+            
+            Calculator add = (a, b) => a + b;
+            Calculator multiply = (a, b) => a * b;
+            
+            Console.WriteLine($"5 + 3 = {add(5, 3)}");
+            Console.WriteLine($"5 * 3 = {multiply(5, 3)}");
+            
+            // Multicast delegates
+            MessageHandler multiHandler = DisplayMessage;
+            multiHandler += DisplayWarning;
+            multiHandler("This goes to both handlers");
+            
+            // Events
+            Console.WriteLine("\n=== EVENTS ===");
+            Button button = new Button();
+            button.Clicked += (sender, message) => {
+                Console.WriteLine($"Event received: {message}");
+            };
+            button.Click();
+            
+            // LINQ
+            Console.WriteLine("\n=== LINQ ===");
+            var numbers = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+            
+            // Query syntax
+            var evenNumbers = from n in numbers
+                            where n % 2 == 0
+                            select n;
+            Console.WriteLine("Even numbers: " + string.Join(", ", evenNumbers));
+            
+            // Method syntax
+            var squares = numbers.Select(n => n * n);
+            Console.WriteLine("Squares: " + string.Join(", ", squares));
+            
+            var sum = numbers.Sum();
+            var max = numbers.Max();
+            var avg = numbers.Average();
+            Console.WriteLine($"Sum: {sum}, Max: {max}, Average: {avg:F2}");
+            
+            // Complex LINQ with objects
+            var people = new List<Person> {
+                new Person("Alice", 25, "Engineer"),
+                new Person("Bob", 30, "Designer"),
+                new Person("Charlie", 35, "Engineer"),
+                new Person("Diana", 28, "Manager")
+            };
+            
+            var engineers = people.Where(p => p.Job == "Engineer")
+                                .OrderBy(p => p.Age)
+                                .Select(p => $"{p.Name} ({p.Age})");
+            Console.WriteLine("Engineers: " + string.Join(", ", engineers));
+            
+            // Grouping
+            var byJob = people.GroupBy(p => p.Job);
+            foreach (var group in byJob) {
+                Console.WriteLine($"\n{group.Key}:");
+                foreach (var person in group) {
+                    Console.WriteLine($"  - {person.Name}");
+                }
+            }
+            
+            // Async/Await
+            Console.WriteLine("\n=== ASYNC/AWAIT ===");
+            MainAsync().Wait();
+        }
+        
+        static void DisplayMessage(string message) {
+            Console.WriteLine($"Message: {message}");
+        }
+        
+        static void DisplayWarning(string message) {
+            Console.WriteLine($"Warning: {message}");
+        }
+        
+        static async Task MainAsync() {
+            Console.WriteLine("Starting async operations...");
+            
+            var task1 = FetchDataAsync("Task 1", 2000);
+            var task2 = FetchDataAsync("Task 2", 1000);
+            var task3 = FetchDataAsync("Task 3", 3000);
+            
+            // Wait for all tasks to complete
+            await Task.WhenAll(task1, task2, task3);
+            
+            Console.WriteLine("All async operations completed!");
+            
+            // Async with LINQ
+            var urls = new[] { "url1", "url2", "url3" };
+            var tasks = urls.Select(url => DownloadAsync(url));
+            var results = await Task.WhenAll(tasks);
+            Console.WriteLine("Downloaded: " + string.Join(", ", results));
+        }
+        
+        static async Task FetchDataAsync(string name, int delay) {
+            Console.WriteLine($"Starting {name}...");
+            await Task.Delay(delay);
+            Console.WriteLine($"Completed {name} after {delay}ms");
+        }
+        
+        static async Task<string> DownloadAsync(string url) {
+            await Task.Delay(500); // Simulate download
+            return $"Content from {url}";
+        }
+    }
+    
+    record Person(string Name, int Age, string Job);
+    
+    // Extension methods
+    static class StringExtensions {
+        public static string Reverse(this string str) {
+            char[] chars = str.ToCharArray();
+            Array.Reverse(chars);
+            return new string(chars);
+        }
+        
+        public static bool IsPalindrome(this string str) {
+            string clean = str.ToLower().Replace(" ", "");
+            return clean == clean.Reverse();
+        }
+    }
+    
+    // Nullable reference types (C# 8.0+)
+    class UserService {
+        public string? GetUserName(int id) {
+            // This can return null
+            return id > 0 ? $"User{id}" : null;
+        }
+        
+        public void ProcessUser() {
+            string? name = GetUserName(0);
+            
+            // Null check required
+            if (name != null) {
+                Console.WriteLine($"Name length: {name.Length}");
+            }
+            
+            // Null-forgiving operator (use carefully)
+            string userName = GetUserName(1)!;
+            Console.WriteLine(userName);
+        }
+    }
+    
+    // Pattern matching enhancements
+    class PatternMatching {
+        public static void Demo() {
+            object[] values = { 42, "hello", 3.14, null, new List<int>(), "123" };
+            
+            foreach (var value in values) {
+                string result = value switch {
+                    int i => $"Integer: {i}",
+                    string s when int.TryParse(s, out int num) => $"Parseable string: {num}",
+                    string s => $"String: {s}",
+                    double d => $"Double: {d}",
+                    null => "Null value",
+                    _ => "Unknown type"
+                };
+                Console.WriteLine(result);
+            }
+        }
+    }
+    
+    // Records with methods
+    record Product(string Name, decimal Price) {
+        public decimal CalculateTax(decimal taxRate) => Price * taxRate;
+        
+        public Product ApplyDiscount(decimal discount) {
+            return this with { Price = Price * (1 - discount) };
+        }
+    }
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Live C# Editor -->
+  <section id="live-editor" class="course-section py-5 bg-dark-800">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">Live C# Editor</h2>
+      
+      <div class="glass rounded-xl p-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div>
+            <h3 class="text-xl font-semibold text-neon-300 mb-4">Write C# Code</h3>
+            <div class="csharp-editor" contenteditable="true" id="csharp-editor">// Welcome to C# Live Editor!
+// Write your C# code here
+
+using System;
+
+class Program {
+    static void Main() {
+        Console.WriteLine("Hello C# Developer!");
+        
+        // Basic variables
+        string name = "C# Learner";
+        int age = 25;
+        double salary = 50000.0;
+        
+        Console.WriteLine("Name: " + name);
+        Console.WriteLine("Age: " + age);
+        Console.WriteLine("Salary: $" + salary);
+        
+        // Control flow example
+        if (age >= 18) {
+            Console.WriteLine(name + " is an adult");
+        } else {
+            Console.WriteLine(name + " is a minor");
+        }
+        
+        // Loop example
+        Console.WriteLine("Counting from 1 to 5:");
+        for (int i = 1; i <= 5; i++) {
+            Console.WriteLine(i);
+        }
+        
+        // Array example
+        int[] numbers = {1, 2, 3, 4, 5};
+        Console.WriteLine("Array elements:");
+        foreach (int num in numbers) {
+            Console.WriteLine(num);
+        }
+        
+        // Method call
+        int result = Add(10, 20);
+        Console.WriteLine("10 + 20 = " + result);
+        
+        // Class example
+        Person person = new Person("Alice", 30);
+        person.Introduce();
+    }
+    
+    // Method definition
+    public static int Add(int a, int b) {
+        return a + b;
+    }
+}
+
+// Simple class
+class Person {
+    public string Name;
+    public int Age;
+    
+    public Person(string name, int age) {
+        Name = name;
+        Age = age;
+    }
+    
+    public void Introduce() {
+        Console.WriteLine($"Hi, I'm {Name} and I'm {Age} years old");
+    }
+}</div>
+            <button onclick="runLiveCSharpCode()" class="w-full mt-4 px-4 py-3 bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-lg font-semibold hover:scale-105 transition-transform">
+              <i class="fas fa-play mr-2"></i>Run Code
+            </button>
+          </div>
+          
+          <div>
+            <h3 class="text-xl font-semibold text-neon-300 mb-4">Output</h3>
+            <div class="csharp-output h-64" id="live-csharp-output">
+              // C# output will appear here
+              <br>
+              // Try writing some C# code and click "Run Code"
+            </div>
+            <div class="mt-4 p-4 bg-purple-900/30 rounded-lg">
+              <h4 class="font-semibold text-purple-300 mb-2">💡 C# Tips:</h4>
+              <ul class="text-sm text-purple-200 space-y-1">
+                <li>• Always include a Main method as entry point</li>
+                <li>• Use Console.WriteLine() for output</li>
+                <li>• C# is case-sensitive: Main ≠ main</li>
+                <li>• End statements with semicolons</li>
+                <li>• Use proper access modifiers</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mini Project Section -->
+  <section class="course-section py-5">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">Mini C# Projects</h2>
+      
+      <div class="glass rounded-xl p-6">
+        <h3 class="text-xl font-semibold text-neon-300 mb-4">To-Do List Application</h3>
+        <p class="text-slate-300 mb-6">A simple console-based to-do list with basic CRUD operations</p>
+        
+        <div class="code-container bg-slate-900 rounded-lg p-4">
+          <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+            <i class="fas fa-copy mr-1"></i>Copy
+          </button>
+          <pre><code class="language-csharp">using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace TodoApp {
+    class Program {
+        static List<string> tasks = new List<string>();
+        static List<bool> completed = new List<bool>();
+        
+        static void Main() {
+            Console.WriteLine("=== C# To-Do List Application ===");
+            
+            while (true) {
+                DisplayMenu();
+                string choice = Console.ReadLine();
+                
+                switch (choice) {
+                    case "1":
+                        AddTask();
+                        break;
+                    case "2":
+                        ViewTasks();
+                        break;
+                    case "3":
+                        MarkTaskComplete();
+                        break;
+                    case "4":
+                        RemoveTask();
+                        break;
+                    case "5":
+                        Console.WriteLine("Goodbye!");
+                        return;
+                    default:
+                        Console.WriteLine("Invalid choice. Please try again.");
+                        break;
+                }
+                
+                Console.WriteLine("\nPress any key to continue...");
+                Console.ReadKey();
+                Console.Clear();
+            }
+        }
+        
+        static void DisplayMenu() {
+            Console.WriteLine("\n--- Menu ---");
+            Console.WriteLine("1. Add Task");
+            Console.WriteLine("2. View Tasks");
+            Console.WriteLine("3. Mark Task Complete");
+            Console.WriteLine("4. Remove Task");
+            Console.WriteLine("5. Exit");
+            Console.Write("Enter your choice: ");
+        }
+        
+        static void AddTask() {
+            Console.Write("Enter task description: ");
+            string task = Console.ReadLine();
+            
+            if (!string.IsNullOrWhiteSpace(task)) {
+                tasks.Add(task);
+                completed.Add(false);
+                Console.WriteLine("Task added successfully!");
+            } else {
+                Console.WriteLine("Task cannot be empty!");
+            }
+        }
+        
+        static void ViewTasks() {
+            if (tasks.Count == 0) {
+                Console.WriteLine("No tasks available.");
+                return;
+            }
+            
+            Console.WriteLine("\n--- Your Tasks ---");
+            for (int i = 0; i < tasks.Count; i++) {
+                string status = completed[i] ? "[✓]" : "[ ]";
+                Console.WriteLine($"{i + 1}. {status} {tasks[i]}");
+            }
+            
+            // Statistics
+            int completedCount = completed.Count(c => c);
+            Console.WriteLine($"\nCompleted: {completedCount}/{tasks.Count}");
+        }
+        
+        static void MarkTaskComplete() {
+            ViewTasks();
+            
+            if (tasks.Count == 0) return;
+            
+            Console.Write("Enter task number to mark complete: ");
+            if (int.TryParse(Console.ReadLine(), out int taskNum) && taskNum >= 1 && taskNum <= tasks.Count) {
+                completed[taskNum - 1] = true;
+                Console.WriteLine($"Task '{tasks[taskNum - 1]}' marked as complete!");
+            } else {
+                Console.WriteLine("Invalid task number!");
+            }
+        }
+        
+        static void RemoveTask() {
+            ViewTasks();
+            
+            if (tasks.Count == 0) return;
+            
+            Console.Write("Enter task number to remove: ");
+            if (int.TryParse(Console.ReadLine(), out int taskNum) && taskNum >= 1 && taskNum <= tasks.Count) {
+                string removedTask = tasks[taskNum - 1];
+                tasks.RemoveAt(taskNum - 1);
+                completed.RemoveAt(taskNum - 1);
+                Console.WriteLine($"Task '{removedTask}' removed successfully!");
+            } else {
+                Console.WriteLine("Invalid task number!");
+            }
+        }
+    }
+    
+    // Enhanced version with classes
+    class TodoItem {
+        public string Description { get; set; }
+        public bool IsCompleted { get; set; }
+        public DateTime CreatedAt { get; set; }
+        
+        public TodoItem(string description) {
+            Description = description;
+            IsCompleted = false;
+            CreatedAt = DateTime.Now;
+        }
+        
+        public void MarkComplete() {
+            IsCompleted = true;
+        }
+        
+        public override string ToString() {
+            string status = IsCompleted ? "[✓]" : "[ ]";
+            return $"{status} {Description} (Created: {CreatedAt:MMM dd, yyyy})";
+        }
+    }
+    
+    class TodoManager {
+        private List<TodoItem> items = new List<TodoItem>();
+        
+        public void AddItem(string description) {
+            items.Add(new TodoItem(description));
+        }
+        
+        public void DisplayItems() {
+            if (items.Count == 0) {
+                Console.WriteLine("No todo items.");
+                return;
+            }
+            
+            Console.WriteLine("\n--- Todo Items ---");
+            foreach (var item in items) {
+                Console.WriteLine(item);
+            }
+        }
+        
+        public void CompleteItem(int index) {
+            if (index >= 0 && index < items.Count) {
+                items[index].MarkComplete();
+            }
+        }
+        
+        public void RemoveItem(int index) {
+            if (index >= 0 && index < items.Count) {
+                items.RemoveAt(index);
+            }
+        }
+    }
+}</code></pre>
+        </div>
+        
+        <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="p-4 bg-green-900/30 rounded-lg">
+            <h4 class="font-semibold text-green-300 mb-2">🎯 Features Implemented</h4>
+            <ul class="text-sm text-green-200 space-y-1">
+              <li>• Add new tasks</li>
+              <li>• View all tasks with status</li>
+              <li>• Mark tasks as complete</li>
+              <li>• Remove tasks</li>
+              <li>• Simple menu system</li>
+              <li>• Input validation</li>
+            </ul>
+          </div>
+          
+          <div class="p-4 bg-blue-900/30 rounded-lg">
+            <h4 class="font-semibold text-blue-300 mb-2">🚀 Enhancement Ideas</h4>
+            <ul class="text-sm text-blue-200 space-y-1">
+              <li>• Save tasks to file</li>
+              <li>• Add due dates and priorities</li>
+              <li>• Categories and tags</li>
+              <li>• Search and filter functionality</li>
+              <li>• GUI version with Windows Forms</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Advanced Track Section -->
+  <section class="course-section py-5 bg-dark-800">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">Advanced C# Track</h2>
+      
+      <div class="glass rounded-xl p-6">
+        <h3 class="text-xl font-semibold text-neon-300 mb-6">What to Learn Next</h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="p-4 bg-dotnet-700/30 rounded-lg">
+            <div class="flex items-center gap-3 mb-3">
+              <i class="fas fa-globe text-blue-400 text-xl"></i>
+              <h4 class="font-semibold text-white">.NET Web API</h4>
+            </div>
+            <p class="text-sm text-slate-300 mb-3">Build RESTful APIs with ASP.NET Core</p>
+            <ul class="text-xs text-blue-200 space-y-1">
+              <li>• REST principles</li>
+              <li>• Controllers and routing</li>
+              <li>• JSON serialization</li>
+              <li>• Authentication & authorization</li>
+            </ul>
+          </div>
+          
+          <div class="p-4 bg-green-900/30 rounded-lg">
+            <div class="flex items-center gap-3 mb-3">
+              <i class="fas fa-database text-green-400 text-xl"></i>
+              <h4 class="font-semibold text-white">Entity Framework</h4>
+            </div>
+            <p class="text-sm text-slate-300 mb-3">ORM for database operations</p>
+            <ul class="text-xs text-green-200 space-y-1">
+              <li>• Code-first approach</li>
+              <li>• LINQ to Entities</li>
+              <li>• Migrations</li>
+              <li>• Relationships and eager loading</li>
+            </ul>
+          </div>
+          
+          <div class="p-4 bg-purple-900/30 rounded-lg">
+            <div class="flex items-center gap-3 mb-3">
+              <i class="fas fa-search text-purple-400 text-xl"></i>
+              <h4 class="font-semibold text-white">LINQ</h4>
+            </div>
+            <p class="text-sm text-slate-300 mb-3">Language Integrated Query</p>
+            <ul class="text-xs text-purple-200 space-y-1">
+              <li>• Query and method syntax</li>
+              <li>• Deferred execution</li>
+              <li>• Complex queries</li>
+              <li>• Performance optimization</li>
+            </ul>
+          </div>
+          
+          <div class="p-4 bg-yellow-900/30 rounded-lg">
+            <div class="flex items-center gap-3 mb-3">
+              <i class="fas fa-layer-group text-yellow-400 text-xl"></i>
+              <h4 class="font-semibold text-white">ASP.NET MVC</h4>
+            </div>
+            <p class="text-sm text-slate-300 mb-3">Web application framework</p>
+            <ul class="text-xs text-yellow-200 space-y-1">
+              <li>• Model-View-Controller pattern</li>
+              <li>• Razor views</li>
+              <li>• Model binding</li>
+              <li>• Dependency injection</li>
+            </ul>
+          </div>
+          
+          <div class="p-4 bg-red-900/30 rounded-lg">
+            <div class="flex items-center gap-3 mb-3">
+              <i class="fas fa-mobile-alt text-red-400 text-xl"></i>
+              <h4 class="font-semibold text-white">MAUI</h4>
+            </div>
+            <p class="text-sm text-slate-300 mb-3">Cross-platform mobile apps</p>
+            <ul class="text-xs text-red-200 space-y-1">
+              <li>• Single project for multiple platforms</li>
+              <li>• XAML UI design</li>
+              <li>• Native API access</li>
+              <li>• App store deployment</li>
+            </ul>
+          </div>
+          
+          <div class="p-4 bg-indigo-900/30 rounded-lg">
+            <div class="flex items-center gap-3 mb-3">
+              <i class="fas fa-gamepad text-indigo-400 text-xl"></i>
+              <h4 class="font-semibold text-white">Unity GameDev</h4>
+            </div>
+            <p class="text-sm text-slate-300 mb-3">Game development with C#</p>
+            <ul class="text-xs text-indigo-200 space-y-1">
+              <li>• Unity scripting</li>
+              <li>• Game physics</li>
+              <li>• Animation and AI</li>
+              <li>• Multiplayer networking</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="mt-6 p-4 bg-slate-800/50 rounded-lg">
+          <h4 class="font-semibold text-neon-300 mb-3">🏗️ Architecture & Best Practices</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+            <div class="space-y-2">
+              <div class="flex items-center gap-2">
+                <i class="fas fa-check text-green-400"></i>
+                <span>Clean Architecture</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <i class="fas fa-check text-green-400"></i>
+                <span>Domain-Driven Design</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <i class="fas fa-check text-green-400"></i>
+                <span>Test-Driven Development</span>
+              </div>
+            </div>
+            <div class="space-y-2">
+              <div class="flex items-center gap-2">
+                <i class="fas fa-check text-green-400"></i>
+                <span>Microservices</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <i class="fas fa-check text-green-400"></i>
+                <span>Azure Cloud Deployment</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <i class="fas fa-check text-green-400"></i>
+                <span>CI/CD Pipelines</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Navigation -->
+  <div class="max-w-6xl mx-auto px-6 py-8">
+    <div class="glass rounded-xl p-6 sticky bottom-6">
+      <h3 class="font-semibold text-neon-300 mb-4">Course Navigation</h3>
+      <div class="flex flex-wrap gap-3">
+        <a href="#basics" class="px-4 py-2 rounded-lg bg-slate-800/40 hover:bg-slate-700/40 transition text-sm">Basics</a>
+        <a href="#live-editor" class="px-4 py-2 rounded-lg bg-slate-800/40 hover:bg-slate-700/40 transition text-sm">Live Editor</a>
+        <button onclick="showCheatSheet()" class="px-4 py-2 rounded-lg bg-csharp-500 hover:bg-csharp-600 transition text-sm">Cheat Sheet</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="glass border-t border-slate-800 mt-20">
+    <div class="max-w-6xl mx-auto px-6 py-8 text-center">
+      <div class="flex items-center justify-center gap-6 mb-4">
+        <a href="/" class="text-slate-300 hover:text-neon-500 transition">Home</a>
+        <a href="#basics" class="text-slate-300 hover:text-neon-500 transition">Course</a>
+        <a href="https://github.com/JUSAIR-JSR" target="_blank" class="text-slate-300 hover:text-neon-500 transition">GitHub</a>
+      </div>
+      <p class="text-slate-500 text-sm">© 2023 C# Course - Complete Beginner to Advanced</p>
+    </div>
+  </footer>
+
+  <!-- Cheat Sheet Modal -->
+  <div id="cheat-sheet" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-50 p-4">
+    <div class="glass rounded-xl p-6 max-w-4xl max-h-[80vh] overflow-y-auto">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-2xl font-bold text-neon-300">C# Cheat Sheet</h3>
+        <button onclick="hideCheatSheet()" class="text-slate-400 hover:text-white">
+          <i class="fas fa-times text-2xl"></i>
+        </button>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h4 class="font-semibold text-green-400 mb-3">Basic Syntax</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">using System;</code>
+            <code class="block bg-slate-800 p-2 rounded">class Program { }</code>
+            <code class="block bg-slate-800 p-2 rounded">static void Main()</code>
+            <code class="block bg-slate-800 p-2 rounded">Console.WriteLine()</code>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-blue-400 mb-3">Data Types</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">int, double, bool, char</code>
+            <code class="block bg-slate-800 p-2 rounded">string, var, object</code>
+            <code class="block bg-slate-800 p-2 rounded">List&lt;T&gt;, Array[]</code>
+            <code class="block bg-slate-800 p-2 rounded">Dictionary&lt;K,V&gt;</code>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-yellow-400 mb-3">Control Flow</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">if (condition) { }</code>
+            <code class="block bg-slate-800 p-2 rounded">for (int i=0; i<10; i++)</code>
+            <code class="block bg-slate-800 p-2 rounded">foreach (var item)</code>
+            <code class="block bg-slate-800 p-2 rounded">switch (value) { }</code>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-purple-400 mb-3">OOP Concepts</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">class MyClass { }</code>
+            <code class="block bg-slate-800 p-2 rounded">: base(), : interface</code>
+            <code class="block bg-slate-800 p-2 rounded">public, private, protected</code>
+            <code class="block bg-slate-800 p-2 rounded">virtual, override, abstract</code>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-red-400 mb-3">Methods</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">void Method() { }</code>
+            <code class="block bg-slate-800 p-2 rounded">return Type Method()</code>
+            <code class="block bg-slate-800 p-2 rounded">ref, out, params</code>
+            <code class="block bg-slate-800 p-2 rounded">async Task Method()</code>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-indigo-400 mb-3">Exception Handling</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">try { } catch { }</code>
+            <code class="block bg-slate-800 p-2 rounded">throw new Exception()</code>
+            <code class="block bg-slate-800 p-2 rounded">finally { }</code>
+            <code class="block bg-slate-800 p-2 rounded">using (resource)</code>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Initialize syntax highlighting
+    hljs.highlightAll();
+
+    // Copy button functionality
+    document.querySelectorAll('.copy-btn').forEach(button => {
+      button.addEventListener('click', function() {
+        const codeBlock = this.closest('.code-container').querySelector('code');
+        const textArea = document.createElement('textarea');
+        textArea.value = codeBlock.textContent;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        
+        // Visual feedback
+        const originalText = this.innerHTML;
+        this.innerHTML = '<i class="fas fa-check mr-1"></i>Copied!';
+        setTimeout(() => {
+          this.innerHTML = originalText;
+        }, 2000);
+      });
+    });
+
+    // Cheat sheet functions
+    function showCheatSheet() {
+      document.getElementById('cheat-sheet').classList.remove('hidden');
+      document.getElementById('cheat-sheet').classList.add('flex');
+    }
+
+    function hideCheatSheet() {
+      document.getElementById('cheat-sheet').classList.add('hidden');
+      document.getElementById('cheat-sheet').classList.remove('flex');
+    }
+
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+
+    // Live C# code execution simulation
+    function runLiveCSharpCode() {
+      const editor = document.getElementById('csharp-editor');
+      const outputElement = document.getElementById('live-csharp-output');
+      
+      if (editor && outputElement) {
+        const code = editor.textContent || editor.innerText;
+        outputElement.innerHTML = '<div class="text-green-400">Running C# code...</div>';
+        
+        // Simulate C# execution
+        setTimeout(() => {
+          const simulatedOutput = `Hello C# Developer!
+Name: C# Learner
+Age: 25
+Salary: $50000
+C# Learner is an adult
+Counting from 1 to 5:
+1
+2
+3
+4
+5
+Array elements:
+1
+2
+3
+4
+5
+10 + 20 = 30
+Hi, I'm Alice and I'm 30 years old`;
+          
+          outputElement.innerHTML = `<div class="text-green-400">Output:</div><div class="mt-2 whitespace-pre-wrap">${simulatedOutput}</div>`;
+        }, 1000);
+      }
+    }
+  </script>
+</body>
+</html>

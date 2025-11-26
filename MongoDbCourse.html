@@ -1,1 +1,2362 @@
+<<<<<<< HEAD
 
+=======
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MongoDB Course - Complete Beginner to Advanced</title>
+  <meta name="description" content="Complete MongoDB course with Node.js, Mongoose, aggregation, and real-world projects" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Highlight.js for syntax highlighting -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            neon: {
+              50: '#f3f7ff',
+              100: '#e6f0ff',
+              300: '#99ccff',
+              500: '#00d0ff',
+              600: '#00a8d9',
+              700: '#00a3cc',
+              800: '#007399'
+            },
+            dark: {
+              900: '#0a0f1c',
+              800: '#0f172a',
+              700: '#1e293b'
+            },
+            mongodb: {
+              500: '#47A248',
+              600: '#3D8B3D',
+              700: '#2F6F2F'
+            }
+          },
+          animation: {
+            'float': 'float 6s ease-in-out infinite',
+            'pulse-glow': 'pulse-glow 2s ease-in-out infinite alternate',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    .neon-text { 
+      text-shadow: 0 0 8px rgba(0,208,255,0.15), 0 0 18px rgba(0,208,255,0.06); 
+    }
+    
+    .glass {
+      background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .code-container {
+      position: relative;
+    }
+    
+    .copy-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    
+    .code-container:hover .copy-btn {
+      opacity: 1;
+    }
+    
+    .terminal {
+      background: #1a1b26;
+      color: #c0caf5;
+      font-family: 'Fira Code', monospace;
+      border-radius: 0.5rem;
+      padding: 1rem;
+    }
+    
+    .terminal .prompt {
+      color: #7dcfff;
+    }
+    
+    .terminal .command {
+      color: #9ece6a;
+    }
+    
+    .terminal .comment {
+      color: #565f89;
+    }
+    
+    .mongo-output {
+      background: #0f172a;
+      color: #10b981;
+      font-family: 'Fira Code', monospace;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      min-height: 100px;
+      border: 1px solid #374151;
+    }
+    
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.5);
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: rgba(0, 208, 255, 0.3);
+      border-radius: 4px;
+    }
+    
+    .course-section {
+      scroll-margin-top: 100px;
+    }
+    
+    /* Animation for live examples */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .animate-fade-in {
+      animation: fadeInUp 0.6s ease-out;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    @keyframes pulse-glow {
+      0% { box-shadow: 0 0 20px rgba(0, 208, 255, 0.4); }
+      100% { box-shadow: 0 0 30px rgba(0, 208, 255, 0.8), 0 0 40px rgba(0, 208, 255, 0.4); }
+    }
+    
+    .mongodb-badge {
+      background: linear-gradient(135deg, #47A248, #3D8B3D);
+      color: white;
+    }
+    
+    .json-key {
+      color: #ff79c6;
+    }
+    
+    .json-string {
+      color: #f1fa8c;
+    }
+    
+    .json-number {
+      color: #bd93f9;
+    }
+    
+    .json-boolean {
+      color: #ff79c6;
+    }
+    
+    .mongo-operator {
+      color: #8be9fd;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-dark-900 via-dark-800 to-dark-900 text-slate-200 min-h-screen">
+
+  <!-- Navigation -->
+  <nav class="glass border-b border-slate-800 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-mongodb-500 to-mongodb-600 flex items-center justify-center">
+          <i class="fas fa-leaf text-white text-lg"></i>
+        </div>
+        <div>
+          <h1 class="text-lg font-bold neon-text">MongoDB Course</h1>
+          <p class="text-xs text-slate-400">Beginner to Advanced</p>
+        </div>
+      </a>
+
+      <div class="flex items-center gap-4">
+        <a href="/" class="px-4 py-2 rounded-lg text-sm hover:bg-slate-800/40 transition">
+          <i class="fas fa-home mr-2"></i>Home
+        </a>
+        <a href="#basics" class="px-4 py-2 rounded-lg text-sm bg-slate-800/40 border border-neon-500/30">
+          <i class="fas fa-book mr-2"></i>Course
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="max-w-7xl mx-auto px-6 py-16 text-center">
+    <div class="max-w-3xl mx-auto">
+      <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800/40 border border-slate-700/40 text-sm mb-6">
+        <i class="fas fa-database text-mongodb-500"></i>
+        Complete MongoDB NoSQL Database Course
+      </span>
+      <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight text-white neon-text mb-6">
+        Master MongoDB
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-mongodb-500 to-mongodb-600 block">The Document Database</span>
+      </h1>
+      <p class="text-slate-300 text-lg mb-8">Learn MongoDB with practical examples, aggregation pipeline, Mongoose ODM, and real-world projects. Build modern applications with NoSQL.</p>
+      
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href="#basics" class="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r from-mongodb-500 to-mongodb-600 font-medium hover:scale-105 transition-transform">
+          <i class="fas fa-play"></i>
+          Start Learning
+        </a>
+        <a href="#mongoose" class="inline-flex items-center gap-3 px-6 py-3 rounded-full border border-slate-700/40 hover:border-neon-500 transition glass">
+          <i class="fab fa-node-js"></i>
+          Mongoose & Node.js
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- MongoDB Basics Section -->
+  <section id="basics" class="course-section py-5">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">MongoDB Basics</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Setup & Installation -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4 flex items-center gap-2">
+            <i class="fas fa-download"></i>
+            Setup & Installation
+          </h3>
+          <p class="text-slate-300 mb-4">Get MongoDB installed and start the MongoDB shell</p>
+          
+          <div class="terminal mb-4">
+            <div class="flex items-center gap-2 mb-2">
+              <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+              <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+              <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+            </div>
+            <div class="space-y-2 text-sm">
+              <div><span class="prompt">$</span> <span class="command">mongod --version</span></div>
+              <div class="text-blue-300">db version v6.0.5</div>
+              <div><span class="prompt">$</span> <span class="command">mongosh</span></div>
+              <div class="text-green-300">Using MongoDB: 6.0.5</div>
+              <div class="text-green-300">test></div>
+              <div><span class="prompt">test></span> <span class="command">db.version()</span></div>
+              <div class="text-blue-300">6.0.5</div>
+            </div>
+          </div>
+          
+          <div class="p-4 bg-green-900/30 rounded-lg">
+            <h4 class="font-semibold text-green-300 mb-2">🛠️ GUI Tools</h4>
+            <div class="grid grid-cols-2 gap-3 text-sm">
+              <div class="flex items-center gap-2 p-2 bg-slate-800/50 rounded">
+                <i class="fas fa-compass text-mongodb-500"></i>
+                <span>MongoDB Compass</span>
+              </div>
+              <div class="flex items-center gap-2 p-2 bg-slate-800/50 rounded">
+                <i class="fas fa-cloud text-blue-400"></i>
+                <span>MongoDB Atlas</span>
+              </div>
+              <div class="flex items-center gap-2 p-2 bg-slate-800/50 rounded">
+                <i class="fas fa-desktop text-purple-400"></i>
+                <span>Studio 3T</span>
+              </div>
+              <div class="flex items-center gap-2 p-2 bg-slate-800/50 rounded">
+                <i class="fas fa-rocket text-yellow-400"></i>
+                <span>NoSQLBooster</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Database & Collections -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Database & Collections</h3>
+          <p class="text-slate-300 mb-4">Create databases and collections</p>
+          
+          <div class="terminal mb-4">
+            <div class="flex items-center gap-2 mb-2">
+              <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+              <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+              <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+            </div>
+            <div class="space-y-2 text-sm">
+              <div><span class="prompt">test></span> <span class="command">use school</span></div>
+              <div class="text-green-300">switched to db school</div>
+              
+              <div><span class="prompt">school></span> <span class="command">db.createCollection("students")</span></div>
+              <div class="text-green-300">{ ok: 1 }</div>
+              
+              <div><span class="prompt">school></span> <span class="command">show dbs</span></div>
+              <div class="text-blue-300">admin   40.00 KiB</div>
+              <div class="text-blue-300">config  60.00 KiB</div>
+              <div class="text-blue-300">local   40.00 KiB</div>
+              <div class="text-blue-300">school   0.00 KiB</div>
+              
+              <div><span class="prompt">school></span> <span class="command">show collections</span></div>
+              <div class="text-blue-300">students</div>
+              
+              <div><span class="prompt">school></span> <span class="command">db.students.drop()</span></div>
+              <div class="text-green-300">true</div>
+            </div>
+          </div>
+          
+          <div class="p-4 bg-blue-900/30 rounded-lg">
+            <h4 class="font-semibold text-blue-300 mb-2">📁 MongoDB Structure</h4>
+            <div class="text-sm text-blue-200 space-y-1">
+              <div><span class="font-semibold">Database</span> - Container for collections</div>
+              <div><span class="font-semibold">Collection</span> - Group of documents (like tables)</div>
+              <div><span class="font-semibold">Document</span> - JSON-like data record (like rows)</div>
+              <div><span class="font-semibold">Field</span> - Key-value pair in a document</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CRUD Operations -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">CRUD Operations</h3>
+          <p class="text-slate-300 mb-4">Create, Read, Update, Delete documents</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4 mb-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-javascript">// INSERT - Create documents
+// Insert one document
+db.students.insertOne({
+  name: "John Doe",
+  age: 20,
+  email: "john@school.com",
+  courses: ["Math", "Science"],
+  address: {
+    city: "New York",
+    country: "USA"
+  },
+  enrolled: true,
+  createdAt: new Date()
+});
+
+// Insert multiple documents
+db.students.insertMany([
+  {
+    name: "Alice Smith",
+    age: 22,
+    email: "alice@school.com",
+    courses: ["History", "Art"],
+    enrolled: true
+  },
+  {
+    name: "Bob Johnson",
+    age: 19,
+    email: "bob@school.com", 
+    courses: ["Math", "Physics"],
+    enrolled: false
+  },
+  {
+    name: "Carol Davis",
+    age: 21,
+    email: "carol@school.com",
+    courses: ["Biology", "Chemistry"],
+    enrolled: true
+  }
+]);
+
+// FIND - Read documents
+// Find all documents
+db.students.find();
+
+// Find with pretty print
+db.students.find().pretty();
+
+// Find specific documents
+db.students.find({ name: "John Doe" });
+db.students.find({ age: { $gt: 20 } });
+db.students.find({ enrolled: true });
+
+// UPDATE - Modify documents
+// Update one document
+db.students.updateOne(
+  { name: "John Doe" },
+  { $set: { age: 21, city: "Boston" } }
+);
+
+// Update multiple documents
+db.students.updateMany(
+  { enrolled: true },
+  { $set: { status: "active" } }
+);
+
+// Increment field
+db.students.updateOne(
+  { name: "John Doe" },
+  { $inc: { age: 1 } }
+);
+
+// Add to array
+db.students.updateOne(
+  { name: "Alice Smith" },
+  { $push: { courses: "Geography" } }
+);
+
+// DELETE - Remove documents
+// Delete one document
+db.students.deleteOne({ name: "Bob Johnson" });
+
+// Delete multiple documents
+db.students.deleteMany({ enrolled: false });
+
+// Delete all documents (be careful!)
+// db.students.deleteMany({});</code></pre>
+          </div>
+        </div>
+
+        <!-- Query Operators -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Query Operators</h3>
+          <p class="text-slate-300 mb-4">Powerful operators for filtering data</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-javascript">// Comparison Operators
+db.students.find({ age: { $eq: 20 } });      // Equal to
+db.students.find({ age: { $ne: 20 } });      // Not equal to
+db.students.find({ age: { $gt: 20 } });      // Greater than
+db.students.find({ age: { $gte: 20 } });     // Greater than or equal
+db.students.find({ age: { $lt: 25 } });      // Less than
+db.students.find({ age: { $lte: 25 } });     // Less than or equal
+db.students.find({ age: { $in: [18, 20, 22] } });  // In array
+db.students.find({ age: { $nin: [18, 19] } });     // Not in array
+
+// Logical Operators
+// AND (implicit)
+db.students.find({ age: { $gt: 18 }, enrolled: true });
+
+// AND (explicit)
+db.students.find({
+  $and: [
+    { age: { $gt: 18 } },
+    { enrolled: true }
+  ]
+});
+
+// OR
+db.students.find({
+  $or: [
+    { age: { $lt: 20 } },
+    { age: { $gt: 25 } }
+  ]
+});
+
+// NOR (neither condition true)
+db.students.find({
+  $nor: [
+    { age: { $lt: 20 } },
+    { enrolled: false }
+  ]
+});
+
+// NOT
+db.students.find({ age: { $not: { $gt: 20 } } });
+
+// Element Operators
+db.students.find({ email: { $exists: true } });      // Field exists
+db.students.find({ age: { $type: "number" } });      // Field type
+db.students.find({ name: { $regex: /^J/ } });        // Regular expression
+db.students.find({ name: { $regex: "John", $options: "i" } }); // Case insensitive
+
+// Array Operators
+db.students.find({ courses: { $size: 2 } });         // Array size
+db.students.find({ courses: { $all: ["Math", "Science"] } }); // All elements
+db.students.find({ courses: "Math" });               // Contains element
+db.students.find({ "courses.0": "Math" });           // Element at position
+
+// Evaluation Operators
+db.students.find({ $expr: { $gt: ["$age", "$minAge"] } }); // Expression
+db.students.find({ $jsonSchema: { ... } });          // JSON schema validation
+db.students.find({ name: { $mod: [5, 0] } });        // Modulo operation</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Advanced MongoDB Section -->
+  <section class="course-section py-5 bg-dark-800">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">Advanced MongoDB</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Aggregation Pipeline -->
+        <div class="glass rounded-xl p-6 component-card">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Aggregation Pipeline</h3>
+          <p class="text-slate-300 mb-4">Powerful data processing and transformation</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-javascript">// Basic aggregation example
+db.students.aggregate([
+  // Stage 1: Filter documents
+  {
+    $match: {
+      enrolled: true,
+      age: { $gte: 18 }
+    }
+  },
+  // Stage 2: Group and calculate
+  {
+    $group: {
+      _id: "$city",
+      totalStudents: { $sum: 1 },
+      averageAge: { $avg: "$age" },
+      maxAge: { $max: "$age" },
+      minAge: { $min: "$age" },
+      names: { $push: "$name" }
+    }
+  },
+  // Stage 3: Sort results
+  {
+    $sort: { totalStudents: -1 }
+  }
+]);
+
+// Complex aggregation with multiple stages
+db.orders.aggregate([
+  // Match specific orders
+  {
+    $match: {
+      status: "completed",
+      orderDate: { $gte: new Date("2024-01-01") }
+    }
+  },
+  // Unwind array (orders with multiple items)
+  {
+    $unwind: "$items"
+  },
+  // Lookup product details
+  {
+    $lookup: {
+      from: "products",
+      localField: "items.productId",
+      foreignField: "_id",
+      as: "productDetails"
+    }
+  },
+  // Unwind product details
+  {
+    $unwind: "$productDetails"
+  },
+  // Calculate total for each item
+  {
+    $addFields: {
+      "items.totalPrice": {
+        $multiply: ["$items.quantity", "$productDetails.price"]
+      }
+    }
+  },
+  // Group back by order
+  {
+    $group: {
+      _id: "$_id",
+      customerId: { $first: "$customerId" },
+      orderDate: { $first: "$orderDate" },
+      totalAmount: { $sum: "$items.totalPrice" },
+      items: { $push: "$items" }
+    }
+  },
+  // Lookup customer details
+  {
+    $lookup: {
+      from: "customers",
+      localField: "customerId",
+      foreignField: "_id",
+      as: "customer"
+    }
+  },
+  // Project final output
+  {
+    $project: {
+      _id: 1,
+      orderDate: 1,
+      totalAmount: 1,
+      "customer.name": 1,
+      "customer.email": 1,
+      items: 1
+    }
+  },
+  // Sort by total amount
+  {
+    $sort: { totalAmount: -1 }
+  },
+  // Limit results
+  {
+    $limit: 10
+  }
+]);
+
+// Common aggregation stages:
+// $match - Filter documents (like WHERE)
+// $group - Group by field and calculate
+// $sort - Sort documents
+// $project - Select/rename fields (like SELECT)
+// $limit - Limit number of documents
+// $skip - Skip documents
+// $unwind - Deconstruct array
+// $lookup - Join collections
+// $addFields - Add new fields
+// $count - Count documents
+// $facet - Multiple pipelines
+// $bucket - Group into buckets
+// $graphLookup - Recursive search</code></pre>
+          </div>
+        </div>
+
+        <!-- Indexes & Performance -->
+        <div class="glass rounded-xl p-6 component-card">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Indexes & Performance</h3>
+          <p class="text-slate-300 mb-4">Optimize query performance with indexes</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-javascript">// Single field index
+db.students.createIndex({ email: 1 });        // Ascending
+db.students.createIndex({ age: -1 });         // Descending
+
+// Compound index
+db.students.createIndex({ city: 1, age: -1 });
+
+// Unique index
+db.students.createIndex({ email: 1 }, { unique: true });
+
+// Partial index (only on subset)
+db.students.createIndex(
+  { email: 1 },
+  { partialFilterExpression: { enrolled: true } }
+);
+
+// TTL index (auto-delete after time)
+db.sessions.createIndex(
+  { createdAt: 1 },
+  { expireAfterSeconds: 3600 } // 1 hour
+);
+
+// Text index (for text search)
+db.articles.createIndex(
+  { title: "text", content: "text" }
+);
+
+// Use text search
+db.articles.find({
+  $text: { $search: "mongodb tutorial" }
+});
+
+// Geospatial index
+db.places.createIndex({ location: "2dsphere" });
+
+// Find nearby places
+db.places.find({
+  location: {
+    $near: {
+      $geometry: {
+        type: "Point",
+        coordinates: [longitude, latitude]
+      },
+      $maxDistance: 1000 // meters
+    }
+  }
+});
+
+// View indexes
+db.students.getIndexes();
+
+// Check query performance
+db.students.find({ email: "test@example.com" }).explain("executionStats");
+
+// Drop index
+db.students.dropIndex("email_1");
+
+// Index performance tips:
+// 1. Create indexes on frequently queried fields
+// 2. Use compound indexes for common query patterns
+// 3. Monitor index usage with $indexStats
+// 4. Consider partial indexes for large collections
+// 5. Use covered queries (projection only indexed fields)
+
+// Check index usage statistics
+db.students.aggregate([{ $indexStats: {} }]);
+
+// Force index usage
+db.students.find({ email: "test@example.com" }).hint({ email: 1 });</code></pre>
+          </div>
+          
+          <div class="mt-4 p-4 bg-yellow-900/30 rounded-lg">
+            <h4 class="font-semibold text-yellow-300 mb-2">⚡ Performance Tips</h4>
+            <div class="text-sm text-yellow-200 space-y-1">
+              <div>Use projections to return only needed fields</div>
+              <div>Limit results with <code>.limit()</code></div>
+              <div>Avoid <code>$where</code> for better performance</div>
+              <div>Use aggregation pipeline for complex operations</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Data Modeling -->
+        <div class="glass rounded-xl p-6 component-card">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Data Modeling</h3>
+          <p class="text-slate-300 mb-4">Embedded vs Referenced documents</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-javascript">// EMBEDDED DOCUMENTS (Denormalization)
+// Good for: One-to-few, data that's accessed together
+db.users.insertOne({
+  _id: 1,
+  name: "John Doe",
+  address: {
+    street: "123 Main St",
+    city: "New York",
+    country: "USA",
+    zipCode: "10001"
+  },
+  contacts: [
+    {
+      type: "email",
+      value: "john@example.com"
+    },
+    {
+      type: "phone", 
+      value: "+1234567890"
+    }
+  ]
+});
+
+// Advantages:
+// - Single query gets all data
+// - Atomic updates
+// - Better read performance
+
+// Disadvantages:
+// - Document size limits (16MB)
+// - Hard to query embedded fields separately
+
+// REFERENCED DOCUMENTS (Normalization)
+// Good for: One-to-many, many-to-many, large datasets
+
+// Users collection
+db.users.insertOne({
+  _id: 1,
+  name: "John Doe",
+  email: "john@example.com"
+});
+
+// Posts collection  
+db.posts.insertMany([
+  {
+    _id: 1,
+    title: "First Post",
+    content: "Hello World!",
+    authorId: 1,  // Reference to user
+    tags: ["mongodb", "tutorial"],
+    createdAt: new Date()
+  },
+  {
+    _id: 2, 
+    title: "Second Post",
+    content: "MongoDB is awesome!",
+    authorId: 1,
+    tags: ["database", "nosql"],
+    createdAt: new Date()
+  }
+]);
+
+// Advantages:
+// - Smaller documents
+// - Flexible queries
+// - No document size issues
+
+// Disadvantages:
+// - Multiple queries needed ($lookup)
+// - More complex data retrieval
+
+// HYBRID APPROACH
+// Embed frequently accessed data, reference less used data
+db.products.insertOne({
+  _id: 1,
+  name: "Laptop",
+  price: 999.99,
+  // Embedded: Frequently accessed details
+  specifications: {
+    brand: "Dell",
+    processor: "Intel i7",
+    ram: "16GB",
+    storage: "512GB SSD"
+  },
+  // Reference: Less frequently accessed
+  supplierId: 123,
+  categoryIds: [1, 2]
+});
+
+// Query with $lookup (like SQL JOIN)
+db.posts.aggregate([
+  {
+    $lookup: {
+      from: "users",           // Collection to join
+      localField: "authorId",  // Field from posts
+      foreignField: "_id",     // Field from users  
+      as: "author"             // Output array field
+    }
+  },
+  {
+    $unwind: "$author"         // Convert array to object
+  }
+]);
+
+// Many-to-Many relationships
+db.students.insertOne({
+  _id: 1,
+  name: "Alice",
+  courseIds: [101, 102, 103]  // Array of references
+});
+
+db.courses.insertMany([
+  { _id: 101, name: "Math", instructor: "Dr. Smith" },
+  { _id: 102, name: "Science", instructor: "Dr. Johnson" },
+  { _id: 103, name: "History", instructor: "Dr. Brown" }
+]);
+
+// Query many-to-many with $lookup
+db.students.aggregate([
+  {
+    $lookup: {
+      from: "courses",
+      localField: "courseIds", 
+      foreignField: "_id",
+      as: "courses"
+    }
+  }
+]);</code></pre>
+          </div>
+        </div>
+
+        <!-- Advanced Features -->
+        <div class="glass rounded-xl p-6 component-card">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Advanced Features</h3>
+          <p class="text-slate-300 mb-4">Transactions, change streams, and more</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-javascript">// TRANSACTIONS (ACID operations)
+const session = db.getMongo().startSession();
+
+session.startTransaction({
+  readConcern: { level: "snapshot" },
+  writeConcern: { w: "majority" }
+});
+
+try {
+  const students = session.getDatabase("school").students;
+  const accounts = session.getDatabase("school").accounts;
+  
+  // Update student
+  students.updateOne(
+    { _id: 1 },
+    { $set: { status: "graduated" } },
+    { session }
+  );
+  
+  // Update account
+  accounts.updateOne(
+    { studentId: 1 },
+    { $set: { balance: 0 } },
+    { session }
+  );
+  
+  // Commit if both operations succeed
+  session.commitTransaction();
+  console.log("Transaction committed successfully");
+  
+} catch (error) {
+  // Rollback if any operation fails
+  session.abortTransaction();
+  console.log("Transaction aborted:", error);
+  
+} finally {
+  session.endSession();
+}
+
+// CHANGE STREAMS (Real-time notifications)
+const changeStream = db.students.watch();
+
+changeStream.on("change", (change) => {
+  console.log("Change detected:", change);
+  
+  switch (change.operationType) {
+    case "insert":
+      console.log("New student:", change.fullDocument);
+      break;
+    case "update":
+      console.log("Updated student:", change.updateDescription);
+      break;
+    case "delete":
+      console.log("Deleted student ID:", change.documentKey._id);
+      break;
+  }
+});
+
+// Filtered change stream
+const filteredStream = db.students.watch([
+  { $match: { "operationType": "insert" } }
+]);
+
+// BULK WRITE OPERATIONS
+const bulkOps = [
+  {
+    insertOne: {
+      document: {
+        name: "Student A",
+        age: 20,
+        enrolled: true
+      }
+    }
+  },
+  {
+    updateOne: {
+      filter: { name: "Student B" },
+      update: { $set: { age: 21 } }
+    }
+  },
+  {
+    deleteOne: {
+      filter: { name: "Student C" }
+    }
+  }
+];
+
+db.students.bulkWrite(bulkOps);
+
+// AGGREGATION ADD-ONS
+
+// $facet - Multiple aggregations in one query
+db.orders.aggregate([
+  {
+    $facet: {
+      "totalSales": [
+        { $group: { _id: null, total: { $sum: "$amount" } } }
+      ],
+      "topCustomers": [
+        { $group: { _id: "$customerId", total: { $sum: "$amount" } } },
+        { $sort: { total: -1 } },
+        { $limit: 5 }
+      ],
+      "monthlySales": [
+        {
+          $group: {
+            _id: { $month: "$orderDate" },
+            total: { $sum: "$amount" }
+          }
+        }
+      ]
+    }
+  }
+]);
+
+// $graphLookup - Recursive relationships
+db.employees.aggregate([
+  {
+    $match: { name: "CEO" }
+  },
+  {
+    $graphLookup: {
+      from: "employees",
+      startWith: "$_id",
+      connectFromField: "_id",
+      connectToField: "managerId",
+      as: "team",
+      maxDepth: 3,
+      depthField: "level"
+    }
+  }
+]);
+
+// TEXT SEARCH with scoring
+db.articles.aggregate([
+  {
+    $match: {
+      $text: { $search: "mongodb performance" }
+    }
+  },
+  {
+    $addFields: {
+      score: { $meta: "textScore" }
+    }
+  },
+  {
+    $sort: { score: -1 }
+  }
+]);</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mongoose & Node.js Section -->
+  <section id="mongoose" class="course-section py-5">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">Mongoose & Node.js</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Mongoose Basics -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Mongoose ODM Basics</h3>
+          <p class="text-slate-300 mb-4">Object Data Modeling for MongoDB with Node.js</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-javascript">// Installation: npm install mongoose
+
+// Basic connection
+const mongoose = require('mongoose');
+
+// Connect to MongoDB
+mongoose.connect('mongodb://localhost:27017/school', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
+
+// Connection events
+mongoose.connection.on('connected', () => {
+  console.log('Mongoose connected to MongoDB');
+});
+
+mongoose.connection.on('error', (err) => {
+  console.log('Mongoose connection error:', err);
+});
+
+mongoose.connection.on('disconnected', () => {
+  console.log('Mongoose disconnected');
+});
+
+// Define a Schema
+const studentSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: [true, 'Name is required'],
+    trim: true,
+    minlength: [2, 'Name must be at least 2 characters'],
+    maxlength: [50, 'Name cannot exceed 50 characters']
+  },
+  age: {
+    type: Number,
+    required: true,
+    min: [5, 'Age must be at least 5'],
+    max: [120, 'Age cannot exceed 120']
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    lowercase: true,
+    match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Please enter a valid email']
+  },
+  courses: [{
+    type: String,
+    enum: ['Math', 'Science', 'History', 'Art', 'Physics']
+  }],
+  address: {
+    street: String,
+    city: String,
+    country: {
+      type: String,
+      default: 'USA'
+    },
+    zipCode: String
+  },
+  enrolled: {
+    type: Boolean,
+    default: false
+  },
+  gpa: {
+    type: Number,
+    min: 0,
+    max: 4.0,
+    default: 0
+  }
+}, {
+  timestamps: true // Adds createdAt and updatedAt
+});
+
+// Create Model
+const Student = mongoose.model('Student', studentSchema);
+
+// Custom instance methods
+studentSchema.methods.getInfo = function() {
+  return `${this.name} (${this.age}) - ${this.email}`;
+};
+
+studentSchema.methods.isAdult = function() {
+  return this.age >= 18;
+};
+
+// Static methods
+studentSchema.statics.findByEmail = function(email) {
+  return this.find({ email: new RegExp(email, 'i') });
+};
+
+studentSchema.statics.findAdults = function() {
+  return this.find({ age: { $gte: 18 } });
+};
+
+// Virtuals (computed properties)
+studentSchema.virtual('fullAddress').get(function() {
+  return `${this.address.street}, ${this.address.city}, ${this.address.country}`;
+});
+
+// Middleware (Hooks)
+studentSchema.pre('save', function(next) {
+  console.log('About to save student:', this.name);
+  next();
+});
+
+studentSchema.post('save', function(doc) {
+  console.log('Student saved:', doc.name);
+});
+
+// Query middleware
+studentSchema.pre('find', function(next) {
+  this.start = Date.now();
+  next();
+});
+
+studentSchema.post('find', function(docs) {
+  console.log(`Query took ${Date.now() - this.start}ms`);
+});</code></pre>
+          </div>
+        </div>
+
+        <!-- CRUD with Mongoose -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">CRUD with Mongoose</h3>
+          <p class="text-slate-300 mb-4">Create, read, update, delete operations</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-javascript">// CREATE operations
+// Create and save a single document
+const student1 = new Student({
+  name: 'John Doe',
+  age: 20,
+  email: 'john@school.com',
+  courses: ['Math', 'Science'],
+  address: {
+    street: '123 Main St',
+    city: 'New York',
+    zipCode: '10001'
+  },
+  enrolled: true,
+  gpa: 3.5
+});
+
+await student1.save();
+
+// Create using create() method
+const student2 = await Student.create({
+  name: 'Alice Smith',
+  age: 22,
+  email: 'alice@school.com',
+  courses: ['History', 'Art'],
+  enrolled: true,
+  gpa: 3.8
+});
+
+// Create multiple documents
+const students = await Student.insertMany([
+  {
+    name: 'Bob Johnson',
+    age: 19,
+    email: 'bob@school.com',
+    courses: ['Physics'],
+    gpa: 3.2
+  },
+  {
+    name: 'Carol Davis',
+    age: 21,
+    email: 'carol@school.com',
+    courses: ['Biology', 'Chemistry'],
+    enrolled: true,
+    gpa: 3.9
+  }
+]);
+
+// READ operations
+// Find all students
+const allStudents = await Student.find();
+
+// Find with conditions
+const adults = await Student.find({ age: { $gte: 18 } });
+const mathStudents = await Student.find({ courses: 'Math' });
+const enrolledStudents = await Student.find({ enrolled: true });
+
+// Find one document
+const john = await Student.findOne({ name: 'John Doe' });
+const studentById = await Student.findById('507f1f77bcf86cd799439011');
+
+// Advanced queries
+const topStudents = await Student.find()
+  .where('age').gte(18)
+  .where('gpa').gte(3.5)
+  .where('enrolled').equals(true)
+  .sort('-gpa')
+  .limit(10)
+  .select('name email gpa courses');
+
+// Count documents
+const studentCount = await Student.countDocuments({ enrolled: true });
+const adultCount = await Student.countDocuments({ age: { $gte: 18 } });
+
+// UPDATE operations
+// Update one document
+await Student.updateOne(
+  { name: 'John Doe' },
+  { 
+    $set: { 
+      age: 21,
+      gpa: 3.6 
+    },
+    $push: { courses: 'Geography' }
+  }
+);
+
+// Update multiple documents
+await Student.updateMany(
+  { enrolled: true },
+  { $set: { status: 'active' } }
+);
+
+// Find and update
+const updatedStudent = await Student.findOneAndUpdate(
+  { email: 'john@school.com' },
+  { $inc: { age: 1 } },
+  { new: true } // Return updated document
+);
+
+// DELETE operations
+// Delete one document
+await Student.deleteOne({ name: 'Bob Johnson' });
+
+// Delete multiple documents
+await Student.deleteMany({ enrolled: false });
+
+// Find and delete
+const deletedStudent = await Student.findOneAndDelete({ 
+  email: 'carol@school.com' 
+});
+
+// Using instance methods
+const student = await Student.findOne({ name: 'John Doe' });
+console.log(student.getInfo()); // "John Doe (21) - john@school.com"
+console.log(student.isAdult()); // true
+console.log(student.fullAddress); // "123 Main St, New York, USA"
+
+// Using static methods
+const adultStudents = await Student.findAdults();
+const emailSearch = await Student.findByEmail('school');
+
+// AGGREGATION with Mongoose
+const stats = await Student.aggregate([
+  {
+    $match: { enrolled: true }
+  },
+  {
+    $group: {
+      _id: '$address.city',
+      averageGPA: { $avg: '$gpa' },
+      totalStudents: { $sum: 1 },
+      maxGPA: { $max: '$gpa' },
+      minGPA: { $min: '$gpa' }
+    }
+  },
+  {
+    $sort: { averageGPA: -1 }
+  }
+]);
+
+// POPULATE (like SQL JOIN)
+// First, define a related schema
+const courseSchema = new mongoose.Schema({
+  name: String,
+  instructor: String,
+  credits: Number
+});
+
+const Course = mongoose.model('Course', courseSchema);
+
+// Update student schema to reference courses
+studentSchema.add({
+  enrolledCourses: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Course'
+  }]
+});
+
+// Use populate to get course details
+const studentWithCourses = await Student.findById(studentId)
+  .populate('enrolledCourses')
+  .exec();</code></pre>
+          </div>
+        </div>
+
+        <!-- Express API with MongoDB -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Express.js API with MongoDB</h3>
+          <p class="text-slate-300 mb-4">Build RESTful APIs with Express and Mongoose</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-javascript">// server.js
+const express = require('express');
+const mongoose = require('mongoose');
+const app = express();
+
+// Middleware
+app.use(express.json());
+
+// Connect to MongoDB
+mongoose.connect('mongodb://localhost:27017/school-api', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
+
+// Student Model (in models/Student.js)
+const studentSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  age: { type: Number, required: true },
+  email: { type: String, required: true, unique: true },
+  courses: [String],
+  enrolled: { type: Boolean, default: false }
+}, { timestamps: true });
+
+const Student = mongoose.model('Student', studentSchema);
+
+// Routes
+
+// GET /students - Get all students
+app.get('/students', async (req, res) => {
+  try {
+    const { page = 1, limit = 10, search, enrolled } = req.query;
+    
+    const query = {};
+    if (search) {
+      query.name = { $regex: search, $options: 'i' };
+    }
+    if (enrolled !== undefined) {
+      query.enrolled = enrolled === 'true';
+    }
+    
+    const students = await Student.find(query)
+      .limit(limit * 1)
+      .skip((page - 1) * limit)
+      .sort({ createdAt: -1 });
+    
+    const total = await Student.countDocuments(query);
+    
+    res.json({
+      students,
+      totalPages: Math.ceil(total / limit),
+      currentPage: page,
+      total
+    });
+    
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// GET /students/:id - Get single student
+app.get('/students/:id', async (req, res) => {
+  try {
+    const student = await Student.findById(req.params.id);
+    
+    if (!student) {
+      return res.status(404).json({ message: 'Student not found' });
+    }
+    
+    res.json(student);
+    
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// POST /students - Create new student
+app.post('/students', async (req, res) => {
+  try {
+    const student = new Student(req.body);
+    const savedStudent = await student.save();
+    
+    res.status(201).json(savedStudent);
+    
+  } catch (error) {
+    if (error.code === 11000) {
+      res.status(400).json({ message: 'Email already exists' });
+    } else if (error.name === 'ValidationError') {
+      res.status(400).json({ 
+        message: 'Validation failed',
+        errors: Object.values(error.errors).map(e => e.message)
+      });
+    } else {
+      res.status(500).json({ message: error.message });
+    }
+  }
+});
+
+// PUT /students/:id - Update student
+app.put('/students/:id', async (req, res) => {
+  try {
+    const student = await Student.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
+    
+    if (!student) {
+      return res.status(404).json({ message: 'Student not found' });
+    }
+    
+    res.json(student);
+    
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+// PATCH /students/:id - Partial update
+app.patch('/students/:id', async (req, res) => {
+  try {
+    const student = await Student.findByIdAndUpdate(
+      req.params.id,
+      { $set: req.body },
+      { new: true, runValidators: true }
+    );
+    
+    if (!student) {
+      return res.status(404).json({ message: 'Student not found' });
+    }
+    
+    res.json(student);
+    
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+// DELETE /students/:id - Delete student
+app.delete('/students/:id', async (req, res) => {
+  try {
+    const student = await Student.findByIdAndDelete(req.params.id);
+    
+    if (!student) {
+      return res.status(404).json({ message: 'Student not found' });
+    }
+    
+    res.json({ message: 'Student deleted successfully' });
+    
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// Advanced routes
+
+// GET /students/stats - Get statistics
+app.get('/students/stats', async (req, res) => {
+  try {
+    const stats = await Student.aggregate([
+      {
+        $group: {
+          _id: null,
+          totalStudents: { $sum: 1 },
+          averageAge: { $avg: '$age' },
+          enrolledCount: { 
+            $sum: { $cond: ['$enrolled', 1, 0] }
+          },
+          coursesCount: { $sum: { $size: '$courses' } }
+        }
+      }
+    ]);
+    
+    res.json(stats[0] || {});
+    
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// GET /students/search/:query - Search students
+app.get('/students/search/:query', async (req, res) => {
+  try {
+    const students = await Student.find({
+      $or: [
+        { name: { $regex: req.params.query, $options: 'i' } },
+        { email: { $regex: req.params.query, $options: 'i' } },
+        { courses: { $in: [new RegExp(req.params.query, 'i')] } }
+      ]
+    });
+    
+    res.json(students);
+    
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// Error handling middleware
+app.use((error, req, res, next) => {
+  console.error(error.stack);
+  res.status(500).json({ message: 'Something went wrong!' });
+});
+
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({ message: 'Route not found' });
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});</code></pre>
+          </div>
+        </div>
+
+        <!-- MongoDB Atlas & Deployment -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">MongoDB Atlas & Deployment</h3>
+          <p class="text-slate-300 mb-4">Cloud deployment and production best practices</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-javascript">// Environment configuration
+// .env file
+MONGODB_URI=mongodb+srv://username:password@cluster0.mongodb.net/school?retryWrites=true&w=majority
+PORT=3000
+NODE_ENV=production
+JWT_SECRET=your-secret-key
+
+// Database connection with environment variables
+const mongoose = require('mongoose');
+
+const connectDB = async () => {
+  try {
+    const conn = await mongoose.connect(process.env.MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
+  } catch (error) {
+    console.error('Database connection error:', error);
+    process.exit(1);
+  }
+};
+
+module.exports = connectDB;
+
+// Connection events for production
+mongoose.connection.on('disconnected', () => {
+  console.log('MongoDB disconnected');
+});
+
+mongoose.connection.on('error', (err) => {
+  console.log('MongoDB connection error:', err);
+});
+
+// Handle graceful shutdown
+process.on('SIGINT', async () => {
+  await mongoose.connection.close();
+  console.log('MongoDB connection closed through app termination');
+  process.exit(0);
+});
+
+// Production connection string format
+// mongodb+srv://username:password@cluster0.abc123.mongodb.net/databaseName?retryWrites=true&w=majority
+
+// Backup and restore commands
+
+// Backup local database
+// mongodump --uri="mongodb://localhost:27017/school" --out=./backup
+
+// Restore to local database  
+// mongorestore --uri="mongodb://localhost:27017/school" ./backup/school
+
+// Backup from MongoDB Atlas
+// mongodump --uri="mongodb+srv://username:password@cluster0.abc123.mongodb.net/school" --out=./atlas-backup
+
+// Restore to MongoDB Atlas
+// mongorestore --uri="mongodb+srv://username:password@cluster0.abc123.mongodb.net/school" ./backup/school
+
+// Performance optimization for production
+
+// 1. Use connection pooling
+mongoose.connect(uri, {
+  poolSize: 10, // Maintain up to 10 socket connections
+  bufferMaxEntries: 0, // Fail immediately if no connection available
+  bufferCommands: false, // Disable mongoose buffering
+});
+
+// 2. Use indexes in production
+await Student.createIndexes();
+
+// 3. Implement query timeouts
+const students = await Student.find({})
+  .maxTimeMS(5000) // 5 second timeout
+  .exec();
+
+// 4. Use lean queries for better performance
+const students = await Student.find({})
+  .lean() // Returns plain JavaScript objects
+  .exec();
+
+// 5. Implement pagination properly
+app.get('/students', async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+  const skip = (page - 1) * limit;
+
+  const [students, total] = await Promise.all([
+    Student.find({})
+      .skip(skip)
+      .limit(limit)
+      .sort({ createdAt: -1 })
+      .lean(),
+    Student.countDocuments({})
+  ]);
+
+  res.json({
+    students,
+    currentPage: page,
+    totalPages: Math.ceil(total / limit),
+    total
+  });
+});
+
+// 6. Use aggregation for complex operations
+app.get('/students/analytics', async (req, res) => {
+  const analytics = await Student.aggregate([
+    {
+      $facet: {
+        ageDistribution: [
+          {
+            $bucket: {
+              groupBy: '$age',
+              boundaries: [0, 18, 25, 35, 50, 100],
+              default: 'Other',
+              output: {
+                count: { $sum: 1 }
+              }
+            }
+          }
+        ],
+        coursePopularity: [
+          { $unwind: '$courses' },
+          {
+            $group: {
+              _id: '$courses',
+              count: { $sum: 1 }
+            }
+          },
+          { $sort: { count: -1 } }
+        ],
+        enrollmentStats: [
+          {
+            $group: {
+              _id: '$enrolled',
+              count: { $sum: 1 },
+              averageAge: { $avg: '$age' }
+            }
+          }
+        ]
+      }
+    }
+  ]);
+
+  res.json(analytics[0]);
+});
+
+// Security best practices
+
+// 1. Use environment variables for sensitive data
+// 2. Implement input validation
+// 3. Use mongoose validation
+// 4. Implement rate limiting
+// 5. Use proper authentication/authorization
+// 6. Sanitize user input
+
+// Monitoring and logging
+
+// Add query logging in development
+if (process.env.NODE_ENV === 'development') {
+  mongoose.set('debug', true);
+}
+
+// Add performance monitoring
+const startTime = Date.now();
+const result = await Student.find({});
+const queryTime = Date.now() - startTime;
+
+if (queryTime > 1000) { // Log slow queries
+  console.warn(`Slow query detected: ${queryTime}ms`);
+}</code></pre>
+          </div>
+          
+          <div class="mt-4 p-4 bg-green-900/30 rounded-lg">
+            <h4 class="font-semibold text-green-300 mb-2">☁️ MongoDB Atlas Setup</h4>
+            <div class="text-sm text-green-200 space-y-2">
+              <div>1. Create account at <a href="https://www.mongodb.com/atlas" class="underline">mongodb.com/atlas</a></div>
+              <div>2. Create a new cluster (free tier available)</div>
+              <div>3. Create database user and get connection string</div>
+              <div>4. Add your IP to whitelist</div>
+              <div>5. Connect using the connection string</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Real World Project Section -->
+  <section class="course-section py-5 bg-dark-800">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">Real World Project</h2>
+      
+      <div class="glass rounded-xl p-6">
+        <h3 class="text-xl font-semibold text-neon-300 mb-4">E-commerce API with MongoDB</h3>
+        <p class="text-slate-300 mb-6">Complete e-commerce backend with products, users, orders, and reviews</p>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div>
+            <h4 class="font-semibold text-green-400 mb-3">🗄️ Database Schema</h4>
+            <div class="code-container bg-slate-900 rounded-lg p-4">
+              <pre><code class="language-javascript">// User Schema
+const userSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  role: { type: String, enum: ['user', 'admin'], default: 'user' },
+  address: {
+    street: String,
+    city: String,
+    country: String,
+    zipCode: String
+  },
+  phone: String,
+  avatar: String,
+  wishlist: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Product'
+  }]
+}, { timestamps: true });
+
+// Product Schema
+const productSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  description: String,
+  price: { type: Number, required: true, min: 0 },
+  comparePrice: { type: Number, min: 0 },
+  category: { type: String, required: true },
+  subcategory: String,
+  brand: String,
+  sku: { type: String, unique: true },
+  images: [String],
+  featured: { type: Boolean, default: false },
+  inventory: {
+    quantity: { type: Number, default: 0 },
+    inStock: { type: Boolean, default: false },
+    lowStockAlert: { type: Number, default: 5 }
+  },
+  attributes: mongoose.Schema.Types.Mixed, // Flexible attributes
+  tags: [String],
+  seo: {
+    title: String,
+    description: String,
+    slug: { type: String, unique: true }
+  }
+}, { timestamps: true });
+
+// Order Schema
+const orderSchema = new mongoose.Schema({
+  orderNumber: { type: String, unique: true },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  items: [{
+    product: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Product',
+      required: true
+    },
+    quantity: { type: Number, required: true, min: 1 },
+    price: { type: Number, required: true, min: 0 },
+    name: String, // Snapshot of product name
+    image: String // Snapshot of product image
+  }],
+  totalAmount: { type: Number, required: true, min: 0 },
+  shippingAddress: {
+    street: String,
+    city: String,
+    country: String,
+    zipCode: String
+  },
+  billingAddress: {
+    street: String,
+    city: String,
+    country: String,
+    zipCode: String
+  },
+  status: {
+    type: String,
+    enum: ['pending', 'confirmed', 'shipped', 'delivered', 'cancelled'],
+    default: 'pending'
+  },
+  paymentStatus: {
+    type: String,
+    enum: ['pending', 'paid', 'failed', 'refunded'],
+    default: 'pending'
+  },
+  paymentMethod: String,
+  shippingMethod: String,
+  trackingNumber: String,
+  notes: String
+}, { timestamps: true });
+
+// Review Schema
+const reviewSchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  product: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Product',
+    required: true
+  },
+  rating: { type: Number, required: true, min: 1, max: 5 },
+  title: String,
+  comment: String,
+  verified: { type: Boolean, default: false },
+  helpful: { type: Number, default: 0 }
+}, { timestamps: true });
+
+// Create models
+const User = mongoose.model('User', userSchema);
+const Product = mongoose.model('Product', productSchema);
+const Order = mongoose.model('Order', orderSchema);
+const Review = mongoose.model('Review', reviewSchema);</code></pre>
+            </div>
+          </div>
+          
+          <div>
+            <h4 class="font-semibold text-blue-400 mb-3">🔗 Data Relationships</h4>
+            <div class="space-y-4">
+              <div class="p-4 bg-slate-800/50 rounded-lg">
+                <div class="font-semibold text-green-400">Users (1) ─── (∞) Orders</div>
+                <div class="text-sm text-slate-400">One user can have many orders</div>
+              </div>
+              
+              <div class="p-4 bg-slate-800/50 rounded-lg">
+                <div class="font-semibold text-blue-400">Products (∞) ─── (∞) Orders</div>
+                <div class="text-sm text-slate-400">Many-to-many via order items</div>
+              </div>
+              
+              <div class="p-4 bg-slate-800/50 rounded-lg">
+                <div class="font-semibold text-purple-400">Users (1) ─── (∞) Reviews</div>
+                <div class="text-sm text-slate-400">One user can write many reviews</div>
+              </div>
+              
+              <div class="p-4 bg-slate-800/50 rounded-lg">
+                <div class="font-semibold text-yellow-400">Products (1) ─── (∞) Reviews</div>
+                <div class="text-sm text-slate-400">One product can have many reviews</div>
+              </div>
+            </div>
+            
+            <h4 class="font-semibold text-purple-400 mt-6 mb-3">📊 Advanced Queries</h4>
+            <div class="code-container bg-slate-900 rounded-lg p-4">
+              <pre><code class="language-javascript">// Get popular products with reviews
+const popularProducts = await Product.aggregate([
+  {
+    $lookup: {
+      from: 'reviews',
+      localField: '_id',
+      foreignField: 'product',
+      as: 'reviews'
+    }
+  },
+  {
+    $lookup: {
+      from: 'orders',
+      localField: '_id',
+      foreignField: 'items.product',
+      as: 'orders'
+    }
+  },
+  {
+    $addFields: {
+      averageRating: { $avg: '$reviews.rating' },
+      reviewCount: { $size: '$reviews' },
+      orderCount: { $size: '$orders' }
+    }
+  },
+  {
+    $match: {
+      'inventory.inStock': true,
+      averageRating: { $gte: 4 },
+      orderCount: { $gt: 0 }
+    }
+  },
+  {
+    $sort: { orderCount: -1, averageRating: -1 }
+  },
+  {
+    $limit: 10
+  },
+  {
+    $project: {
+      name: 1,
+      price: 1,
+      images: 1,
+      averageRating: 1,
+      reviewCount: 1,
+      orderCount: 1
+    }
+  }
+]);
+
+// User order history with product details
+const userOrders = await Order.aggregate([
+  {
+    $match: { user: mongoose.Types.ObjectId(userId) }
+  },
+  {
+    $unwind: '$items'
+  },
+  {
+    $lookup: {
+      from: 'products',
+      localField: 'items.product',
+      foreignField: '_id',
+      as: 'productDetails'
+    }
+  },
+  {
+    $unwind: '$productDetails'
+  },
+  {
+    $group: {
+      _id: '$_id',
+      orderNumber: { $first: '$orderNumber' },
+      totalAmount: { $first: '$totalAmount' },
+      status: { $first: '$status' },
+      createdAt: { $first: '$createdAt' },
+      items: {
+        $push: {
+          name: '$items.name',
+          quantity: '$items.quantity',
+          price: '$items.price',
+          image: '$items.image',
+          product: '$productDetails'
+        }
+      }
+    }
+  },
+  {
+    $sort: { createdAt: -1 }
+  }
+]);</code></pre>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mt-6 p-4 bg-green-900/30 rounded-lg">
+          <h4 class="font-semibold text-green-300 mb-2">🚀 Performance Optimization</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+            <div class="space-y-2">
+              <div class="flex items-center gap-2">
+                <i class="fas fa-bolt text-green-400"></i>
+                <code>db.products.createIndex({ category: 1, price: -1 })</code>
+              </div>
+              <div class="flex items-center gap-2">
+                <i class="fas fa-bolt text-green-400"></i>
+                <code>db.products.createIndex({ "inventory.inStock": 1 })</code>
+              </div>
+              <div class="flex items-center gap-2">
+                <i class="fas fa-bolt text-green-400"></i>
+                <code>db.orders.createIndex({ user: 1, createdAt: -1 })</code>
+              </div>
+            </div>
+            <div class="space-y-2">
+              <div class="flex items-center gap-2">
+                <i class="fas fa-bolt text-green-400"></i>
+                <code>db.reviews.createIndex({ product: 1, rating: -1 })</code>
+              </div>
+              <div class="flex items-center gap-2">
+                <i class="fas fa-bolt text-green-400"></i>
+                <code>db.users.createIndex({ email: 1 }, { unique: true })</code>
+              </div>
+              <div class="flex items-center gap-2">
+                <i class="fas fa-bolt text-green-400"></i>
+                <code>db.products.createIndex({ name: "text", description: "text" })</code>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cheat Sheet Section -->
+  <section class="course-section py-5">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">MongoDB Commands Cheat Sheet</h2>
+      
+      <div class="glass rounded-xl p-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="space-y-4">
+            <h3 class="text-lg font-semibold text-green-400 mb-3">📊 Database Operations</h3>
+            <div class="space-y-2">
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Show databases</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">show dbs</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Use database</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">use dbname</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Show collections</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">show collections</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Create collection</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">db.createCollection()</code>
+              </div>
+            </div>
+          </div>
+          
+          <div class="space-y-4">
+            <h3 class="text-lg font-semibold text-blue-400 mb-3">📝 CRUD Operations</h3>
+            <div class="space-y-2">
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Insert one</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">db.collection.insertOne()</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Insert many</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">db.collection.insertMany()</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Find documents</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">db.collection.find()</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Update documents</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">db.collection.updateOne()</code>
+              </div>
+            </div>
+          </div>
+          
+          <div class="space-y-4">
+            <h3 class="text-lg font-semibold text-purple-400 mb-3">🔍 Query Operators</h3>
+            <div class="space-y-2">
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Comparison</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">$gt, $lt, $eq</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Logical</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">$and, $or, $not</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Array</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">$in, $all, $size</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Element</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">$exists, $type</code>
+              </div>
+            </div>
+          </div>
+          
+          <div class="space-y-4">
+            <h3 class="text-lg font-semibold text-yellow-400 mb-3">⚡ Performance</h3>
+            <div class="space-y-2">
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Create index</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">db.collection.createIndex()</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Show indexes</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">db.collection.getIndexes()</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Explain query</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">db.collection.find().explain()</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Limit results</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">db.collection.find().limit()</code>
+              </div>
+            </div>
+          </div>
+          
+          <div class="space-y-4">
+            <h3 class="text-lg font-semibold text-red-400 mb-3">🔄 Aggregation</h3>
+            <div class="space-y-2">
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Aggregate</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">db.collection.aggregate()</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Match stage</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">$match</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Group stage</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">$group</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Lookup stage</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">$lookup</code>
+              </div>
+            </div>
+          </div>
+          
+          <div class="space-y-4">
+            <h3 class="text-lg font-semibold text-indigo-400 mb-3">🔧 Administration</h3>
+            <div class="space-y-2">
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Backup database</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">mongodump</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Restore database</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">mongorestore</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Import data</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">mongoimport</code>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-800/50 rounded">
+                <span class="text-sm">Export data</span>
+                <code class="text-xs bg-slate-700 px-2 py-1 rounded">mongoexport</code>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mt-6 p-4 bg-blue-900/30 rounded-lg">
+          <h4 class="font-semibold text-blue-300 mb-2">💡 Pro Tips</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+            <div class="space-y-2">
+              <div><code>db.collection.find().pretty()</code> - Format output</div>
+              <div><code>db.collection.find().count()</code> - Count documents</div>
+              <div><code>db.collection.find().sort()</code> - Sort results</div>
+            </div>
+            <div class="space-y-2">
+              <div><code>db.collection.distinct()</code> - Get unique values</div>
+              <div><code>db.stats()</code> - Database statistics</div>
+              <div><code>db.collection.stats()</code> - Collection statistics</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Navigation -->
+  <div class="max-w-6xl mx-auto px-6 py-8">
+    <div class="glass rounded-xl p-6 sticky bottom-6">
+      <h3 class="font-semibold text-neon-300 mb-4">Course Navigation</h3>
+      <div class="flex flex-wrap gap-3">
+        <a href="#basics" class="px-4 py-2 rounded-lg bg-slate-800/40 hover:bg-slate-700/40 transition text-sm">Basics</a>
+        <a href="#mongoose" class="px-4 py-2 rounded-lg bg-slate-800/40 hover:bg-slate-700/40 transition text-sm">Mongoose</a>
+        <button onclick="showCheatSheet()" class="px-4 py-2 rounded-lg bg-mongodb-500 hover:bg-mongodb-600 transition text-sm">Cheat Sheet</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="glass border-t border-slate-800 mt-20">
+    <div class="max-w-6xl mx-auto px-6 py-8 text-center">
+      <div class="flex items-center justify-center gap-6 mb-4">
+        <a href="/" class="text-slate-300 hover:text-neon-500 transition">Home</a>
+        <a href="#basics" class="text-slate-300 hover:text-neon-500 transition">Course</a>
+        <a href="https://github.com/JUSAIR-JSR" target="_blank" class="text-slate-300 hover:text-neon-500 transition">GitHub</a>
+      </div>
+      <p class="text-slate-500 text-sm">© 2023 MongoDB Course - Complete Beginner to Advanced</p>
+    </div>
+  </footer>
+
+  <!-- Cheat Sheet Modal -->
+  <div id="cheat-sheet" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-50 p-4">
+    <div class="glass rounded-xl p-6 max-w-4xl max-h-[80vh] overflow-y-auto">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-2xl font-bold text-neon-300">MongoDB Cheat Sheet</h3>
+        <button onclick="hideCheatSheet()" class="text-slate-400 hover:text-white">
+          <i class="fas fa-times text-2xl"></i>
+        </button>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h4 class="font-semibold text-green-400 mb-3">Basic Commands</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">show dbs</code>
+            <code class="block bg-slate-800 p-2 rounded">use dbname</code>
+            <code class="block bg-slate-800 p-2 rounded">show collections</code>
+            <code class="block bg-slate-800 p-2 rounded">db.collection.find()</code>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-blue-400 mb-3">CRUD Operations</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">db.collection.insertOne()</code>
+            <code class="block bg-slate-800 p-2 rounded">db.collection.find()</code>
+            <code class="block bg-slate-800 p-2 rounded">db.collection.updateOne()</code>
+            <code class="block bg-slate-800 p-2 rounded">db.collection.deleteOne()</code>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-yellow-400 mb-3">Query Operators</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">$gt, $lt, $eq</code>
+            <code class="block bg-slate-800 p-2 rounded">$and, $or, $not</code>
+            <code class="block bg-slate-800 p-2 rounded">$in, $nin</code>
+            <code class="block bg-slate-800 p-2 rounded">$exists, $type</code>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-purple-400 mb-3">Aggregation</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">$match</code>
+            <code class="block bg-slate-800 p-2 rounded">$group</code>
+            <code class="block bg-slate-800 p-2 rounded">$sort</code>
+            <code class="block bg-slate-800 p-2 rounded">$lookup</code>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-red-400 mb-3">Indexes</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">db.collection.createIndex()</code>
+            <code class="block bg-slate-800 p-2 rounded">db.collection.getIndexes()</code>
+            <code class="block bg-slate-800 p-2 rounded">db.collection.dropIndex()</code>
+            <code class="block bg-slate-800 p-2 rounded">db.collection.explain()</code>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-indigo-400 mb-3">Administration</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">mongodump</code>
+            <code class="block bg-slate-800 p-2 rounded">mongorestore</code>
+            <code class="block bg-slate-800 p-2 rounded">mongoimport</code>
+            <code class="block bg-slate-800 p-2 rounded">mongoexport</code>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Initialize syntax highlighting
+    hljs.highlightAll();
+
+    // Copy button functionality
+    document.querySelectorAll('.copy-btn').forEach(button => {
+      button.addEventListener('click', function() {
+        const codeBlock = this.closest('.code-container').querySelector('code');
+        const textArea = document.createElement('textarea');
+        textArea.value = codeBlock.textContent;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        
+        // Visual feedback
+        const originalText = this.innerHTML;
+        this.innerHTML = '<i class="fas fa-check mr-1"></i>Copied!';
+        setTimeout(() => {
+          this.innerHTML = originalText;
+        }, 2000);
+      });
+    });
+
+    // Cheat sheet functions
+    function showCheatSheet() {
+      document.getElementById('cheat-sheet').classList.remove('hidden');
+      document.getElementById('cheat-sheet').classList.add('flex');
+    }
+
+    function hideCheatSheet() {
+      document.getElementById('cheat-sheet').classList.add('hidden');
+      document.getElementById('cheat-sheet').classList.remove('flex');
+    }
+
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
+>>>>>>> e0b595c (updated to new styles)

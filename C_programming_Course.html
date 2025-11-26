@@ -1,0 +1,2317 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>C Programming Course - Complete Beginner to Advanced</title>
+  <meta name="description" content="Complete C programming course for system programming, embedded systems, and logic building" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Highlight.js for syntax highlighting -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            neon: {
+              50: '#f3f7ff',
+              100: '#e6f0ff',
+              300: '#99ccff',
+              500: '#00d0ff',
+              600: '#00a8d9',
+              700: '#00a3cc',
+              800: '#007399'
+            },
+            dark: {
+              900: '#0a0f1c',
+              800: '#0f172a',
+              700: '#1e293b'
+            },
+            c_lang: {
+              500: '#00599c',
+              600: '#004a7c',
+              700: '#003b63'
+            }
+          },
+          animation: {
+            'float': 'float 6s ease-in-out infinite',
+            'pulse-glow': 'pulse-glow 2s ease-in-out infinite alternate',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    .neon-text { 
+      text-shadow: 0 0 8px rgba(0,208,255,0.15), 0 0 18px rgba(0,208,255,0.06); 
+    }
+    
+    .glass {
+      background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .code-container {
+      position: relative;
+    }
+    
+    .copy-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    
+    .code-container:hover .copy-btn {
+      opacity: 1;
+    }
+    
+    .terminal {
+      background: #1a1b26;
+      color: #c0caf5;
+      font-family: 'Fira Code', monospace;
+      border-radius: 0.5rem;
+      padding: 1rem;
+    }
+    
+    .terminal .prompt {
+      color: #7dcfff;
+    }
+    
+    .terminal .command {
+      color: #9ece6a;
+    }
+    
+    .c-editor {
+      background: #1e293b;
+      color: #c0caf5;
+      font-family: 'Fira Code', monospace;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      min-height: 200px;
+      border: 1px solid #374151;
+    }
+    
+    .c-output {
+      background: #0f172a;
+      color: #10b981;
+      font-family: 'Fira Code', monospace;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      min-height: 100px;
+      border: 1px solid #374151;
+    }
+    
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.5);
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: rgba(0, 208, 255, 0.3);
+      border-radius: 4px;
+    }
+    
+    .course-section {
+      scroll-margin-top: 100px;
+    }
+    
+    /* Animation for live examples */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .animate-fade-in {
+      animation: fadeInUp 0.6s ease-out;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    @keyframes pulse-glow {
+      0% { box-shadow: 0 0 20px rgba(0, 208, 255, 0.4); }
+      100% { box-shadow: 0 0 30px rgba(0, 208, 255, 0.8), 0 0 40px rgba(0, 208, 255, 0.4); }
+    }
+    
+    .c-badge {
+      background: linear-gradient(135deg, #00599c, #004a7c);
+      color: white;
+    }
+    
+    .memory-visual {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      margin: 10px 0;
+    }
+    
+    .memory-cell {
+      padding: 8px;
+      border: 1px solid #374151;
+      border-radius: 4px;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.9rem;
+    }
+    
+    .memory-address {
+      color: #7dcfff;
+    }
+    
+    .memory-value {
+      color: #9ece6a;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-dark-900 via-dark-800 to-dark-900 text-slate-200 min-h-screen">
+
+  <!-- Navigation -->
+  <nav class="glass border-b border-slate-800 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-c_lang-500 to-c_lang-600 flex items-center justify-center">
+          <i class="fas fa-c text-white text-lg"></i>
+        </div>
+        <div>
+          <h1 class="text-lg font-bold neon-text">C Programming Course</h1>
+          <p class="text-xs text-slate-400">Beginner to Advanced</p>
+        </div>
+      </a>
+
+      <div class="flex items-center gap-4">
+        <a href="/" class="px-4 py-2 rounded-lg text-sm hover:bg-slate-800/40 transition">
+          <i class="fas fa-home mr-2"></i>Home
+        </a>
+        <a href="#basics" class="px-4 py-2 rounded-lg text-sm bg-slate-800/40 border border-neon-500/30">
+          <i class="fas fa-book mr-2"></i>Course
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="max-w-7xl mx-auto px-6 py-16 text-center">
+    <div class="max-w-3xl mx-auto">
+      <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800/40 border border-slate-700/40 text-sm mb-6">
+        <i class="fas fa-microchip text-c_lang-500"></i>
+        Complete C Programming Course
+      </span>
+      <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight text-white neon-text mb-6">
+        Master C Programming
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-c_lang-500 to-c_lang-600 block">The Language of Systems</span>
+      </h1>
+      <p class="text-slate-300 text-lg mb-8">Learn C programming for system development, embedded systems, operating systems, and building strong programming fundamentals. Perfect for college exams, interviews, and professional development.</p>
+      
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href="#basics" class="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r from-c_lang-500 to-c_lang-600 font-medium hover:scale-105 transition-transform">
+          <i class="fas fa-play"></i>
+          Start Learning
+        </a>
+        <a href="#live-editor" class="inline-flex items-center gap-3 px-6 py-3 rounded-full border border-slate-700/40 hover:border-neon-500 transition glass">
+          <i class="fas fa-code"></i>
+          Live Editor
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- C Basics Section -->
+  <section id="basics" class="course-section py-5">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">C Programming Basics</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Setup & Installation -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4 flex items-center gap-2">
+            <i class="fas fa-download"></i>
+            Setup & Installation
+          </h3>
+          <p class="text-slate-300 mb-4">Get C compiler installed and create your first program</p>
+          
+          <div class="terminal mb-4">
+            <div class="flex items-center gap-2 mb-2">
+              <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+              <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+              <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+            </div>
+            <div class="space-y-2 text-sm">
+              <div><span class="prompt">$</span> <span class="command">gcc --version</span></div>
+              <div class="text-blue-300">gcc (Ubuntu 11.4.0) 11.4.0</div>
+              <div><span class="prompt">$</span> <span class="command">gcc program.c -o program</span></div>
+              <div class="text-gray-400"># Compile C program</div>
+              <div><span class="prompt">$</span> <span class="command">./program</span></div>
+              <div class="text-gray-400"># Run compiled program</div>
+            </div>
+          </div>
+          
+          <div class="p-4 bg-green-900/30 rounded-lg">
+            <h4 class="font-semibold text-green-300 mb-2">🚀 First C Program</h4>
+            <div class="code-container bg-slate-800 rounded p-3">
+              <pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int main() {
+    printf("Hello, World!\n");
+    return 0;
+}</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- Basic Structure -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Basic Program Structure</h3>
+          <p class="text-slate-300 mb-4">Understanding the components of a C program</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-c">// Preprocessor directive - includes standard input/output library
+#include &lt;stdio.h&gt;
+
+// Main function - program entry point
+int main() {
+    // Variable declaration
+    int number = 42;
+    
+    // Output statement
+    printf("The number is: %d\n", number);
+    
+    // Return statement
+    return 0;
+}</code></pre>
+          </div>
+          
+          <div class="mt-4 p-4 bg-blue-900/30 rounded-lg">
+            <h4 class="font-semibold text-blue-300 mb-2">📝 Program Components</h4>
+            <ul class="text-sm text-blue-200 space-y-1">
+              <li><code>#include</code> - Include header files</li>
+              <li><code>int main()</code> - Main function (entry point)</li>
+              <li><code>{ }</code> - Code blocks</li>
+              <li><code>printf()</code> - Output function</li>
+              <li><code>return 0</code> - Program exit status</li>
+              <li><code>//</code> - Single-line comments</li>
+              <li><code>/* */</code> - Multi-line comments</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Variables & Data Types -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Variables & Data Types</h3>
+          <p class="text-slate-300 mb-4">C's static typing and basic data types</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int main() {
+    // Integer types
+    int age = 20;
+    short smallNumber = 100;
+    long bigNumber = 100000L;
+    unsigned int positiveOnly = 50;
+    
+    // Floating-point types
+    float height = 5.8f;
+    double salary = 50000.50;
+    long double precise = 3.1415926535L;
+    
+    // Character type
+    char grade = 'A';
+    char newline = '\n';
+    
+    // Output variables
+    printf("Age: %d\n", age);
+    printf("Height: %.1f\n", height);
+    printf("Salary: %.2f\n", salary);
+    printf("Grade: %c\n", grade);
+    
+    // Size of data types
+    printf("Size of int: %zu bytes\n", sizeof(int));
+    printf("Size of float: %zu bytes\n", sizeof(float));
+    printf("Size of double: %zu bytes\n", sizeof(double));
+    printf("Size of char: %zu bytes\n", sizeof(char));
+    
+    return 0;
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- Input & Output -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Input & Output</h3>
+          <p class="text-slate-300 mb-4">Getting user input and displaying output</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int main() {
+    // Basic output
+    printf("Welcome to C Programming!\n");
+    
+    // Variables for input
+    int age;
+    float height;
+    char name[50];
+    char initial;
+    
+    // Getting input
+    printf("Enter your name: ");
+    scanf("%s", name);
+    
+    printf("Enter your age: ");
+    scanf("%d", &age);
+    
+    printf("Enter your height (in meters): ");
+    scanf("%f", &height);
+    
+    // Clear input buffer
+    while(getchar() != '\n');
+    
+    printf("Enter your initial: ");
+    scanf("%c", &initial);
+    
+    // Display collected information
+    printf("\n--- User Information ---\n");
+    printf("Name: %s\n", name);
+    printf("Age: %d\n", age);
+    printf("Height: %.2f meters\n", height);
+    printf("Initial: %c\n", initial);
+    
+    // Formatted output examples
+    printf("\n--- Formatted Output ---\n");
+    printf("Integer: %d\n", 42);
+    printf("Float: %.2f\n", 3.14159);
+    printf("Character: %c\n", 'X');
+    printf("String: %s\n", "Hello");
+    printf("Scientific: %e\n", 123456.789);
+    printf("Hexadecimal: %x\n", 255);
+    
+    return 0;
+}</code></pre>
+          </div>
+          
+          <div class="mt-4 p-4 bg-purple-900/30 rounded-lg">
+            <h4 class="font-semibold text-purple-300 mb-2">🔤 Format Specifiers</h4>
+            <div class="grid grid-cols-2 gap-2 text-sm">
+              <div><code>%d</code> - Integer</div>
+              <div><code>%f</code> - Float</div>
+              <div><code>%c</code> - Character</div>
+              <div><code>%s</code> - String</div>
+              <div><code>%lf</code> - Double</div>
+              <div><code>%x</code> - Hexadecimal</div>
+              <div><code>%p</code> - Pointer</div>
+              <div><code>%%</code> - Percent sign</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Control Flow Section -->
+  <section class="course-section py-5 bg-dark-800">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">Control Flow</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Operators -->
+        <div class="glass rounded-xl p-6 component-card">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Operators</h3>
+          <p class="text-slate-300 mb-4">Arithmetic, relational, logical, and assignment operators</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int main() {
+    int a = 10, b = 3;
+    
+    // Arithmetic operators
+    printf("Arithmetic Operators:\n");
+    printf("%d + %d = %d\n", a, b, a + b);
+    printf("%d - %d = %d\n", a, b, a - b);
+    printf("%d * %d = %d\n", a, b, a * b);
+    printf("%d / %d = %d\n", a, b, a / b);
+    printf("%d %% %d = %d\n", a, b, a % b);
+    
+    // Relational operators
+    printf("\nRelational Operators:\n");
+    printf("%d == %d: %d\n", a, b, a == b);
+    printf("%d != %d: %d\n", a, b, a != b);
+    printf("%d > %d: %d\n", a, b, a > b);
+    printf("%d < %d: %d\n", a, b, a < b);
+    printf("%d >= %d: %d\n", a, b, a >= b);
+    printf("%d <= %d: %d\n", a, b, a <= b);
+    
+    // Logical operators
+    int x = 1, y = 0;
+    printf("\nLogical Operators:\n");
+    printf("%d && %d: %d\n", x, y, x && y);
+    printf("%d || %d: %d\n", x, y, x || y);
+    printf("!%d: %d\n", x, !x);
+    
+    // Assignment operators
+    int c = 5;
+    printf("\nAssignment Operators:\n");
+    c += 3;  printf("c += 3: %d\n", c);
+    c -= 2;  printf("c -= 2: %d\n", c);
+    c *= 2;  printf("c *= 2: %d\n", c);
+    c /= 2;  printf("c /= 2: %d\n", c);
+    
+    // Increment/Decrement
+    int count = 5;
+    printf("\nIncrement/Decrement:\n");
+    printf("count++: %d\n", count++);  // Post-increment
+    printf("++count: %d\n", ++count);  // Pre-increment
+    printf("count--: %d\n", count--);  // Post-decrement
+    printf("--count: %d\n", --count);  // Pre-decrement
+    
+    // Bitwise operators
+    unsigned int m = 5, n = 3;
+    printf("\nBitwise Operators:\n");
+    printf("%d & %d = %d\n", m, n, m & n);   // AND
+    printf("%d | %d = %d\n", m, n, m | n);   // OR
+    printf("%d ^ %d = %d\n", m, n, m ^ n);   // XOR
+    printf("~%d = %d\n", m, ~m);             // NOT
+    printf("%d << 1 = %d\n", m, m << 1);     // Left shift
+    printf("%d >> 1 = %d\n", m, m >> 1);     // Right shift
+    
+    return 0;
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- Conditional Statements -->
+        <div class="glass rounded-xl p-6 component-card">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Conditional Statements</h3>
+          <p class="text-slate-300 mb-4">If/else statements and switch cases</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int main() {
+    int age = 18;
+    
+    // Basic if-else
+    if (age >= 18) {
+        printf("You are an adult\n");
+    } else {
+        printf("You are a minor\n");
+    }
+    
+    // Else-if ladder
+    int score = 85;
+    printf("Score: %d -> ", score);
+    
+    if (score >= 90) {
+        printf("Grade: A\n");
+    } else if (score >= 80) {
+        printf("Grade: B\n");
+    } else if (score >= 70) {
+        printf("Grade: C\n");
+    } else if (score >= 60) {
+        printf("Grade: D\n");
+    } else {
+        printf("Grade: F\n");
+    }
+    
+    // Nested if statements
+    int number = 15;
+    if (number > 0) {
+        printf("%d is positive", number);
+        if (number % 2 == 0) {
+            printf(" and even\n");
+        } else {
+            printf(" and odd\n");
+        }
+    }
+    
+    // Ternary operator
+    int a = 10, b = 20;
+    int max = (a > b) ? a : b;
+    printf("Maximum of %d and %d is %d\n", a, b, max);
+    
+    // Switch statement
+    int day = 3;
+    printf("Day %d: ", day);
+    
+    switch (day) {
+        case 1:
+            printf("Monday\n");
+            break;
+        case 2:
+            printf("Tuesday\n");
+            break;
+        case 3:
+            printf("Wednesday\n");
+            break;
+        case 4:
+            printf("Thursday\n");
+            break;
+        case 5:
+            printf("Friday\n");
+            break;
+        case 6:
+            printf("Saturday\n");
+            break;
+        case 7:
+            printf("Sunday\n");
+            break;
+        default:
+            printf("Invalid day\n");
+    }
+    
+    // Multiple cases in switch
+    char grade = 'B';
+    printf("Grade %c: ", grade);
+    
+    switch (grade) {
+        case 'A':
+        case 'a':
+            printf("Excellent!\n");
+            break;
+        case 'B':
+        case 'b':
+            printf("Good!\n");
+            break;
+        case 'C':
+        case 'c':
+            printf("Average\n");
+            break;
+        case 'D':
+        case 'd':
+            printf("Poor\n");
+            break;
+        case 'F':
+        case 'f':
+            printf("Fail\n");
+            break;
+        default:
+            printf("Invalid grade\n");
+    }
+    
+    return 0;
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- Loops -->
+        <div class="glass rounded-xl p-6 component-card">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Loops</h3>
+          <p class="text-slate-300 mb-4">For loops, while loops, and loop control</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int main() {
+    // For loop
+    printf("For loop (1 to 5): ");
+    for (int i = 1; i <= 5; i++) {
+        printf("%d ", i);
+    }
+    printf("\n");
+    
+    // While loop
+    printf("While loop (1 to 5): ");
+    int j = 1;
+    while (j <= 5) {
+        printf("%d ", j);
+        j++;
+    }
+    printf("\n");
+    
+    // Do-while loop
+    printf("Do-while loop (1 to 5): ");
+    int k = 1;
+    do {
+        printf("%d ", k);
+        k++;
+    } while (k <= 5);
+    printf("\n");
+    
+    // Nested loops
+    printf("\nMultiplication table (1-3):\n");
+    for (int i = 1; i <= 3; i++) {
+        for (int j = 1; j <= 3; j++) {
+            printf("%d x %d = %d\n", i, j, i * j);
+        }
+    }
+    
+    // Loop control: break and continue
+    printf("\nNumbers 1-10 (skip 5): ");
+    for (int i = 1; i <= 10; i++) {
+        if (i == 5) {
+            continue;  // Skip 5
+        }
+        if (i == 8) {
+            break;     // Stop at 8
+        }
+        printf("%d ", i);
+    }
+    printf("\n");
+    
+    // Infinite loop with break
+    printf("Counting until 5: ");
+    int counter = 1;
+    while (1) {  // Infinite loop
+        printf("%d ", counter);
+        if (counter == 5) {
+            break;
+        }
+        counter++;
+    }
+    printf("\n");
+    
+    // Array iteration with loops
+    int numbers[] = {10, 20, 30, 40, 50};
+    int size = sizeof(numbers) / sizeof(numbers[0]);
+    
+    printf("\nArray elements: ");
+    for (int i = 0; i < size; i++) {
+        printf("%d ", numbers[i]);
+    }
+    printf("\n");
+    
+    // Reverse array
+    printf("Reverse array: ");
+    for (int i = size - 1; i >= 0; i--) {
+        printf("%d ", numbers[i]);
+    }
+    printf("\n");
+    
+    // Sum of array elements
+    int sum = 0;
+    for (int i = 0; i < size; i++) {
+        sum += numbers[i];
+    }
+    printf("Sum of array: %d\n", sum);
+    
+    return 0;
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- Arrays -->
+        <div class="glass rounded-xl p-6 component-card">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Arrays</h3>
+          <p class="text-slate-300 mb-4">Working with single and multi-dimensional arrays</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int main() {
+    // Single-dimensional arrays
+    int numbers[5] = {10, 20, 30, 40, 50};
+    float temperatures[3] = {36.5, 37.2, 35.8};
+    
+    // Array declaration and initialization
+    int scores[5];  // Array of 5 integers
+    scores[0] = 95;
+    scores[1] = 87;
+    scores[2] = 92;
+    scores[3] = 78;
+    scores[4] = 85;
+    
+    // Accessing array elements
+    printf("First number: %d\n", numbers[0]);
+    printf("Third temperature: %.1f\n", temperatures[2]);
+    
+    // Array length calculation
+    int numbers_size = sizeof(numbers) / sizeof(numbers[0]);
+    printf("Numbers array size: %d\n", numbers_size);
+    
+    // Iterating through arrays
+    printf("All numbers: ");
+    for (int i = 0; i < numbers_size; i++) {
+        printf("%d ", numbers[i]);
+    }
+    printf("\n");
+    
+    printf("All scores: ");
+    for (int i = 0; i < 5; i++) {
+        printf("%d ", scores[i]);
+    }
+    printf("\n");
+    
+    // Multi-dimensional arrays
+    int matrix[3][3] = {
+        {1, 2, 3},
+        {4, 5, 6},
+        {7, 8, 9}
+    };
+    
+    printf("\n2D Array (Matrix):\n");
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            printf("%d ", matrix[i][j]);
+        }
+        printf("\n");
+    }
+    
+    // Character arrays (strings)
+    char name[20] = "John Doe";
+    char greeting[] = "Hello, World!";
+    
+    printf("\nCharacter Arrays:\n");
+    printf("Name: %s\n", name);
+    printf("Greeting: %s\n", greeting);
+    printf("Name length: %zu\n", sizeof(name));
+    printf("Greeting length: %zu\n", sizeof(greeting));
+    
+    // Modifying character arrays
+    name[0] = 'J';
+    name[5] = 'D';
+    printf("Modified name: %s\n", name);
+    
+    // Array of strings
+    char fruits[3][20] = {
+        "Apple",
+        "Banana",
+        "Orange"
+    };
+    
+    printf("\nArray of Strings:\n");
+    for (int i = 0; i < 3; i++) {
+        printf("Fruit %d: %s\n", i + 1, fruits[i]);
+    }
+    
+    // Array operations
+    int arr[5] = {5, 2, 8, 1, 9};
+    
+    // Find maximum
+    int max = arr[0];
+    for (int i = 1; i < 5; i++) {
+        if (arr[i] > max) {
+            max = arr[i];
+        }
+    }
+    printf("\nMaximum value: %d\n", max);
+    
+    // Find minimum
+    int min = arr[0];
+    for (int i = 1; i < 5; i++) {
+        if (arr[i] < min) {
+            min = arr[i];
+        }
+    }
+    printf("Minimum value: %d\n", min);
+    
+    // Calculate average
+    int sum = 0;
+    for (int i = 0; i < 5; i++) {
+        sum += arr[i];
+    }
+    float average = (float)sum / 5;
+    printf("Average: %.2f\n", average);
+    
+    return 0;
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Functions Section -->
+  <section class="course-section py-5">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">Functions & Pointers</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Functions -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Functions</h3>
+          <p class="text-slate-300 mb-4">Defining and using functions in C</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-c">#include &lt;stdio.h&gt;
+
+// Function declarations (prototypes)
+void greet();
+int add(int a, int b);
+float calculateAverage(int arr[], int size);
+void swap(int *a, int *b);
+int factorial(int n);
+int isPrime(int num);
+
+int main() {
+    // Basic function call
+    greet();
+    
+    // Function with parameters and return value
+    int result = add(5, 3);
+    printf("5 + 3 = %d\n", result);
+    
+    // Function with array parameter
+    int numbers[] = {10, 20, 30, 40, 50};
+    int size = sizeof(numbers) / sizeof(numbers[0]);
+    float avg = calculateAverage(numbers, size);
+    printf("Average: %.2f\n", avg);
+    
+    // Function with pointers (call by reference)
+    int x = 10, y = 20;
+    printf("Before swap: x = %d, y = %d\n", x, y);
+    swap(&x, &y);
+    printf("After swap: x = %d, y = %d\n", x, y);
+    
+    // Recursive function
+    int num = 5;
+    printf("Factorial of %d is %d\n", num, factorial(num));
+    
+    // Function returning boolean-like value
+    int testNum = 17;
+    if (isPrime(testNum)) {
+        printf("%d is a prime number\n", testNum);
+    } else {
+        printf("%d is not a prime number\n", testNum);
+    }
+    
+    return 0;
+}
+
+// Function definitions
+
+// Basic function without parameters
+void greet() {
+    printf("Hello from greet() function!\n");
+}
+
+// Function with parameters and return value
+int add(int a, int b) {
+    return a + b;
+}
+
+// Function with array parameter
+float calculateAverage(int arr[], int size) {
+    int sum = 0;
+    for (int i = 0; i < size; i++) {
+        sum += arr[i];
+    }
+    return (float)sum / size;
+}
+
+// Function using pointers (call by reference)
+void swap(int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+// Recursive function
+int factorial(int n) {
+    if (n == 0 || n == 1) {
+        return 1;
+    }
+    return n * factorial(n - 1);
+}
+
+// Function returning int (boolean-like)
+int isPrime(int num) {
+    if (num <= 1) return 0;
+    if (num == 2) return 1;
+    if (num % 2 == 0) return 0;
+    
+    for (int i = 3; i * i <= num; i += 2) {
+        if (num % i == 0) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+// Function with static variable
+int counter() {
+    static int count = 0;  // Retains value between calls
+    count++;
+    return count;
+}
+
+// Example using static variable
+void staticExample() {
+    printf("\nStatic variable example:\n");
+    for (int i = 0; i < 5; i++) {
+        printf("Counter: %d\n", counter());
+    }
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- Pointers -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Pointers</h3>
+          <p class="text-slate-300 mb-4">Memory addresses and pointer operations</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int main() {
+    // Basic pointers
+    int x = 10;
+    int *p = &x;  // p points to x
+    
+    printf("Basic Pointers:\n");
+    printf("Value of x: %d\n", x);
+    printf("Address of x: %p\n", (void*)&x);
+    printf("Value of p (address stored): %p\n", (void*)p);
+    printf("Value at address stored in p: %d\n", *p);
+    
+    // Pointer arithmetic
+    printf("\nPointer Arithmetic:\n");
+    int arr[] = {10, 20, 30, 40, 50};
+    int *ptr = arr;  // Points to first element
+    
+    printf("Array elements using pointers:\n");
+    for (int i = 0; i < 5; i++) {
+        printf("arr[%d] = %d, *(ptr + %d) = %d\n", 
+               i, arr[i], i, *(ptr + i));
+    }
+    
+    // Array name as pointer
+    printf("\nArray name as pointer:\n");
+    printf("*arr = %d\n", *arr);
+    printf("*(arr + 1) = %d\n", *(arr + 1));
+    printf("*(arr + 2) = %d\n", *(arr + 2));
+    
+    // Pointer to pointer
+    printf("\nPointer to Pointer:\n");
+    int y = 100;
+    int *p1 = &y;
+    int **p2 = &p1;
+    
+    printf("y = %d\n", y);
+    printf("*p1 = %d\n", *p1);
+    printf("**p2 = %d\n", **p2);
+    printf("Address of y: %p\n", (void*)&y);
+    printf("Address stored in p1: %p\n", (void*)p1);
+    printf("Address stored in p2: %p\n", (void*)p2);
+    
+    // Pointers and functions
+    printf("\nPointers and Functions:\n");
+    int a = 5, b = 10;
+    printf("Before: a = %d, b = %d\n", a, b);
+    
+    // Swap using pointers
+    void swap(int *x, int *y) {
+        int temp = *x;
+        *x = *y;
+        *y = temp;
+    }
+    
+    swap(&a, &b);
+    printf("After swap: a = %d, b = %d\n", a, b);
+    
+    // Pointers with arrays in functions
+    void printArray(int *arr, int size) {
+        printf("Array elements: ");
+        for (int i = 0; i < size; i++) {
+            printf("%d ", *(arr + i));
+        }
+        printf("\n");
+    }
+    
+    printArray(arr, 5);
+    
+    // Pointer and string
+    printf("\nPointers and Strings:\n");
+    char str[] = "Hello";
+    char *strPtr = str;
+    
+    printf("String: %s\n", str);
+    printf("Using pointer: ");
+    while (*strPtr != '\0') {
+        printf("%c", *strPtr);
+        strPtr++;
+    }
+    printf("\n");
+    
+    // Array of pointers
+    printf("\nArray of Pointers:\n");
+    char *names[] = {"Alice", "Bob", "Charlie", "Diana"};
+    int namesCount = sizeof(names) / sizeof(names[0]);
+    
+    for (int i = 0; i < namesCount; i++) {
+        printf("Name %d: %s\n", i + 1, names[i]);
+    }
+    
+    // Void pointer
+    printf("\nVoid Pointer:\n");
+    int num = 42;
+    float fnum = 3.14;
+    char ch = 'A';
+    
+    void *vp;
+    
+    vp = &num;
+    printf("Integer via void pointer: %d\n", *(int*)vp);
+    
+    vp = &fnum;
+    printf("Float via void pointer: %.2f\n", *(float*)vp);
+    
+    vp = &ch;
+    printf("Char via void pointer: %c\n", *(char*)vp);
+    
+    // Null pointer
+    printf("\nNull Pointer:\n");
+    int *nullPtr = NULL;
+    if (nullPtr == NULL) {
+        printf("Pointer is NULL - safe to check before use\n");
+    }
+    
+    return 0;
+}</code></pre>
+          </div>
+          
+          <div class="mt-4 p-4 bg-blue-900/30 rounded-lg">
+            <h4 class="font-semibold text-blue-300 mb-2">🧠 Memory Visualization</h4>
+            <div class="memory-visual">
+              <div class="memory-cell">
+                <span class="memory-address">0x1000:</span>
+                <span class="memory-value">x = 10</span>
+              </div>
+              <div class="memory-cell">
+                <span class="memory-address">0x2000:</span>
+                <span class="memory-value">p = 0x1000</span>
+                <span class="text-slate-400 ml-2">// points to x</span>
+              </div>
+              <div class="memory-cell">
+                <span class="memory-address">0x3000:</span>
+                <span class="memory-value">arr[0] = 10</span>
+              </div>
+              <div class="memory-cell">
+                <span class="memory-address">0x3004:</span>
+                <span class="memory-value">arr[1] = 20</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Structures -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Structures</h3>
+          <p class="text-slate-300 mb-4">Creating and using structures for complex data</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+// Structure definition
+struct Student {
+    char name[50];
+    int age;
+    float gpa;
+    int roll_number;
+};
+
+// Structure with typedef
+typedef struct {
+    char title[100];
+    char author[50];
+    int year;
+    float price;
+} Book;
+
+// Nested structure
+struct Address {
+    char street[100];
+    char city[50];
+    char state[50];
+    int zip_code;
+};
+
+struct Person {
+    char name[50];
+    int age;
+    struct Address address;
+};
+
+// Function to print student information
+void printStudent(struct Student s) {
+    printf("Name: %s\n", s.name);
+    printf("Age: %d\n", s.age);
+    printf("GPA: %.2f\n", s.gpa);
+    printf("Roll Number: %d\n", s.roll_number);
+}
+
+// Function to update GPA (using pointer)
+void updateGPA(struct Student *s, float newGPA) {
+    s->gpa = newGPA;
+}
+
+int main() {
+    // Structure variable declaration and initialization
+    struct Student student1 = {"Alice Johnson", 20, 3.8, 101};
+    
+    printf("Student 1 Information:\n");
+    printStudent(student1);
+    
+    // Modifying structure members
+    printf("\nAfter modification:\n");
+    student1.age = 21;
+    student1.gpa = 3.9;
+    strcpy(student1.name, "Alice Smith");
+    printStudent(student1);
+    
+    // Using typedef structure
+    Book book1 = {"The C Programming Language", "K&R", 1978, 45.99};
+    
+    printf("\nBook Information:\n");
+    printf("Title: %s\n", book1.title);
+    printf("Author: %s\n", book1.author);
+    printf("Year: %d\n", book1.year);
+    printf("Price: $%.2f\n", book1.price);
+    
+    // Array of structures
+    struct Student class[3] = {
+        {"Bob Brown", 19, 3.5, 102},
+        {"Charlie Davis", 20, 3.2, 103},
+        {"Diana Evans", 21, 3.9, 104}
+    };
+    
+    printf("\nClass Students:\n");
+    for (int i = 0; i < 3; i++) {
+        printf("Student %d: %s (GPA: %.2f)\n", 
+               class[i].roll_number, class[i].name, class[i].gpa);
+    }
+    
+    // Nested structures
+    struct Person person1 = {
+        "John Doe",
+        30,
+        {"123 Main St", "Springfield", "IL", 62701}
+    };
+    
+    printf("\nPerson with Address:\n");
+    printf("Name: %s\n", person1.name);
+    printf("Age: %d\n", person1.age);
+    printf("Address: %s, %s, %s %d\n", 
+           person1.address.street, 
+           person1.address.city, 
+           person1.address.state, 
+           person1.address.zip_code);
+    
+    // Pointers to structures
+    struct Student *ptr = &student1;
+    
+    printf("\nUsing Structure Pointer:\n");
+    printf("Name: %s\n", ptr->name);        // Arrow operator
+    printf("Age: %d\n", ptr->age);
+    printf("GPA: %.2f\n", (*ptr).gpa);      // Dot operator with dereference
+    
+    // Update using pointer
+    updateGPA(&student1, 4.0);
+    printf("\nAfter GPA update:\n");
+    printf("New GPA: %.2f\n", student1.gpa);
+    
+    // Structure with array
+    struct Course {
+        char name[50];
+        int credits;
+        float grades[5];
+    };
+    
+    struct Course math = {"Mathematics", 3, {85.5, 90.0, 78.5, 92.0, 88.5}};
+    
+    printf("\nCourse Information:\n");
+    printf("Course: %s (%d credits)\n", math.name, math.credits);
+    printf("Grades: ");
+    for (int i = 0; i < 5; i++) {
+        printf("%.1f ", math.grades[i]);
+    }
+    printf("\n");
+    
+    // Structure size
+    printf("\nStructure Sizes:\n");
+    printf("Size of Student: %zu bytes\n", sizeof(struct Student));
+    printf("Size of Book: %zu bytes\n", sizeof(Book));
+    printf("Size of Person: %zu bytes\n", sizeof(struct Person));
+    
+    return 0;
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- File Handling -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">File Handling</h3>
+          <p class="text-slate-300 mb-4">Reading from and writing to files</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int main() {
+    FILE *file;
+    char text[100];
+    
+    // Writing to a file
+    printf("Writing to file...\n");
+    file = fopen("example.txt", "w");
+    
+    if (file == NULL) {
+        printf("Error opening file for writing!\n");
+        return 1;
+    }
+    
+    fprintf(file, "Hello, File Handling!\n");
+    fprintf(file, "This is a sample text file.\n");
+    fprintf(file, "C file operations are powerful.\n");
+    
+    fclose(file);
+    printf("File written successfully!\n");
+    
+    // Reading from a file
+    printf("\nReading from file:\n");
+    file = fopen("example.txt", "r");
+    
+    if (file == NULL) {
+        printf("Error opening file for reading!\n");
+        return 1;
+    }
+    
+    while (fgets(text, sizeof(text), file) != NULL) {
+        printf("%s", text);
+    }
+    
+    fclose(file);
+    
+    // Appending to a file
+    printf("\nAppending to file...\n");
+    file = fopen("example.txt", "a");
+    
+    if (file == NULL) {
+        printf("Error opening file for appending!\n");
+        return 1;
+    }
+    
+    fprintf(file, "This line was appended!\n");
+    fclose(file);
+    printf("Text appended successfully!\n");
+    
+    // Reading character by character
+    printf("\nReading character by character:\n");
+    file = fopen("example.txt", "r");
+    
+    if (file == NULL) {
+        printf("Error opening file!\n");
+        return 1;
+    }
+    
+    char ch;
+    int charCount = 0;
+    while ((ch = fgetc(file)) != EOF) {
+        printf("%c", ch);
+        charCount++;
+    }
+    printf("\nTotal characters: %d\n", charCount);
+    
+    fclose(file);
+    
+    // Binary file operations
+    printf("\nBinary File Operations:\n");
+    
+    // Writing binary data
+    int numbers[] = {10, 20, 30, 40, 50};
+    file = fopen("data.bin", "wb");
+    
+    if (file == NULL) {
+        printf("Error creating binary file!\n");
+        return 1;
+    }
+    
+    fwrite(numbers, sizeof(int), 5, file);
+    fclose(file);
+    printf("Binary data written successfully!\n");
+    
+    // Reading binary data
+    int readNumbers[5];
+    file = fopen("data.bin", "rb");
+    
+    if (file == NULL) {
+        printf("Error opening binary file!\n");
+        return 1;
+    }
+    
+    fread(readNumbers, sizeof(int), 5, file);
+    fclose(file);
+    
+    printf("Read binary data: ");
+    for (int i = 0; i < 5; i++) {
+        printf("%d ", readNumbers[i]);
+    }
+    printf("\n");
+    
+    // File position operations
+    printf("\nFile Position Operations:\n");
+    file = fopen("example.txt", "r");
+    
+    if (file == NULL) {
+        printf("Error opening file!\n");
+        return 1;
+    }
+    
+    // Get current position
+    long position = ftell(file);
+    printf("Current position: %ld\n", position);
+    
+    // Move to beginning
+    fseek(file, 0, SEEK_SET);
+    printf("After seeking to beginning: %ld\n", ftell(file));
+    
+    // Read first line
+    fgets(text, sizeof(text), file);
+    printf("First line: %s", text);
+    
+    // Move to end
+    fseek(file, 0, SEEK_END);
+    printf("File size: %ld bytes\n", ftell(file));
+    
+    fclose(file);
+    
+    // Error handling with perror
+    printf("\nError Handling:\n");
+    file = fopen("nonexistent.txt", "r");
+    if (file == NULL) {
+        perror("Error opening file");
+    }
+    
+    // Remove file
+    if (remove("example.txt") == 0) {
+        printf("File deleted successfully\n");
+    } else {
+        printf("Error deleting file\n");
+    }
+    
+    if (remove("data.bin") == 0) {
+        printf("Binary file deleted successfully\n");
+    } else {
+        printf("Error deleting binary file\n");
+    }
+    
+    return 0;
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Advanced C Section -->
+  <section class="course-section py-5 bg-dark-800">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">Advanced C Programming</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Dynamic Memory Allocation -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Dynamic Memory Allocation</h3>
+          <p class="text-slate-300 mb-4">Managing memory at runtime with malloc, calloc, realloc, free</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int main() {
+    // malloc - Memory Allocation
+    printf("=== malloc Example ===\n");
+    int *mallocPtr = (int*)malloc(5 * sizeof(int));
+    
+    if (mallocPtr == NULL) {
+        printf("Memory allocation failed!\n");
+        return 1;
+    }
+    
+    // Initialize and use allocated memory
+    for (int i = 0; i < 5; i++) {
+        mallocPtr[i] = (i + 1) * 10;
+    }
+    
+    printf("malloc array: ");
+    for (int i = 0; i < 5; i++) {
+        printf("%d ", mallocPtr[i]);
+    }
+    printf("\n");
+    
+    // calloc - Contiguous Allocation (initialized to 0)
+    printf("\n=== calloc Example ===\n");
+    int *callocPtr = (int*)calloc(5, sizeof(int));
+    
+    if (callocPtr == NULL) {
+        printf("Memory allocation failed!\n");
+        free(mallocPtr);
+        return 1;
+    }
+    
+    printf("calloc array (initialized to 0): ");
+    for (int i = 0; i < 5; i++) {
+        printf("%d ", callocPtr[i]);
+    }
+    printf("\n");
+    
+    // Initialize calloc array
+    for (int i = 0; i < 5; i++) {
+        callocPtr[i] = (i + 1) * 20;
+    }
+    
+    printf("calloc array after assignment: ");
+    for (int i = 0; i < 5; i++) {
+        printf("%d ", callocPtr[i]);
+    }
+    printf("\n");
+    
+    // realloc - Reallocate memory
+    printf("\n=== realloc Example ===\n");
+    int *reallocPtr = (int*)realloc(callocPtr, 10 * sizeof(int));
+    
+    if (reallocPtr == NULL) {
+        printf("Memory reallocation failed!\n");
+        free(mallocPtr);
+        free(callocPtr);
+        return 1;
+    }
+    
+    callocPtr = reallocPtr;  // Use the new pointer
+    
+    // Initialize new elements
+    for (int i = 5; i < 10; i++) {
+        callocPtr[i] = (i + 1) * 20;
+    }
+    
+    printf("After realloc (size 10): ");
+    for (int i = 0; i < 10; i++) {
+        printf("%d ", callocPtr[i]);
+    }
+    printf("\n");
+    
+    // Dynamic string allocation
+    printf("\n=== Dynamic Strings ===\n");
+    char *str = (char*)malloc(50 * sizeof(char));
+    
+    if (str != NULL) {
+        strcpy(str, "Hello, Dynamic Memory!");
+        printf("Dynamic string: %s\n", str);
+    }
+    
+    // Dynamic array of structures
+    printf("\n=== Dynamic Structure Array ===\n");
+    typedef struct {
+        char name[50];
+        int age;
+    } Person;
+    
+    int numPersons = 3;
+    Person *persons = (Person*)malloc(numPersons * sizeof(Person));
+    
+    if (persons != NULL) {
+        // Initialize structures
+        strcpy(persons[0].name, "Alice");
+        persons[0].age = 25;
+        
+        strcpy(persons[1].name, "Bob");
+        persons[1].age = 30;
+        
+        strcpy(persons[2].name, "Charlie");
+        persons[2].age = 35;
+        
+        // Print structures
+        for (int i = 0; i < numPersons; i++) {
+            printf("Person %d: %s, %d years\n", 
+                   i + 1, persons[i].name, persons[i].age);
+        }
+    }
+    
+    // Two-dimensional dynamic array
+    printf("\n=== 2D Dynamic Array ===\n");
+    int rows = 3, cols = 4;
+    int **matrix = (int**)malloc(rows * sizeof(int*));
+    
+    for (int i = 0; i < rows; i++) {
+        matrix[i] = (int*)malloc(cols * sizeof(int));
+    }
+    
+    // Initialize matrix
+    int counter = 1;
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            matrix[i][j] = counter++;
+        }
+    }
+    
+    // Print matrix
+    printf("Dynamic 2D Array:\n");
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            printf("%2d ", matrix[i][j]);
+        }
+        printf("\n");
+    }
+    
+    // Free all allocated memory
+    printf("\n=== Freeing Memory ===\n");
+    free(mallocPtr);
+    free(callocPtr);
+    free(str);
+    free(persons);
+    
+    // Free 2D array
+    for (int i = 0; i < rows; i++) {
+        free(matrix[i]);
+    }
+    free(matrix);
+    
+    printf("All memory freed successfully!\n");
+    
+    // Memory leak demonstration (commented out for safety)
+    /*
+    printf("\n=== Memory Leak Example ===\n");
+    int *leakPtr = (int*)malloc(100 * sizeof(int));
+    // Forgot to free leakPtr - memory leak!
+    // free(leakPtr);  // This should be called
+    */
+    
+    return 0;
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- Recursion -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Recursion</h3>
+          <p class="text-slate-300 mb-4">Functions that call themselves</p>
+          
+          <div class="code-container bg-slate-900 rounded-lg p-4">
+            <button class="copy-btn bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+            <pre><code class="language-c">#include &lt;stdio.h&gt;
+
+// Factorial function
+unsigned long long factorial(int n) {
+    // Base case
+    if (n == 0 || n == 1) {
+        return 1;
+    }
+    // Recursive case
+    return n * factorial(n - 1);
+}
+
+// Fibonacci sequence
+int fibonacci(int n) {
+    // Base cases
+    if (n == 0) return 0;
+    if (n == 1) return 1;
+    // Recursive case
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+// Power calculation
+double power(double base, int exponent) {
+    // Base case
+    if (exponent == 0) return 1;
+    if (exponent == 1) return base;
+    
+    // Recursive cases
+    if (exponent > 0) {
+        return base * power(base, exponent - 1);
+    } else {
+        return 1 / power(base, -exponent);
+    }
+}
+
+// GCD (Greatest Common Divisor) using Euclidean algorithm
+int gcd(int a, int b) {
+    // Base case
+    if (b == 0) return a;
+    // Recursive case
+    return gcd(b, a % b);
+}
+
+// Tower of Hanoi
+void towerOfHanoi(int n, char from_rod, char to_rod, char aux_rod) {
+    if (n == 1) {
+        printf("Move disk 1 from %c to %c\n", from_rod, to_rod);
+        return;
+    }
+    towerOfHanoi(n - 1, from_rod, aux_rod, to_rod);
+    printf("Move disk %d from %c to %c\n", n, from_rod, to_rod);
+    towerOfHanoi(n - 1, aux_rod, to_rod, from_rod);
+}
+
+// Binary search using recursion
+int binarySearch(int arr[], int left, int right, int target) {
+    if (left <= right) {
+        int mid = left + (right - left) / 2;
+        
+        if (arr[mid] == target) return mid;
+        if (arr[mid] > target) return binarySearch(arr, left, mid - 1, target);
+        return binarySearch(arr, mid + 1, right, target);
+    }
+    return -1;  // Not found
+}
+
+// Sum of digits
+int sumOfDigits(int n) {
+    if (n == 0) return 0;
+    return (n % 10) + sumOfDigits(n / 10);
+}
+
+// Reverse a number
+int reverseNumber(int n, int reversed) {
+    if (n == 0) return reversed;
+    return reverseNumber(n / 10, reversed * 10 + n % 10);
+}
+
+// Palindrome check
+int isPalindrome(char str[], int start, int end) {
+    // Base case: single character or empty string
+    if (start >= end) return 1;
+    
+    // If characters don't match
+    if (str[start] != str[end]) return 0;
+    
+    // Recursive call for remaining substring
+    return isPalindrome(str, start + 1, end - 1);
+}
+
+int main() {
+    printf("=== Recursion Examples ===\n\n");
+    
+    // Factorial
+    printf("Factorials:\n");
+    for (int i = 0; i <= 10; i++) {
+        printf("%d! = %llu\n", i, factorial(i));
+    }
+    
+    // Fibonacci
+    printf("\nFibonacci sequence (first 15 terms):\n");
+    for (int i = 0; i < 15; i++) {
+        printf("%d ", fibonacci(i));
+    }
+    printf("\n");
+    
+    // Power
+    printf("\nPower calculations:\n");
+    printf("2^5 = %.0f\n", power(2, 5));
+    printf("3^4 = %.0f\n", power(3, 4));
+    printf("5^-2 = %.4f\n", power(5, -2));
+    
+    // GCD
+    printf("\nGCD calculations:\n");
+    printf("GCD(56, 98) = %d\n", gcd(56, 98));
+    printf("GCD(48, 18) = %d\n", gcd(48, 18));
+    printf("GCD(17, 13) = %d\n", gcd(17, 13));
+    
+    // Tower of Hanoi
+    printf("\nTower of Hanoi for 3 disks:\n");
+    towerOfHanoi(3, 'A', 'C', 'B');
+    
+    // Binary Search
+    printf("\nBinary Search:\n");
+    int sortedArray[] = {2, 5, 8, 12, 16, 23, 38, 45, 67, 89};
+    int size = sizeof(sortedArray) / sizeof(sortedArray[0]);
+    int target = 23;
+    
+    int result = binarySearch(sortedArray, 0, size - 1, target);
+    if (result != -1) {
+        printf("Element %d found at index %d\n", target, result);
+    } else {
+        printf("Element %d not found\n", target);
+    }
+    
+    // Sum of digits
+    printf("\nSum of digits:\n");
+    int numbers[] = {123, 4567, 98765};
+    for (int i = 0; i < 3; i++) {
+        printf("Sum of digits of %d = %d\n", 
+               numbers[i], sumOfDigits(numbers[i]));
+    }
+    
+    // Reverse number
+    printf("\nReverse numbers:\n");
+    int nums[] = {123, 4567, 98765};
+    for (int i = 0; i < 3; i++) {
+        printf("Reverse of %d = %d\n", 
+               nums[i], reverseNumber(nums[i], 0));
+    }
+    
+    // Palindrome check
+    printf("\nPalindrome check:\n");
+    char *testStrings[] = {"racecar", "hello", "madam", "programming"};
+    int numStrings = sizeof(testStrings) / sizeof(testStrings[0]);
+    
+    for (int i = 0; i < numStrings; i++) {
+        int len = 0;
+        while (testStrings[i][len] != '\0') len++;
+        
+        int palindrome = isPalindrome(testStrings[i], 0, len - 1);
+        printf("'%s' is %s palindrome\n", 
+               testStrings[i], palindrome ? "a" : "not a");
+    }
+    
+    // Recursive array sum
+    printf("\nArray operations with recursion:\n");
+    int arr[] = {1, 2, 3, 4, 5};
+    int arrSize = sizeof(arr) / sizeof(arr[0]);
+    
+    int arraySum(int a[], int n) {
+        if (n <= 0) return 0;
+        return a[n - 1] + arraySum(a, n - 1);
+    }
+    
+    int arrayMax(int a[], int n) {
+        if (n == 1) return a[0];
+        int max = arrayMax(a, n - 1);
+        return (a[n - 1] > max) ? a[n - 1] : max;
+    }
+    
+    printf("Array sum: %d\n", arraySum(arr, arrSize));
+    printf("Array max: %d\n", arrayMax(arr, arrSize));
+    
+    return 0;
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- Mini Projects -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Mini Projects</h3>
+          <p class="text-slate-300 mb-4">Practical C programming projects</p>
+          
+          <div class="space-y-6">
+            <!-- Calculator -->
+            <div class="p-4 bg-green-900/30 rounded-lg">
+              <h4 class="font-semibold text-green-300 mb-2">🧮 Calculator</h4>
+              <div class="code-container bg-slate-800 rounded p-3">
+                <pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int main() {
+    double num1, num2, result;
+    char operator;
+    
+    printf("Simple Calculator\n");
+    printf("Enter calculation (e.g., 5 + 3): ");
+    scanf("%lf %c %lf", &num1, &operator, &num2);
+    
+    switch(operator) {
+        case '+':
+            result = num1 + num2;
+            break;
+        case '-':
+            result = num1 - num2;
+            break;
+        case '*':
+            result = num1 * num2;
+            break;
+        case '/':
+            if(num2 != 0) {
+                result = num1 / num2;
+            } else {
+                printf("Error: Division by zero!\n");
+                return 1;
+            }
+            break;
+        case '%':
+            result = (int)num1 % (int)num2;
+            break;
+        default:
+            printf("Error: Invalid operator!\n");
+            return 1;
+    }
+    
+    printf("Result: %.2lf %c %.2lf = %.2lf\n", 
+           num1, operator, num2, result);
+    return 0;
+}</code></pre>
+              </div>
+            </div>
+
+            <!-- Guessing Game -->
+            <div class="p-4 bg-blue-900/30 rounded-lg">
+              <h4 class="font-semibold text-blue-300 mb-2">🎯 Guessing Game</h4>
+              <div class="code-container bg-slate-800 rounded p-3">
+                <pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;time.h&gt;
+
+int main() {
+    int secret, guess, attempts = 0;
+    
+    // Initialize random seed
+    srand(time(0));
+    secret = rand() % 100 + 1;  // Random number between 1-100
+    
+    printf("🎮 Welcome to the Guessing Game!\n");
+    printf("I'm thinking of a number between 1 and 100.\n");
+    
+    do {
+        printf("Enter your guess: ");
+        scanf("%d", &guess);
+        attempts++;
+        
+        if(guess < secret) {
+            printf("Too low! Try again.\n");
+        } else if(guess > secret) {
+            printf("Too high! Try again.\n");
+        } else {
+            printf("🎉 Correct! You guessed it in %d attempts.\n", attempts);
+        }
+        
+    } while(guess != secret);
+    
+    return 0;
+}</code></pre>
+              </div>
+            </div>
+
+            <!-- Student Marksheet -->
+            <div class="p-4 bg-purple-900/30 rounded-lg">
+              <h4 class="font-semibold text-purple-300 mb-2">📊 Student Marksheet</h4>
+              <div class="code-container bg-slate-800 rounded p-3">
+                <pre><code class="language-c">#include &lt;stdio.h&gt;
+
+struct Student {
+    char name[50];
+    int rollNo;
+    float marks[5];
+    float total;
+    float average;
+    char grade;
+};
+
+char calculateGrade(float average) {
+    if(average >= 90) return 'A';
+    if(average >= 80) return 'B';
+    if(average >= 70) return 'C';
+    if(average >= 60) return 'D';
+    return 'F';
+}
+
+int main() {
+    struct Student student;
+    
+    printf("📝 Student Marksheet System\n\n");
+    
+    printf("Enter student name: ");
+    fgets(student.name, sizeof(student.name), stdin);
+    
+    printf("Enter roll number: ");
+    scanf("%d", &student.rollNo);
+    
+    printf("Enter marks for 5 subjects:\n");
+    student.total = 0;
+    
+    for(int i = 0; i < 5; i++) {
+        printf("Subject %d: ", i + 1);
+        scanf("%f", &student.marks[i]);
+        student.total += student.marks[i];
+    }
+    
+    student.average = student.total / 5;
+    student.grade = calculateGrade(student.average);
+    
+    // Display marksheet
+    printf("\n═══════════════════════════════════\n");
+    printf("           STUDENT MARKSHEET\n");
+    printf("═══════════════════════════════════\n");
+    printf("Name: %s", student.name);
+    printf("Roll No: %d\n", student.rollNo);
+    printf("\nSubject-wise Marks:\n");
+    
+    for(int i = 0; i < 5; i++) {
+        printf("Subject %d: %.2f\n", i + 1, student.marks[i]);
+    }
+    
+    printf("\nTotal Marks: %.2f/500\n", student.total);
+    printf("Average: %.2f%%\n", student.average);
+    printf("Grade: %c\n", student.grade);
+    
+    if(student.grade == 'F') {
+        printf("Status: ❌ Failed\n");
+    } else {
+        printf("Status: ✅ Passed\n");
+    }
+    
+    return 0;
+}</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interview Topics -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-neon-300 mb-4">Interview Topics</h3>
+          <p class="text-slate-300 mb-4">Important C concepts for technical interviews</p>
+          
+          <div class="space-y-4">
+            <div class="p-4 bg-yellow-900/30 rounded-lg">
+              <h4 class="font-semibold text-yellow-300 mb-2">📚 Storage Classes</h4>
+              <div class="text-sm text-yellow-200 space-y-2">
+                <div><span class="font-semibold">auto</span> - Default, local scope</div>
+                <div><span class="font-semibold">register</span> - Store in CPU register</div>
+                <div><span class="font-semibold">static</span> - Preserves value between calls</div>
+                <div><span class="font-semibold">extern</span> - Global variable declaration</div>
+              </div>
+            </div>
+            
+            <div class="p-4 bg-red-900/30 rounded-lg">
+              <h4 class="font-semibold text-red-300 mb-2">🔄 Call by Value vs Reference</h4>
+              <div class="code-container bg-slate-800 rounded p-3">
+                <pre><code class="language-c">// Call by value - copies value
+void modifyValue(int x) {
+    x = x + 10;  // Doesn't affect original
+}
+
+// Call by reference - uses pointers
+void modifyReference(int *x) {
+    *x = *x + 10;  // Affects original
+}</code></pre>
+              </div>
+            </div>
+            
+            <div class="p-4 bg-blue-900/30 rounded-lg">
+              <h4 class="font-semibold text-blue-300 mb-2">⚠️ Dangling Pointers</h4>
+              <div class="code-container bg-slate-800 rounded p-3">
+                <pre><code class="language-c">int *createDanglingPointer() {
+    int x = 10;
+    return &x;  // x goes out of scope - dangling pointer!
+}
+
+// Safe alternative
+int *createSafePointer() {
+    int *x = malloc(sizeof(int));
+    *x = 10;
+    return x;  // Caller must free this memory
+}</code></pre>
+              </div>
+            </div>
+            
+            <div class="p-4 bg-green-900/30 rounded-lg">
+              <h4 class="font-semibold text-green-300 mb-2">💾 malloc vs calloc</h4>
+              <div class="text-sm text-green-200 space-y-2">
+                <div><span class="font-semibold">malloc</span> - Allocates memory, contains garbage values</div>
+                <div><span class="font-semibold">calloc</span> - Allocates and initializes to zero</div>
+                <div><span class="font-semibold">realloc</span> - Resizes allocated memory</div>
+                <div><span class="font-semibold">free</span> - Deallocates memory</div>
+              </div>
+            </div>
+            
+            <div class="p-4 bg-purple-900/30 rounded-lg">
+              <h4 class="font-semibold text-purple-300 mb-2">🏗️ Stack vs Heap</h4>
+              <div class="text-sm text-purple-200 space-y-2">
+                <div><span class="font-semibold">Stack</span> - Automatic memory, fast, limited size</div>
+                <div><span class="font-semibold">Heap</span> - Dynamic memory, manual management, larger</div>
+                <div><span class="font-semibold">Use stack</span> for local variables, function calls</div>
+                <div><span class="font-semibold">Use heap</span> for dynamic data, large objects</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Live C Editor -->
+  <section id="live-editor" class="course-section py-5">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold neon-text mb-8 text-center">Live C Editor</h2>
+      
+      <div class="glass rounded-xl p-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div>
+            <h3 class="text-xl font-semibold text-neon-300 mb-4">Write C Code</h3>
+            <div class="c-editor" contenteditable="true" id="c-editor">#include &lt;stdio.h&gt;
+
+int main() {
+    printf("Welcome to C Programming!\n");
+    
+    // Basic variables
+    int number = 42;
+    float decimal = 3.14;
+    char letter = 'A';
+    
+    printf("Number: %d\n", number);
+    printf("Decimal: %.2f\n", decimal);
+    printf("Letter: %c\n", letter);
+    
+    // Array example
+    int numbers[] = {1, 2, 3, 4, 5};
+    int sum = 0;
+    
+    printf("Array elements: ");
+    for(int i = 0; i < 5; i++) {
+        printf("%d ", numbers[i]);
+        sum += numbers[i];
+    }
+    printf("\nSum: %d\n", sum);
+    
+    // Function call
+    int result = multiply(5, 3);
+    printf("5 * 3 = %d\n", result);
+    
+    return 0;
+}
+
+// Function definition
+int multiply(int a, int b) {
+    return a * b;
+}</div>
+            <button onclick="runLiveCCode()" class="w-full mt-4 px-4 py-3 bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-lg font-semibold hover:scale-105 transition-transform">
+              <i class="fas fa-play mr-2"></i>Run Code
+            </button>
+          </div>
+          
+          <div>
+            <h3 class="text-xl font-semibold text-neon-300 mb-4">Output</h3>
+            <div class="c-output h-64" id="live-c-output">
+              // C program output will appear here
+              <br>
+              // Try writing some C code and click "Run Code"
+            </div>
+            <div class="mt-4 p-4 bg-purple-900/30 rounded-lg">
+              <h4 class="font-semibold text-purple-300 mb-2">💡 C Programming Tips:</h4>
+              <ul class="text-sm text-purple-200 space-y-1">
+                <li>• Always include stdio.h for input/output</li>
+                <li>• Use main() as the program entry point</li>
+                <li>• Declare functions before using them</li>
+                <li>• Use proper format specifiers in printf/scanf</li>
+                <li>• Free dynamically allocated memory</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Navigation -->
+  <div class="max-w-6xl mx-auto px-6 py-8">
+    <div class="glass rounded-xl p-6 sticky bottom-6">
+      <h3 class="font-semibold text-neon-300 mb-4">Course Navigation</h3>
+      <div class="flex flex-wrap gap-3">
+        <a href="#basics" class="px-4 py-2 rounded-lg bg-slate-800/40 hover:bg-slate-700/40 transition text-sm">Basics</a>
+        <a href="#live-editor" class="px-4 py-2 rounded-lg bg-slate-800/40 hover:bg-slate-700/40 transition text-sm">Live Editor</a>
+        <button onclick="showCheatSheet()" class="px-4 py-2 rounded-lg bg-c_lang-500 hover:bg-c_lang-600 transition text-sm">Cheat Sheet</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="glass border-t border-slate-800 mt-20">
+    <div class="max-w-6xl mx-auto px-6 py-8 text-center">
+      <div class="flex items-center justify-center gap-6 mb-4">
+        <a href="/" class="text-slate-300 hover:text-neon-500 transition">Home</a>
+        <a href="#basics" class="text-slate-300 hover:text-neon-500 transition">Course</a>
+        <a href="https://github.com/JUSAIR-JSR" target="_blank" class="text-slate-300 hover:text-neon-500 transition">GitHub</a>
+      </div>
+      <p class="text-slate-500 text-sm">© 2023 C Programming Course - Complete Beginner to Advanced</p>
+    </div>
+  </footer>
+
+  <!-- Cheat Sheet Modal -->
+  <div id="cheat-sheet" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-50 p-4">
+    <div class="glass rounded-xl p-6 max-w-4xl max-h-[80vh] overflow-y-auto">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-2xl font-bold text-neon-300">C Programming Cheat Sheet</h3>
+        <button onclick="hideCheatSheet()" class="text-slate-400 hover:text-white">
+          <i class="fas fa-times text-2xl"></i>
+        </button>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h4 class="font-semibold text-green-400 mb-3">Basic Syntax</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">#include &lt;stdio.h&gt;</code>
+            <code class="block bg-slate-800 p-2 rounded">int main() { }</code>
+            <code class="block bg-slate-800 p-2 rounded">printf("Hello");</code>
+            <code class="block bg-slate-800 p-2 rounded">return 0;</code>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-blue-400 mb-3">Data Types</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">int, float, double</code>
+            <code class="block bg-slate-800 p-2 rounded">char, void</code>
+            <code class="block bg-slate-800 p-2 rounded">short, long</code>
+            <code class="block bg-slate-800 p-2 rounded">unsigned</code>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-yellow-400 mb-3">Control Flow</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">if (condition) { }</code>
+            <code class="block bg-slate-800 p-2 rounded">for (int i=0; i<n; i++)</code>
+            <code class="block bg-slate-800 p-2 rounded">while (condition) { }</code>
+            <code class="block bg-slate-800 p-2 rounded">switch (value) { }</code>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-purple-400 mb-3">Functions</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">return_type name() { }</code>
+            <code class="block bg-slate-800 p-2 rounded">void function()</code>
+            <code class="block bg-slate-800 p-2 rounded">int add(int a, int b)</code>
+            <code class="block bg-slate-800 p-2 rounded">recursive_function()</code>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-red-400 mb-3">Pointers</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">int *p = &x;</code>
+            <code class="block bg-slate-800 p-2 rounded">*p = value;</code>
+            <code class="block bg-slate-800 p-2 rounded">p = arr;</code>
+            <code class="block bg-slate-800 p-2 rounded">void *vp;</code>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-indigo-400 mb-3">Memory Management</h4>
+          <div class="space-y-2 text-sm">
+            <code class="block bg-slate-800 p-2 rounded">malloc(size)</code>
+            <code class="block bg-slate-800 p-2 rounded">calloc(num, size)</code>
+            <code class="block bg-slate-800 p-2 rounded">realloc(ptr, size)</code>
+            <code class="block bg-slate-800 p-2 rounded">free(ptr)</code>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Initialize syntax highlighting
+    hljs.highlightAll();
+
+    // Copy button functionality
+    document.querySelectorAll('.copy-btn').forEach(button => {
+      button.addEventListener('click', function() {
+        const codeBlock = this.closest('.code-container').querySelector('code');
+        const textArea = document.createElement('textarea');
+        textArea.value = codeBlock.textContent;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        
+        // Visual feedback
+        const originalText = this.innerHTML;
+        this.innerHTML = '<i class="fas fa-check mr-1"></i>Copied!';
+        setTimeout(() => {
+          this.innerHTML = originalText;
+        }, 2000);
+      });
+    });
+
+    // Cheat sheet functions
+    function showCheatSheet() {
+      document.getElementById('cheat-sheet').classList.remove('hidden');
+      document.getElementById('cheat-sheet').classList.add('flex');
+    }
+
+    function hideCheatSheet() {
+      document.getElementById('cheat-sheet').classList.add('hidden');
+      document.getElementById('cheat-sheet').classList.remove('flex');
+    }
+
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+
+    // Live C code execution simulation
+    function runLiveCCode() {
+      const editor = document.getElementById('c-editor');
+      const outputElement = document.getElementById('live-c-output');
+      
+      if (editor && outputElement) {
+        const code = editor.textContent || editor.innerText;
+        outputElement.innerHTML = '<div class="text-green-400">Compiling and running C code...</div>';
+        
+        // Simulate C execution (in a real environment, this would use a C compiler)
+        setTimeout(() => {
+          // This is a simulation - in reality you'd need a C compiler
+          const simulatedOutput = `Welcome to C Programming!
+Number: 42
+Decimal: 3.14
+Letter: A
+Array elements: 1 2 3 4 5 
+Sum: 15
+5 * 3 = 15`;
+          
+          outputElement.innerHTML = `<div class="text-green-400">Output:</div><div class="mt-2 whitespace-pre-wrap">${simulatedOutput}</div>`;
+        }, 1000);
+      }
+    }
+  </script>
+</body>
+</html>
